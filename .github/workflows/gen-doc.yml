@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mkdocs-material mkdocs-awesome-nav mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-minify-plugin pillow cairosvg
+          pip install mkdocs-material mkdocs-awesome-nav
 
       - name: Build MkDocs site
         run: mkdocs build --strict
