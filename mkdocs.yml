@@ -4,7 +4,6 @@ site_author: Filippo Gurioli
 strict: true
 repo_url: https://github.com/FilippoGurioli/test-2-code-llm
 repo_name: FilippoGurioli/test-2-code-llm
-edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -12,8 +11,6 @@ theme:
 
   icon:
     repo: material/github
-    edit: material/pencil
-    view: material/eye
     logo: material/code-braces
 
   favicon: https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Brain/3D/brain_3d.png
@@ -48,8 +45,6 @@ theme:
     - content.code.annotate
     - content.tooltips
     - content.tabs.link
-    - content.action.edit
-    - content.action.view
 
     # Header enhancements
     - header.autohide
