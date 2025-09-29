@@ -1,0 +1,109 @@
+/* ----------------------------
+   General enhancements
+---------------------------- */
+
+/* Make body text slightly larger for readability */
+.md-typeset {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* Improve code block appearance */
+.md-typeset pre, 
+.md-typeset code {
+    font-family: "Fira Code", "Courier New", monospace;
+    font-size: 0.95rem;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 0.2em 0.4em;
+}
+
+/* Highlight inline code */
+.md-typeset code:not(pre code) {
+    background-color: #e0e0e0;
+    padding: 0.15em 0.3em;
+}
+
+/* Mermaid diagrams responsive */
+.mermaid {
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: #ffffffaa; /* subtle background */
+    border-radius: 6px;
+    padding: 0.5em;
+}
+
+/* Tables */
+.md-typeset table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.md-typeset th, .md-typeset td {
+    border: 1px solid #ccc;
+    padding: 0.4em 0.6em;
+}
+
+.md-typeset th {
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+/* Enhance admonitions */
+.admonition {
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding: 0.5em 1em;
+    margin: 1em 0;
+}
+
+/* Optional: color coding for admonitions */
+.admonition.note {
+    border-color: #3f51b5;
+    background-color: #f0f0ff;
+}
+.admonition.warning {
+    border-color: #ff9800;
+    background-color: #fff4e5;
+}
+.admonition.tip {
+    border-color: #4caf50;
+    background-color: #e6f4ea;
+}
+.admonition.danger {
+    border-color: #f44336;
+    background-color: #ffe6e6;
+}
+
+/* Tabs styling for pymdownx.blocks.tab */
+.md-typeset .tabbed {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1em;
+    overflow: hidden;
+}
+
+/* Smooth scroll for anchor links */
+.md-nav__link:focus {
+    outline: 2px solid #6200ea;
+    outline-offset: 2px;
+}
+
+/* Optional: improve spacing for headings */
+.md-typeset h1, .md-typeset h2, .md-typeset h3 {
+    scroll-margin-top: 80px; /* useful if sticky header */
+}
+
+/* Emoji spacing */
+.md-typeset img.emoji {
+    vertical-align: middle;
+    margin: 0 0.1em;
+}
+
+/* Code annotation highlight (Material feature) */
+.md-typeset code.annotated {
+    background-color: #fff2cc;
+    border-radius: 3px;
+    padding: 0.15em 0.3em;
+}
