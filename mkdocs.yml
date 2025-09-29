@@ -5,16 +5,6 @@ strict: true
 repo_url: https://github.com/FilippoGurioli/test-2-code-llm
 repo_name: FilippoGurioli/test-2-code-llm
 
-nav:
-  - Home: index.md
-  - Introduction: introduction.md
-  - Requirements: requirements.md
-  - Architecture: architecture.md
-  - Design: design.md
-  - Implementation: implementation.md
-  - Experiments: experiments.md
-  - Results: results.md
-
 theme:
   name: material
   language: en
