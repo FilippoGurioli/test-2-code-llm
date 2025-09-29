@@ -1,3 +1,3 @@
-# test-2-code-llm
+# Test to Code with LLMs
 
-Repository in which I try to generate code from LLM passing in the prompt many kinds of different tests (Unit, Integration, Acceptance)
+This repository contains the code and documentation for my project on using Large Language Models (LLMs) to generate code from tests. The project explores the capabilities of LLMs in understanding test cases and producing corresponding code implementations.
