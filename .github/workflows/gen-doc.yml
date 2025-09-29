@@ -1,4 +1,4 @@
-name: Doc generation Pipeline
+name: Generate Documentation
 
 on:
   push:
