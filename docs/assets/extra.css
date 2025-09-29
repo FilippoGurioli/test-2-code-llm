@@ -2,17 +2,10 @@
    General enhancements
 ---------------------------- */
 
-/* Make body text slightly larger for readability */
-.md-typeset {
-    font-size: 1.05rem;
-    line-height: 1.6;
-}
-
 /* Improve code block appearance */
 .md-typeset pre, 
 .md-typeset code {
     font-family: "Fira Code", "Courier New", monospace;
-    font-size: 0.95rem;
     background-color: #f5f5f5;
     border-radius: 6px;
     padding: 0.2em 0.4em;
