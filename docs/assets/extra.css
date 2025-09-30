@@ -39,6 +39,7 @@
 /* Headings with gradient accents */
 .md-typeset h1 {
     font-weight: 700;
+    font-size: 2.5rem;
     background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -91,102 +92,6 @@
     border-radius: 0;
     padding: 0;
     color: var(--md-code-text-light);
-}
-
-/* ========================================
-   🏷️ CODE BLOCK LANGUAGE LABELS
-======================================== */
-
-/* Code block with language label styling */
-.highlight {
-    position: relative;
-    margin: 1.5rem 0;
-    border-radius: var(--md-border-radius);
-    box-shadow: var(--md-shadow-light);
-    transition: var(--md-transition-smooth);
-    overflow: hidden;
-}
-
-.highlight:hover {
-    box-shadow: var(--md-shadow-medium);
-    transform: translateY(-2px);
-}
-
-/* Language label */
-.highlight .filename,
-.highlight .language-text,
-.highlight > .highlight-source,
-.highlight::before,
-.md-typeset .highlight .language-name {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 0 var(--md-border-radius) 0 var(--md-border-radius-small);
-    z-index: 1;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-}
-
-/* Alternative selectors for different code block implementations */
-.md-typeset .highlight > pre::before,
-.md-typeset .codehilite::before,
-.md-typeset .highlight-source::before {
-    content: attr(data-lang);
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 0 var(--md-border-radius) 0 var(--md-border-radius-small);
-    z-index: 1;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-}
-
-/* Ensure the pre element inside highlight has connected borders */
-.highlight > pre,
-.md-typeset .highlight pre {
-    border-radius: var(--md-border-radius);
-    margin: 0;
-    border: 1px solid var(--md-code-border-light);
-}
-
-/* Remove individual pre styling when inside highlight wrapper */
-.highlight pre {
-    box-shadow: none !important;
-    transform: none !important;
-}
-
-.highlight:hover pre {
-    transform: none !important;
-}
-
-/* Code block title/filename styling (for when filename is shown) */
-.md-typeset .highlight .highlight-filename,
-.md-typeset .codehilite .codehilite-filename {
-    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-    border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
-    margin: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Adjust pre padding when there's a filename/title */
-.highlight .highlight-filename + pre,
-.codehilite .codehilite-filename + pre {
-    border-radius: 0 0 var(--md-border-radius) var(--md-border-radius);
-    border-top: none;
 }
 
 /* Inline code with styling - Light mode */
@@ -404,36 +309,6 @@
 [data-md-color-scheme="slate"] .mermaid {
     background: var(--md-mermaid-bg-dark);
     border: 1px solid var(--md-mermaid-border-dark);
-}
-
-/* Dark mode styles for code block language labels */
-[data-md-color-scheme="slate"] .highlight {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-[data-md-color-scheme="slate"] .highlight:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-[data-md-color-scheme="slate"] .highlight > pre {
-    border: 1px solid var(--md-code-border-dark);
-}
-
-[data-md-color-scheme="slate"] .highlight .filename,
-[data-md-color-scheme="slate"] .highlight .language-text,
-[data-md-color-scheme="slate"] .highlight > .highlight-source,
-[data-md-color-scheme="slate"] .md-typeset .highlight .language-name,
-[data-md-color-scheme="slate"] .md-typeset .highlight > pre::before,
-[data-md-color-scheme="slate"] .md-typeset .codehilite::before,
-[data-md-color-scheme="slate"] .md-typeset .highlight-source::before {
-    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
-    color: white;
-}
-
-[data-md-color-scheme="slate"] .md-typeset .highlight .highlight-filename,
-[data-md-color-scheme="slate"] .md-typeset .codehilite .codehilite-filename {
-    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 [data-md-color-scheme="slate"] .md-typeset table {
