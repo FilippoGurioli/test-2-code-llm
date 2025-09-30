@@ -104,6 +104,7 @@ markdown_extensions:
   - def_list
   - footnotes
   - md_in_html
+  - mdx_truly_sane_lists
   - toc:
       permalink: true
       title: On this page

@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mkdocs-material mkdocs-awesome-nav
+          pip install mkdocs-material mkdocs-awesome-nav mdx-truly-sane-lists
 
       - name: Build MkDocs site
         run: mkdocs build --strict
