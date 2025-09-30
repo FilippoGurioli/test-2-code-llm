@@ -29,7 +29,6 @@
 }
 
 .md-typeset {
-    font-size: 1.1rem;
     line-height: 1.7;
     font-weight: 400;
     text-rendering: optimizeLegibility;
@@ -89,7 +88,6 @@
 
 .md-typeset pre code {
     font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-    font-size: 0.9rem;
     font-weight: 500;
     line-height: 1.6;
     background: transparent;
@@ -105,7 +103,6 @@
     border-radius: var(--md-border-radius-small);
     padding: 0.25em 0.5em;
     font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
-    font-size: 0.85em;
     font-weight: 600;
     color: var(--md-primary-fg-color);
     transition: var(--md-transition-fast);
@@ -150,7 +147,6 @@
     font-weight: 600;
     text-align: left;
     padding: 1rem 1.5rem;
-    font-size: 0.95rem;
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
