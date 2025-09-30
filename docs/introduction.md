@@ -17,7 +17,7 @@ flowchart TD
     CodeGen --> Test(Test generated code with provided tests)
     Test --> Check{tests pass?}
     Check -->|yes| PR(Pull Request on the develop branch)
-    Check -->|no| Check2(tries > upperBuond?)
+    Check -->|no| Check2{tries > upperBuond?}
     Check2 -->|yes| Fail(Pipeline fails)
     Fail --> Warning(Notificate failure to developers)
     Check2 -->|no| CodeGen
@@ -44,4 +44,4 @@ Moreover, experiments will be done among different models to find the sweet spot
 - Smollm2
 - Qwen3
 - GitHub Copilot
-- Gemini Flash (util the API free tier limits)
+- Gemini Flash (until the API free tier limits)
