@@ -34,7 +34,7 @@ As said before, even no arguments could be passed. In that case the following va
 
 ### Experiment Command
 
-The experiment command is the one that performs experiments over many different llms. Its main capability is to report into a file the results gained during the experiments.
+The experiment command is the one that performs experiments over many different LLMs. It performs multiple runs with different configurations and collects detailed metrics on the performance of each model and tests adopted.
 
 It takes as input a `yml` file in which all the configurations are set.
 
@@ -63,7 +63,6 @@ test_suites:
     language: "python"
 
 strategies:
-  prompt_engineering: ["zero_shot", "few_shot", "chain_of_thought"]
   max_retries: [1, 3, 5]
   matrix_testing: true # to combine multiple test suites in a single run
 ```
@@ -72,9 +71,13 @@ strategies:
 
 This component is responsible of loading and validating the configuration file passed to the experiment command. It also provides default values for missing configurations.
 
+## Experiment Manager
+
+This component is responsible of managing the experiments. It takes care of combining the different configurations in order to create a list of experiments to be run. It also handles the output directory structure for the results.
+
 ## Dispatcher
 
-The dispatcher orchestrates the workflow by coordinating interactions between the other components. It receives input from the CLI and ensures that each component performs its designated tasks in the correct sequence.
+The dispatcher orchestrates the workflow by coordinating interactions between the other core components. It receives input from the CLI and ensures that each component performs its designated tasks in the correct sequence.
 
 ## Reporting Engine
 
@@ -82,14 +85,14 @@ It is responsible of handling the information gained from the code generation en
 
 It provides insights on the following metrics:
 
-- generation success rates by model/strategy;
-- performance metrics;
-- token usage;
-- error patterns.
+- generation success rates by model/tests;
+- time taken for generation;
+- coverage;
+- test pass rates.
 
 ## Code Generation Engine
 
-It's the core of the application. It exploits an LLM to perform the code generation while dumping useful statistics during and at the end of the process. It is also responsible of handling retries.
+It's the core of the application. It exploits an LLM to perform the code generation while dumping useful statistics during and at the end of the process.
 
 ## LLM Provider Interface
 
@@ -101,16 +104,20 @@ It exploits a sandboxed environment to execute the generated code against the pr
 
 ## Architecture Diagram
 
+### Overall System Architecture
+
 ```mermaid
----
-config:
-    layout: elk
----
 flowchart TD
     User([User]) -->|commands| CLI[CLI Handler]
     CLI -->|triggers| OE[Dispatcher]
+    CLI -->|triggers| EM[Experiment Manager]
     CLI -->|loads| CM[Configuration Manager]
-    
+    EM -->|uses| OE
+    subgraph CoreComponents[Core Components]
+        OE
+        EV
+        CGE
+    end
     OE -->|dispatches| CGE[Code Generation Engine]
     OE -->|validates| EV[Execution Validator]
     OE -->|perf results| ARE[Reporting Engine]
@@ -121,13 +128,34 @@ flowchart TD
     CGE -->|API calls| LLM@{ shape: procs, label: "LLM Providers"}
     LLM -->|responses| CGE
     EV -->|executes| Sandbox[Sandboxed Environment]
-    
-    subgraph "Execution Environment"
-        Sandbox
-        TestRunner[Test Runners]
-        Sandbox --> TestRunner
-    end
+    Sandbox --> TestRunner[Test Runners]
     
     ARE -.-> Reports[(Report Files)]
     ARE -.-> Console[/Console Output/]
+```
+
+### Feedback Loop Sequence
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant CLI as CLI Handler
+    participant Dispatcher
+    participant CGE as Code Generation Engine
+    participant LLM as LLM Provider
+    participant EV as Execution Validator
+    participant ARE as Reporting Engine
+    
+    User ->> CLI: run "t2c generate"
+    CLI ->> Dispatcher: trigger generation
+    loop retries until success or upperBound
+        Dispatcher ->> CGE: request code
+        CGE ->> LLM: generate code
+        LLM -->> CGE: return code
+        CGE -->> Dispatcher: generated code
+        Dispatcher ->> EV: send code for validation
+        EV -->> Dispatcher: pass/fail result
+    end
+    Dispatcher ->> ARE: send results & metrics
+    ARE -->> User: report outcome
 ```
