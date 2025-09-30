@@ -64,7 +64,6 @@ The following section lists all the project requirements that have been identifi
 1. Generated code quality shall be evaluated using multiple criteria:
    - Test pass rates
    - Code complexity metrics
-   - Adherence to coding standards
    - Performance characteristics
 
 ## Functional Requirements
@@ -79,7 +78,6 @@ The following section lists all the project requirements that have been identifi
 
 ### System Functional Requirements
 
-1. The system shall parse test files and extract relevant specifications for code generation.
 1. The system shall execute generated code against the original test suite to validate correctness.
 1. The system shall implement retry logic with iterative refinement when tests fail.
 1. The system shall generate comprehensive reports on generation success/failure rates.
@@ -90,13 +88,11 @@ The following section lists all the project requirements that have been identifi
 
 1. The system shall generate code for simple test cases (< 10 tests) within 2 minutes per LLM model.
 1. The system shall handle network failures and API timeouts gracefully with appropriate retry mechanisms.
-1. The system shall maintain data integrity when processing multiple test files concurrently.
 1. The system architecture shall allow easy addition of new LLM providers.
 1. API keys and credentials shall be stored securely and not logged or exposed.
 
 ## Implementation Requirements
 
 1. The system shall be implemented in Python 3.9+ for broad compatibility and rich ecosystem support.
-1. The system shall use established libraries for LLM API integration (OpenAI SDK, etc.).
 1. The system shall implement a plugin architecture for easy addition of new LLM providers.
 1. The system shall include unit tests covering all core functionality with >80% code coverage.
