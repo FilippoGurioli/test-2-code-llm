@@ -69,38 +69,22 @@ The following section lists all the project requirements that have been identifi
 
 ## Functional Requirements
 
-<!-- TODO -->
-<!-- ### User Functional Requirements
+### User Functional Requirements
 
-**UFR-01** As a developer, I shall be able to provide a directory of test files to generate corresponding implementation code.
-
-**UFR-02** As a developer, I shall be able to specify the target output directory for generated code.
-
-**UFR-03** As a developer, I shall be able to select which LLM model to use for code generation.
-
-**UFR-04** As a developer, I shall be able to configure generation parameters (temperature, max tokens, etc.).
-
-**UFR-05** As a researcher, I shall be able to run comparative experiments across multiple models with identical test inputs.
-
-**UFR-06** As a CI/CD engineer, I shall be able to integrate the tool into automated pipelines with appropriate exit codes and logging.
+1. Users shall provide a directory of test files to generate corresponding implementation code.
+1. Users shall specify the target output directory for generated code.
+1. Users shall select which LLM model to use for code generation.
+1. Users shall run comparative experiments across multiple models with identical test inputs.
+1. Users shall integrate the tool into automated pipelines with appropriate exit codes and logging.
 
 ### System Functional Requirements
 
-**SFR-01** The system shall parse test files and extract relevant specifications for code generation.
-
-**SFR-02** The system shall construct appropriate prompts for LLMs based on test analysis.
-
-**SFR-03** The system shall execute generated code against the original test suite to validate correctness.
-
-**SFR-04** The system shall implement retry logic with iterative refinement when tests fail.
-
-**SFR-05** The system shall generate comprehensive reports on generation success/failure rates.
-
-**SFR-06** The system shall cache LLM responses to avoid redundant API calls during development.
-
-**SFR-07** The system shall support batch processing of multiple test files simultaneously.
-
-**SFR-08** The system shall validate generated code syntax before test execution. -->
+1. The system shall parse test files and extract relevant specifications for code generation.
+1. The system shall execute generated code against the original test suite to validate correctness.
+1. The system shall implement retry logic with iterative refinement when tests fail.
+1. The system shall generate comprehensive reports on generation success/failure rates.
+1. The system shall support batch processing of multiple test files simultaneously.
+1. The system shall validate generated code syntax before test execution.
 
 ## Non-Functional Requirements
 
