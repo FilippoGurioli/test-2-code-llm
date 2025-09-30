@@ -44,7 +44,7 @@ t2c experiment --config experiments.yml
 
 This is an comprehensive example of the file:
 
-```yml
+```yaml
 experiment:
   name: "T2C Comparative Study"
   output_dir: "./experiments/results"
