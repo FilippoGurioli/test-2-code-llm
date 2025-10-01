@@ -39,10 +39,10 @@ The experiment command is the one that performs experiments over many different 
 It takes as input a `yml` file in which all the configurations are set.
 
 ```bash
-t2c experiment --config experiments.yml
+t2c experiment config.yml
 ```
 
-This is an comprehensive example of the file:
+This is a comprehensive example of the file:
 
 ```yaml
 experiment:
