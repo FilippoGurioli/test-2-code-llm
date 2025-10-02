@@ -154,9 +154,9 @@ classDiagram
     class ExperimentCommand {}
 
     class ComponentLocator {
-        -Map~String, CoreComponent~ components
-        +register(name, instance)
-        +get(name) CoreComponent
+        -Map~String, T~ components
+        +register~T~(name, instance)
+        +get(name) T
     }
 
     class CoreComponent {
@@ -204,11 +204,36 @@ classDiagram
     LLMProviderInterface <|-- GeminiFlashProvider
 ```
 
-## Validator Executor
+## Execution Validator
 
-The Validator Executor is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
+The Execution Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
 
-TODO
+```mermaid
+classDiagram
+    class ExecutionValidator {
+        -SandboxEnvironment sandbox
+        -String language
+        +execute_code(generated_code, test_suite) void
+        +subscribe(observer) void
+        +unsubscribe(observer) void
+    }
+
+    class SandboxEnvironment {
+        +run(code, tests) ExecutionResult
+    }
+
+    class ExecutionResult {
+        -Boolean success
+        -String output
+        -String error
+        +is_successful() Boolean
+        +get_output() String
+        +get_error() String
+    }
+
+    ExecutionValidator --> SandboxEnvironment
+    SandboxEnvironment --> ExecutionResult
+```
 
 ## Reporting Engine
 
@@ -251,7 +276,7 @@ classDiagram
     }
 
     CodeGenerationEngine --> CodeGenerationObserver
-    ValidatorExecutor --> CodeValidationObserver
+    ExecutionValidator --> CodeValidationObserver
     CodeGenerationObserver <|-- ReportingEngine
     CodeValidationObserver <|-- ReportingEngine
     ReportingEngine --> LogStrategy
