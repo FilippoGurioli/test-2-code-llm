@@ -50,7 +50,7 @@ The following validators are included:
 - Dependency Validator: ensures all required dependencies are installed;
 - Resource Validator: checks if sufficient resources (e.g., memory, CPU) are available.
 
-### Final Class Diagram
+### Final Class Diagrams
 
 ```mermaid
 classDiagram
@@ -64,6 +64,52 @@ classDiagram
         +execute_command(config) ExecutionResult
     }
     
+    namespace ParsingPipeline {
+        class ArgumentParser {
+            +parse(args[]) Configuration
+        }
+
+        class ConfigurationMerger {
+            +merge(parsed_args, defaults, file, env) Configuration
+        }
+    }
+    
+    CLIHandler --> Command
+    CLIHandler --> ValidationChain
+    CLIHandler --> ArgumentParser
+    CLIHandler --> ConfigurationMerger
+```
+
+```mermaid
+classDiagram
+    namespace ValidationChain {    
+        class ChainValidator {
+            -List~Validator~ validators
+            +add_validator(validator)
+            +validate(config) ValidationResult
+        }
+
+        class Validator {
+            <<interface>>
+            +validate(config) ValidationResult
+        }
+
+        class PathValidator {}
+        class ModelValidator {}
+        class DependencyValidator {}
+        class ResourceValidator {}
+    }
+    
+    CLIHandler --> ChainValidator
+    ChainValidator --> Validator
+    Validator <|-- PathValidator
+    Validator <|-- ModelValidator
+    Validator <|-- DependencyValidator
+    Validator <|-- ResourceValidator
+```
+
+```mermaid
+classDiagram
     class CommandFactory {
         -Map~String, Command~ commands
         +get_command(name) Command
@@ -83,47 +129,11 @@ classDiagram
     class ExperimentCommand {
         +execute(config) ExecutionResult
     }
-    
-    namespace ValidationChain {
-        class ChainValidator {
-            -List~Validator~ validators
-            +add_validator(validator)
-            +validate(config) ValidationResult
-        }
 
-        class Validator {
-            <<interface>>
-            +validate(config) ValidationResult
-        }
-
-        class PathValidator {}
-        class ModelValidator {}
-        class DependencyValidator {}
-        class ResourceValidator {}
-    }
-
-    namespace ParsingPipeline {
-        class ArgumentParser {
-            +parse(args[]) Configuration
-        }
-
-        class ConfigurationMerger {
-            +merge(parsed_args, defaults, file, env) Configuration
-        }
-    }
-    
     CLIHandler --> CommandFactory
-    CLIHandler --> ChainValidator
-    CLIHandler --> ArgumentParser
-    CLIHandler --> ConfigurationMerger
     CommandFactory --> Command
     Command <|-- GenerateCommand
     Command <|-- ExperimentCommand
-    ChainValidator --> Validator
-    Validator <|-- PathValidator
-    Validator <|-- ModelValidator
-    Validator <|-- DependencyValidator
-    Validator <|-- ResourceValidator
 ```
 
 ### Detailed Processing Steps

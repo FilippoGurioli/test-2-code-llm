@@ -7,3 +7,5 @@ nav:
   - Implementation: implementation.md
   - Experiments: experiments.md
   - Results: results.md
+  - Appendices:
+      - Class Diagram: appendices/class-diagram.md
