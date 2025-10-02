@@ -50,7 +50,7 @@ The following validators are included:
 - Dependency Validator: ensures all required dependencies are installed;
 - Resource Validator: checks if sufficient resources (e.g., memory, CPU) are available.
 
-### Final Class Diagrams
+### Final Class Diagram
 
 ```mermaid
 classDiagram
@@ -73,15 +73,7 @@ classDiagram
             +merge(parsed_args, defaults, file, env) Configuration
         }
     }
-    
-    CLIHandler --> Dispatcher
-    CLIHandler --> ValidationChain
-    CLIHandler --> ArgumentParser
-    CLIHandler --> ConfigurationMerger
-```
 
-```mermaid
-classDiagram
     namespace ValidationChain {    
         class ChainValidator {
             -List~Validator~ validators
@@ -106,6 +98,9 @@ classDiagram
     Validator <|-- ModelValidator
     Validator <|-- DependencyValidator
     Validator <|-- ResourceValidator
+    CLIHandler --> Dispatcher
+    CLIHandler --> ArgumentParser
+    CLIHandler --> ConfigurationMerger
 ```
 
 ### Detailed Processing Steps
@@ -129,8 +124,8 @@ sequenceDiagram
     CLIHandler->>ChainValidator: validate(configuration)
     ChainValidator-->>CLIHandler: ValidationResult(valid=true)
     
-    CLIHandler->>Dispatcher: get_command("generate")
-    Dispatcher-->>CLIHandler: GenerateCommand instance
+    CLIHandler->>Dispatcher: launch_command(configuration)
+    Dispatcher-->>CLIHandler: Result(success=true, details={...})
 ```
 
 ## Dispatcher
