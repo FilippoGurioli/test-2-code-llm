@@ -110,17 +110,19 @@ It exploits a sandboxed environment to execute the generated code against the pr
 flowchart TD
     User([User]) -->|commands| CLI[CLI Handler]
     CLI -->|triggers| OE[Dispatcher]
-    CLI -->|triggers| EM[Experiment Manager]
     CLI -->|loads| CM[Configuration Manager]
-    EM -->|uses| OE
     subgraph CoreComponents[Core Components]
-        OE
-        EV
-        CGE
+      EM
+      OE
+      EV
+      CGE
     end
+    OE -->|orchestrates| EM[Experiment Manager]
     OE -->|dispatches| CGE[Code Generation Engine]
     OE -->|validates| EV[Execution Validator]
     OE -->|perf results| ARE[Reporting Engine]
+
+    EM -->|uses many| CGE
     
     EV -->|output results| ARE
     CGE -->|generated code| EV

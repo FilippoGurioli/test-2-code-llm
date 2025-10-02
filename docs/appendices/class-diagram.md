@@ -65,10 +65,12 @@ classDiagram
     
     class GenerateCommand {
         +execute(config) ExecutionResult
+        +get_help_text() String
     }
     
     class ExperimentCommand {
         +execute(config) ExecutionResult
+        +get_help_text() String
     }
 
     main --> CLIHandler
