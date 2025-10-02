@@ -50,10 +50,9 @@ The following validators are included:
 - Dependency Validator: ensures all required dependencies are installed;
 - Resource Validator: checks if sufficient resources (e.g., memory, CPU) are available.
 
+### Final Class Diagram
+
 ```mermaid
----
-title: CLI Handler Design
----
 classDiagram
     class CLIHandler {
         -ArgumentParser parser
@@ -127,10 +126,9 @@ classDiagram
     Validator <|-- ResourceValidator
 ```
 
+### Detailed Processing Steps
+
 ```mermaid
----
-title: Detailed Processing Steps
----
 sequenceDiagram
     participant User
     participant CLIHandler
@@ -154,3 +152,7 @@ sequenceDiagram
     
     CLIHandler->>GenerateCommand: execute(configuration)
 ```
+
+## Dispatcher
+
+TODO
