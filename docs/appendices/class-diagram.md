@@ -10,6 +10,7 @@ classDiagram
         -ConfigurationMerger config_merger
         -ChainValidator validator
         -CommandFactory command_factory
+        -ComponentLocator locator
         +parse_arguments(args[]) Configuration
         +validate_configuration(config) ValidationResult
         +execute_command(config) ExecutionResult
@@ -51,26 +52,41 @@ classDiagram
         }
     }
     
-    class CommandFactory {
-        -Map~String, Command~ commands
-        +get_command(name) Command
-        +list_commands() String[]
+    namespace Dispatcher {
+
+        class CommandFactory {
+            -ComponentLocator component_locator
+            -Map~String, Command~ commands
+            +get_command(name) Command
+            +list_commands() String[]
+        }
+        
+        class Command {
+            <<interface>>
+            +execute(config) ExecutionResult
+            +get_help_text() String
+        }
+        
+        class GenerateCommand {
+            +execute(config) ExecutionResult
+            +get_help_text() String
+        }
+        
+        class ExperimentCommand {
+            +execute(config) ExecutionResult
+            +get_help_text() String
+        }
+
+        class ComponentLocator {
+            -Map~String, Component~ components
+            +register(name, instance)
+            +get(name) Component
+        }
     }
-    
-    class Command {
+
+    class Component {
         <<interface>>
-        +execute(config) ExecutionResult
-        +get_help_text() String
-    }
-    
-    class GenerateCommand {
-        +execute(config) ExecutionResult
-        +get_help_text() String
-    }
-    
-    class ExperimentCommand {
-        +execute(config) ExecutionResult
-        +get_help_text() String
+        +perform_task() Result
     }
 
     main --> CLIHandler
@@ -86,4 +102,7 @@ classDiagram
     CLIHandler --> ChainValidator
     CLIHandler --> ArgumentParser
     CLIHandler --> ConfigurationMerger
+    GenerateCommand --> ComponentLocator
+    ExperimentCommand --> ComponentLocator
+    ComponentLocator --> Component
 ```

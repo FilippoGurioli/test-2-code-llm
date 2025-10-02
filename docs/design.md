@@ -4,7 +4,7 @@ This section provides detailed design specifications for each component of the *
 
 ## CLI Handler
 
-The CLI Handler implements a **Chain of Responsibility** with a **Command Pattern** for validation and processing. It provides a clean separation between command parsing, validation, and execution delegation.
+The CLI Handler implements a **Chain of Responsibility** for validation. It provides a clean separation between command parsing, validation, and execution delegation.
 
 Since the execution logic is demanded to internal components, the CLI Handler focuses on argument parsing and validation. To achieve these functionalities, it employs two macro components:
 
@@ -20,15 +20,15 @@ sequenceDiagram
     participant CLIHandler
     participant ParsingPipeline
     participant ValidationChain
-    participant CommandExecutor
+    participant Dispatcher
 
     User->>CLIHandler: t2c generate --tests ./my-tests
     CLIHandler->>ParsingPipeline: parse(arguments)
     ParsingPipeline-->>CLIHandler: Configuration
     CLIHandler->>ValidationChain: validate(Configuration)
     ValidationChain-->>CLIHandler: ValidationResult
-    CLIHandler->>CommandExecutor: execute(Configuration)
-    CommandExecutor-->>CLIHandler: ExecutionResult
+    CLIHandler->>Dispatcher: execute(Configuration)
+    Dispatcher-->>CLIHandler: ExecutionResult
     CLIHandler-->>User: display(ExecutionResult)
 ```
 
@@ -58,7 +58,7 @@ classDiagram
         -ArgumentParser parser
         -ConfigurationMerger config_merger
         -ChainValidator validator
-        -CommandFactory command_factory
+        -Dispatcher dispatcher
         +parse_arguments(args[]) Configuration
         +validate_configuration(config) ValidationResult
         +execute_command(config) ExecutionResult
@@ -74,7 +74,7 @@ classDiagram
         }
     }
     
-    CLIHandler --> Command
+    CLIHandler --> Dispatcher
     CLIHandler --> ValidationChain
     CLIHandler --> ArgumentParser
     CLIHandler --> ConfigurationMerger
@@ -108,9 +108,39 @@ classDiagram
     Validator <|-- ResourceValidator
 ```
 
+### Detailed Processing Steps
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant CLIHandler
+    participant ArgumentParser
+    participant ConfigurationMerger
+    participant ChainValidator
+    participant Dispatcher
+
+    User->>CLIHandler: t2c generate --tests ./my-tests
+    CLIHandler->>ArgumentParser: parse(["generate", "--tests", "./my-tests"])
+    ArgumentParser-->>CLIHandler: ParsedArguments(command="generate", args={...})
+    
+    CLIHandler->>ConfigurationMerger: merge(parsed_args, defaults, file, env)
+    ConfigurationMerger-->>CLIHandler: Configuration(tests="./my-tests", ...)
+    
+    CLIHandler->>ChainValidator: validate(configuration)
+    ChainValidator-->>CLIHandler: ValidationResult(valid=true)
+    
+    CLIHandler->>Dispatcher: get_command("generate")
+    Dispatcher-->>CLIHandler: GenerateCommand instance
+```
+
+## Dispatcher
+
+The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects and a **Service Locator** to retrieve later components' instances.
+
 ```mermaid
 classDiagram
     class CommandFactory {
+        -ComponentLocator component_locator
         -Map~String, Command~ commands
         +get_command(name) Command
         +list_commands() String[]
@@ -126,39 +156,22 @@ classDiagram
     
     class ExperimentCommand {}
 
+    class ComponentLocator {
+        -Map~String, Component~ components
+        +register(name, instance)
+        +get(name) Component
+    }
+
+    class Component {
+        <<interface>>
+        +perform_task() Result
+    }
+
     CLIHandler --> CommandFactory
     CommandFactory --> Command
     Command <|-- GenerateCommand
     Command <|-- ExperimentCommand
+    ExperimentCommand --> ComponentLocator
+    GenerateCommand --> ComponentLocator
+    ComponentLocator --> Component
 ```
-
-### Detailed Processing Steps
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant CLIHandler
-    participant ArgumentParser
-    participant ConfigurationMerger
-    participant ChainValidator
-    participant CommandFactory
-
-    User->>CLIHandler: t2c generate --tests ./my-tests
-    CLIHandler->>ArgumentParser: parse(["generate", "--tests", "./my-tests"])
-    ArgumentParser-->>CLIHandler: ParsedArguments(command="generate", args={...})
-    
-    CLIHandler->>ConfigurationMerger: merge(parsed_args, defaults, file, env)
-    ConfigurationMerger-->>CLIHandler: Configuration(tests="./my-tests", ...)
-    
-    CLIHandler->>ChainValidator: validate(configuration)
-    ChainValidator-->>CLIHandler: ValidationResult(valid=true)
-    
-    CLIHandler->>CommandFactory: get_command("generate")
-    CommandFactory-->>CLIHandler: GenerateCommand instance
-    
-    CLIHandler->>GenerateCommand: execute(configuration)
-```
-
-## Dispatcher
-
-TODO
