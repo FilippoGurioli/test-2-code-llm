@@ -71,13 +71,13 @@ strategies:
 
 This component is responsible of loading and validating the configuration file passed to the experiment command. It also provides default values for missing configurations.
 
-## Experiment Manager
-
-This component is responsible of managing the experiments. It takes care of combining the different configurations in order to create a list of experiments to be run. It also handles the output directory structure for the results.
-
 ## Dispatcher
 
 The dispatcher orchestrates the workflow by coordinating interactions between the other core components. It receives input from the CLI and ensures that each component performs its designated tasks in the correct sequence.
+
+## Experiment Manager
+
+This component is responsible of managing the experiments. It takes care of combining the different configurations in order to create a list of experiments to be run. It also handles the output directory structure for the results.
 
 ## Reporting Engine
 
@@ -113,7 +113,6 @@ flowchart TD
     CLI -->|loads| CM[Configuration Manager]
     subgraph CoreComponents[Core Components]
       EM
-      OE
       EV
       CGE
     end

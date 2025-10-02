@@ -38,18 +38,10 @@ classDiagram
             +validate(config) ValidationResult
         }
 
-        class PathValidator {
-            +validate(config) ValidationResult
-        }
-        class ModelValidator {
-            +validate(config) ValidationResult
-        }
-        class DependencyValidator {
-            +validate(config) ValidationResult
-        }
-        class ResourceValidator {
-            +validate(config) ValidationResult
-        }
+        class PathValidator {}
+        class ModelValidator {}
+        class DependencyValidator {}
+        class ResourceValidator {}
     }
     
     namespace Dispatcher {
@@ -67,15 +59,9 @@ classDiagram
             +get_help_text() String
         }
         
-        class GenerateCommand {
-            +execute(config) ExecutionResult
-            +get_help_text() String
-        }
+        class GenerateCommand {}
         
-        class ExperimentCommand {
-            +execute(config) ExecutionResult
-            +get_help_text() String
-        }
+        class ExperimentCommand {}
 
         class ComponentLocator {
             -Map~String, Component~ components
@@ -84,11 +70,31 @@ classDiagram
         }
     }
 
-    class Component {
+    class CoreComponent {
         <<interface>>
-        +perform_task() Result
+        +TODO() Result
     }
 
+    class CodeGenerationEngine {
+        -LLMProviderFactory llm_factory
+        +generate_code(tests, config) CodeResult
+    }
+    class LLMProviderInterface {
+        <<interface>>
+        +generate_code(prompt, config) CodeResult
+    }
+    class LLMProviderFactory {
+        +create_provider(name) LLMProviderInterface
+    }
+    CoreComponent --> CodeGenerationEngine
+    CodeGenerationEngine --> LLMProviderFactory
+    LLMProviderFactory --> LLMProviderInterface
+    LLMProviderInterface <|-- MistralProvider
+    LLMProviderInterface <|-- DeepSeekR1Provider
+    LLMProviderInterface <|-- Smollm2Provider
+    LLMProviderInterface <|-- Qwen3Provider
+    LLMProviderInterface <|-- GitHubCopilotProvider
+    LLMProviderInterface <|-- GeminiFlashProvider
     main --> CLIHandler
     CLIHandler --> CommandFactory
     CommandFactory --> Command
@@ -104,5 +110,5 @@ classDiagram
     CLIHandler --> ConfigurationMerger
     GenerateCommand --> ComponentLocator
     ExperimentCommand --> ComponentLocator
-    ComponentLocator --> Component
+    ComponentLocator --> CoreComponent
 ```

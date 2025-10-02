@@ -132,6 +132,8 @@ sequenceDiagram
 
 The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects and a **Service Locator** to retrieve later components' instances.
 
+<!--  TODO: understand how to serve core components to commands, currently is a service locator but it's an antipattern -->
+
 ```mermaid
 classDiagram
     class CommandFactory {
@@ -152,14 +154,13 @@ classDiagram
     class ExperimentCommand {}
 
     class ComponentLocator {
-        -Map~String, Component~ components
+        -Map~String, CoreComponent~ components
         +register(name, instance)
-        +get(name) Component
+        +get(name) CoreComponent
     }
 
-    class Component {
+    class CoreComponent {
         <<interface>>
-        +perform_task() Result
     }
 
     CLIHandler --> CommandFactory
@@ -168,5 +169,34 @@ classDiagram
     Command <|-- ExperimentCommand
     ExperimentCommand --> ComponentLocator
     GenerateCommand --> ComponentLocator
-    ComponentLocator --> Component
+    ComponentLocator --> CoreComponent
+```
+
+## Code Generation Engine
+
+The Code Generation Engine is responsible for generating code based on provided test specifications using Large Language Models (LLMs). It exploits the **Strategy Pattern** to support multiple LLM providers and the **Factory Pattern** to instantiate the appropriate strategy based on user configuration.
+
+```mermaid
+classDiagram
+    class CodeGenerationEngine {
+        -LLMProviderFactory llm_factory
+        +generate_code(tests, config) CodeResult
+    }
+    class LLMProviderInterface {
+        <<interface>>
+        +generate_code(prompt, config) CodeResult
+    }
+    class LLMProviderFactory {
+        +create_provider(name) LLMProviderInterface
+    }
+    class Dispatcher {}
+    Dispatcher --> CodeGenerationEngine
+    CodeGenerationEngine --> LLMProviderFactory
+    LLMProviderFactory --> LLMProviderInterface
+    LLMProviderInterface <|-- MistralProvider
+    LLMProviderInterface <|-- DeepSeekR1Provider
+    LLMProviderInterface <|-- Smollm2Provider
+    LLMProviderInterface <|-- Qwen3Provider
+    LLMProviderInterface <|-- GitHubCopilotProvider
+    LLMProviderInterface <|-- GeminiFlashProvider
 ```
