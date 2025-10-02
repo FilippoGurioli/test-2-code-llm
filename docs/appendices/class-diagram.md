@@ -76,8 +76,11 @@ classDiagram
     }
 
     class CodeGenerationEngine {
-        -LLMProviderFactory llm_factory
+        -LLMProviderInterface llm_provider
+        -List~CodeGenerationObserver~ observers
         +generate_code(tests, config) CodeResult
+        +subscribe(observer) void
+        +unsubscribe(observer) void
     }
     class LLMProviderInterface {
         <<interface>>
@@ -87,7 +90,7 @@ classDiagram
         +create_provider(name) LLMProviderInterface
     }
     CoreComponent --> CodeGenerationEngine
-    CodeGenerationEngine --> LLMProviderFactory
+    CodeGenerationEngine --> LLMProviderInterface
     LLMProviderFactory --> LLMProviderInterface
     LLMProviderInterface <|-- MistralProvider
     LLMProviderInterface <|-- DeepSeekR1Provider

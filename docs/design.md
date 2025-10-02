@@ -179,8 +179,11 @@ The Code Generation Engine is responsible for generating code based on provided 
 ```mermaid
 classDiagram
     class CodeGenerationEngine {
-        -LLMProviderFactory llm_factory
+        -LLMProviderInterface llm_provider
+        -List~CodeGenerationObserver~ observers
         +generate_code(tests, config) CodeResult
+        +subscribe(observer) void
+        +unsubscribe(observer) void
     }
     class LLMProviderInterface {
         <<interface>>
@@ -191,7 +194,7 @@ classDiagram
     }
     class Dispatcher {}
     Dispatcher --> CodeGenerationEngine
-    CodeGenerationEngine --> LLMProviderFactory
+    CodeGenerationEngine --> LLMProviderInterface
     LLMProviderFactory --> LLMProviderInterface
     LLMProviderInterface <|-- MistralProvider
     LLMProviderInterface <|-- DeepSeekR1Provider
@@ -199,4 +202,61 @@ classDiagram
     LLMProviderInterface <|-- Qwen3Provider
     LLMProviderInterface <|-- GitHubCopilotProvider
     LLMProviderInterface <|-- GeminiFlashProvider
+```
+
+## Validator Executor
+
+The Validator Executor is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
+
+TODO
+
+## Reporting Engine
+
+The Reporting Engine is responsible for actively collecting, tracking, and analyzing metrics throughout the code generation process. It implements the **Observer Pattern** to monitor events and the **Strategy Pattern** to construct comprehensive reports.
+
+```mermaid
+classDiagram
+    class ReportingEngine {
+        -LogStrategy log_strategy
+        -List~CodeGenStat~ statistics
+        +log_report() void
+    }
+
+    class CodeGenerationObserver {
+        <<interface>>
+        +on_code_generation_start(model_name, test_suite) void
+        +on_code_generation(is_failed) void
+    }
+
+    class CodeValidationObserver {
+        <<interface>>
+        +on_code_validation_start(model_name, test_suite) void
+        +on_code_validation(is_failed) void
+        +on_test_metrics_measured(test_pass_rate, coverage) void
+    }
+
+    class LogStrategy {
+        <<interface>>
+        +log(code_gen_stat) void
+    }
+
+    class CodeGenStat {
+        -String model_name
+        -String test_suite
+        -Boolean generation_success
+        -Boolean validation_success
+        -Float test_pass_rate
+        -Float coverage
+        -Duration time_taken
+    }
+
+    CodeGenerationEngine --> CodeGenerationObserver
+    ValidatorExecutor --> CodeValidationObserver
+    CodeGenerationObserver <|-- ReportingEngine
+    CodeValidationObserver <|-- ReportingEngine
+    ReportingEngine --> LogStrategy
+    ReportingEngine --> CodeGenStat
+    LogStrategy <|-- ConsoleLogger
+    LogStrategy <|-- JsonLogger
+    LogStrategy <|-- CsvLogger
 ```

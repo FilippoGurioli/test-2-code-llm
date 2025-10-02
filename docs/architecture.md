@@ -109,27 +109,25 @@ It exploits a sandboxed environment to execute the generated code against the pr
 ```mermaid
 flowchart TD
     User([User]) -->|commands| CLI[CLI Handler]
-    CLI -->|triggers| OE[Dispatcher]
+    CLI -->|triggers| Dispatcher[Dispatcher]
     CLI -->|loads| CM[Configuration Manager]
     subgraph CoreComponents[Core Components]
       EM
       EV
       CGE
+      ARE
     end
-    OE -->|orchestrates| EM[Experiment Manager]
-    OE -->|dispatches| CGE[Code Generation Engine]
-    OE -->|validates| EV[Execution Validator]
-    OE -->|perf results| ARE[Reporting Engine]
-
-    EM -->|uses many| CGE
-    
+    Dispatcher -->|orchestrates| EM[Experiment Manager]
+    Dispatcher -->|dispatches| CGE[Code Generation Engine]
+    Dispatcher -->|validates| EV[Execution Validator]
     EV -->|output results| ARE
+    EV -->|executes| Sandbox[Sandboxed Environment]
+    CGE -->|perf results| ARE[Reporting Engine]
+    EM -->|uses many| CGE
+    Sandbox --> TestRunner[Test Runners]
     CGE -->|generated code| EV
-    
     CGE -->|API calls| LLM@{ shape: procs, label: "LLM Providers"}
     LLM -->|responses| CGE
-    EV -->|executes| Sandbox[Sandboxed Environment]
-    Sandbox --> TestRunner[Test Runners]
     
     ARE -.-> Reports[(Report Files)]
     ARE -.-> Console[/Console Output/]
@@ -156,7 +154,8 @@ sequenceDiagram
         CGE -->> Dispatcher: generated code
         Dispatcher ->> EV: send code for validation
         EV -->> Dispatcher: pass/fail result
+        CGE ->> ARE: send results & metrics
+        EV ->> ARE: send results & metrics
     end
-    Dispatcher ->> ARE: send results & metrics
     ARE -->> User: report outcome
 ```
