@@ -404,3 +404,55 @@
         transform: translateY(0);
     }
 }
+
+/* Fix namespace styling in class diagrams */
+.mermaid .cluster rect {
+    fill: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%) !important;
+    stroke: var(--md-primary-fg-color) !important;
+    stroke-width: 2px !important;
+    opacity: 0.1 !important;
+}
+
+.mermaid .cluster text {
+    fill: var(--md-primary-fg-color) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+/* Class diagram styling */
+.mermaid .classDiagram-class > rect {
+    fill: rgba(103, 58, 183, 0.05) !important;
+    stroke: var(--md-primary-fg-color) !important;
+    stroke-width: 2px !important;
+}
+
+.mermaid .classDiagram-class text {
+    fill: var(--md-primary-fg-color) !important;
+    font-weight: 500 !important;
+}
+
+/* Interface styling */
+.mermaid .classDiagram-class.interface > rect {
+    fill: rgba(156, 39, 176, 0.08) !important;
+    stroke: var(--md-accent-fg-color) !important;
+    stroke-dasharray: 5,5 !important;
+}
+
+/* Dark mode mermaid overrides */
+[data-md-color-scheme="slate"] .mermaid .cluster rect {
+    fill: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%) !important;
+    opacity: 0.15 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .cluster text {
+    fill: #e2e8f0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .classDiagram-class > rect {
+    fill: rgba(103, 58, 183, 0.1) !important;
+    stroke: #e2e8f0 !important;
+}
+
+[data-md-color-scheme="slate"] .mermaid .classDiagram-class text {
+    fill: #e2e8f0 !important;
+}
