@@ -122,13 +122,9 @@ classDiagram
         +get_help_text() String
     }
     
-    class GenerateCommand {
-        +execute(config) ExecutionResult
-    }
+    class GenerateCommand {}
     
-    class ExperimentCommand {
-        +execute(config) ExecutionResult
-    }
+    class ExperimentCommand {}
 
     CLIHandler --> CommandFactory
     CommandFactory --> Command
