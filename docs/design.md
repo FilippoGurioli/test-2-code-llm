@@ -132,8 +132,6 @@ sequenceDiagram
 
 The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects and a **Service Locator** to retrieve later components' instances.
 
-<!--  TODO: understand how to serve core components to commands, currently is a service locator but it's an antipattern -->
-
 ```mermaid
 classDiagram
     class CommandFactory {
@@ -159,17 +157,12 @@ classDiagram
         +get(name) T
     }
 
-    class CoreComponent {
-        <<interface>>
-    }
-
     CLIHandler --> CommandFactory
     CommandFactory --> Command
     Command <|-- GenerateCommand
     Command <|-- ExperimentCommand
     ExperimentCommand --> ComponentLocator
     GenerateCommand --> ComponentLocator
-    ComponentLocator --> CoreComponent
 ```
 
 ## Code Generation Engine
@@ -235,6 +228,10 @@ classDiagram
     SandboxEnvironment --> ExecutionResult
 ```
 
+## Experiment Manager
+
+The logic for the experiment manager will already be included into the [`ExperimentCommand`](#dispatcher). Therefore no design is needed for this component.
+
 ## Reporting Engine
 
 The Reporting Engine is responsible for actively collecting, tracking, and analyzing metrics throughout the code generation process. It implements the **Observer Pattern** to monitor events and the **Strategy Pattern** to construct comprehensive reports.
@@ -242,7 +239,7 @@ The Reporting Engine is responsible for actively collecting, tracking, and analy
 ```mermaid
 classDiagram
     class ReportingEngine {
-        -LogStrategy log_strategy
+        -CollectStrategy collect_strategy
         -List~CodeGenStat~ statistics
         +log_report() void
     }
@@ -260,9 +257,9 @@ classDiagram
         +on_test_metrics_measured(test_pass_rate, coverage) void
     }
 
-    class LogStrategy {
+    class CollectStrategy {
         <<interface>>
-        +log(code_gen_stat) void
+        +collect(code_gen_stat) void
     }
 
     class CodeGenStat {
@@ -279,9 +276,9 @@ classDiagram
     ExecutionValidator --> CodeValidationObserver
     CodeGenerationObserver <|-- ReportingEngine
     CodeValidationObserver <|-- ReportingEngine
-    ReportingEngine --> LogStrategy
+    ReportingEngine --> CollectStrategy
     ReportingEngine --> CodeGenStat
-    LogStrategy <|-- ConsoleLogger
-    LogStrategy <|-- JsonLogger
-    LogStrategy <|-- CsvLogger
+    CollectStrategy <|-- ConsoleCollector
+    CollectStrategy <|-- JsonCollector
+    CollectStrategy <|-- CsvCollector
 ```
