@@ -10,7 +10,7 @@ It features 2 main commands: `generate` and `experiment`.
 
 ### Generate Command
 
-The `generate` command is a one-shot command that performs a code generation with the specified configuration.
+The `generate` command that performs a one-shot code generation with the specified configuration.
 
 The command has been planned to be functional even with no configuration. The following is sufficient to let T2C do its job.
 
@@ -18,7 +18,7 @@ The command has been planned to be functional even with no configuration. The fo
 t2c generate
 ```
 
-However it supports these configurations:
+However it supports these options:
 
 - `--tests`, `-t`: a path to the directory containing the test files;
 - `--outout`, `-o`: a path to the directory that will contain the result;
