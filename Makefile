@@ -1,6 +1,6 @@
 # Makefile for T2C development
 
-.PHONY: help install install-dev test test-unit test-integration lint format type-check clean build docs
+.PHONY: help install install-dev test test-coverage test-watch lint format type-check security quality clean build
 
 # Default Python interpreter
 PYTHON := python3
@@ -34,9 +34,20 @@ format:  ## Format code (black + ruff)
 type-check:  ## Run type checking (mypy)
 	mypy src/t2c/
 
+security:  ## Run security checks
+	@echo "🔍 Running dependency vulnerability scan..."
+	@safety check || (echo "❌ Security vulnerabilities found in dependencies!" && exit 1)
+	@echo "🔒 Running static security analysis..."
+	@bandit -r src/ -f custom --msg-template "{relpath}:{line}: {severity}: {msg} ({test_id})" || (echo "❌ Security issues found in code!" && exit 1)
+	@echo "✅ Security checks passed!"
+
+test-watch:  ## Run tests in watch mode
+	pytest-watch --runner "pytest --tb=short -v"
+
 quality:  ## Run all quality checks
 	$(MAKE) lint
 	$(MAKE) type-check
+	$(MAKE) security
 	$(MAKE) test
 
 clean:  ## Clean build artifacts
@@ -52,6 +63,3 @@ clean:  ## Clean build artifacts
 
 build:  ## Build package
 	$(PYTHON) -m build
-
-hooks-run:  ## Run all hooks on all files  
-	pre-commit run --all-files
