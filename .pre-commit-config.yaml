@@ -1,0 +1,48 @@
+# Pre-commit hooks configuration for T2C
+# Strict mode: fail commits if any issues found
+
+repos:
+  # Code formatting - FAIL if not formatted
+  - repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+      - id: black-check
+        name: black-check
+        language_version: python3.11
+        args: [--check, --diff, --line-length=88]
+        files: ^src/|^tests/
+
+  # Linting - FAIL if any issues found
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.292
+    hooks:
+      - id: ruff
+        name: ruff-check
+        args: [--output-format=full]
+        files: ^src/|^tests/
+
+  # Conventional commits validation
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--strict]
+
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=5000"] # 5MB limit like your custom hook
+      - id: debug-statements
+
+# Configuration
+default_stages: [commit]
+fail_fast: true # Stop on first failure

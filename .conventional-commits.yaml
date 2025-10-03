@@ -1,0 +1,40 @@
+# Conventional Commits Configuration for T2C
+# Format: type(scope): description  
+# Breaking changes: type(scope)!: description
+
+# Allowed commit types
+types = [
+    "feat",     # New feature
+    "fix",      # Bug fix  
+    "docs",     # Documentation changes
+    "style",    # Code style changes (formatting, etc)
+    "refactor", # Code refactoring
+    "test",     # Adding or updating tests
+    "chore",    # Maintenance tasks
+    "perf",     # Performance improvements
+    "ci",       # CI/CD changes
+    "build",    # Build system changes
+    "revert",   # Revert previous commit
+]
+
+# Optional scopes (can be omitted)
+scopes = [
+    "cli",          # CLI components
+    "core",         # Core business logic
+    "engines",      # Code generation, validation, reporting engines
+    "experiments",  # Experiment management
+    "config",       # Configuration handling
+    "utils",        # Utilities
+    "tests",        # Test-related changes
+    "docs",         # Documentation
+    "deps",         # Dependencies
+]
+
+# Breaking changes format examples:
+#   feat!: remove deprecated API
+#   feat(cli)!: change command line interface  
+#   fix(core)!: fix validation breaking existing behavior
+
+# Validation rules
+min_length = 10     # Minimum description length
+max_length = 72     # Maximum header length

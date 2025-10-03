@@ -16,6 +16,7 @@ install:  ## Install package in development mode
 install-dev:  ## Install package with development dependencies
 	$(PIP) install -e ".[dev]"
 	pre-commit install
+	pre-commit install --hook-type commit-msg
 
 test:  ## Run all tests
 	pytest
@@ -51,3 +52,6 @@ clean:  ## Clean build artifacts
 
 build:  ## Build package
 	$(PYTHON) -m build
+
+hooks-run:  ## Run all hooks on all files  
+	pre-commit run --all-files
