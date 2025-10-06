@@ -54,7 +54,7 @@ dev = [
 ]
 
 [project.scripts]
-t2c = "src.t2c.main:main"
+t2c = "t2c.main:main"
 
 [project.urls]
 Homepage = "https://filippogurioli.github.io/test-2-code-llm/"

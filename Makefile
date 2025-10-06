@@ -18,7 +18,7 @@ $(VENV)/bin/activate:  ## Create in-project virtual environment
 	@echo "Virtual environment created in $(VENV). To activate: source $(VENV)/bin/activate"
 
 run: $(VENV)/bin/activate  ## Run the main application
-	$(PYTHON) -m src.t2c
+	$(PYTHON) -m t2c
 
 install: $(VENV)/bin/activate  ## Install package in development mode
 	$(PIP) install -e .
