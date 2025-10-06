@@ -28,6 +28,8 @@ scopes = [
     "tests",        # Test-related changes
     "docs",         # Documentation
     "deps",         # Dependencies
+    "api-deps",     # Dependency updates that affect APIs (minor releases)
+    "core-deps",    # Dependency updates that affect core internals (patch releases)
 ]
 
 # Breaking changes format examples:

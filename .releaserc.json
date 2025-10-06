@@ -1,0 +1,33 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    ["@semantic-release/commit-analyzer", {
+      "preset": "conventionalcommits",
+      "releaseRules": [
+        { "type": "chore", "scope": "api-deps", "release": "minor" },
+        { "type": "feat", "release": "minor" },
+
+        { "type": "chore", "scope": "core-deps", "release": "patch" },
+        { "type": "fix", "release": "patch" },
+        { "type": "docs", "release": "patch" },
+        { "type": "perf", "release": "patch" },
+        { "type": "revert", "release": "patch" }
+      ],
+      "parserOpts": {
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING-CHANGE", "BREAKING"]
+      }
+    }],
+    ["@semantic-release/release-notes-generator", {
+      "preset": "conventionalcommits"
+    }],
+    ["@semantic-release/changelog", {
+      "changelogFile": "CHANGELOG.md"
+    }],
+    ["@semantic-release/github", {}],
+    ["@semantic-release/git", {
+      "assets": ["CHANGELOG.md"],
+      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+    }]
+  ],
+  "verifyConditions": ["@semantic-release/github"]
+}
