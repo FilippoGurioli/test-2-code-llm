@@ -2,6 +2,35 @@
 
 The system architecture consists of several key components that work together to achieve the goal of generating code from test specifications using Large Language Models (LLMs).
 
+## Overall Diagram
+
+```mermaid
+flowchart TD
+    User([User]) -->|commands| CLI[CLI Handler]
+    CLI -->|triggers| Dispatcher[Dispatcher]
+    CLI -->|loads| CM[Configuration Manager]
+    subgraph CoreComponents[Core Components]
+      EM
+      EV
+      CGE
+      ARE
+    end
+    Dispatcher -->|orchestrates| EM[Experiment Manager]
+    Dispatcher -->|dispatches| CGE[Code Generation Engine]
+    Dispatcher -->|validates| EV[Execution Validator]
+    EV -->|output results| ARE
+    EV -->|executes| Sandbox[Sandboxed Environment]
+    CGE -->|perf results| ARE[Reporting Engine]
+    EM -->|uses many| CGE
+    Sandbox --> TestRunner[Test Runners]
+    CGE -->|generated code| EV
+    CGE -->|API calls| LLM@{ shape: procs, label: "LLM Providers"}
+    LLM -->|responses| CGE
+    
+    ARE -.-> Reports[(Report Files)]
+    ARE -.-> Console[/Console Output/]
+```
+
 ## Command Line Interface Helper
 
 The front-end of the application faces directly to command line. This component is responsible of parsing the user input in order to launch the corresponding features in the later components.
@@ -21,7 +50,7 @@ t2c generate
 However it supports these options:
 
 - `--tests`, `-t`: a path to the directory containing the test files;
-- `--outout`, `-o`: a path to the directory that will contain the result;
+- `--output`, `-o`: a path to the directory that will contain the result;
 - `--model`, `-m`: a string that describes what model to use;
 - `--upperBound`, `-u`: the max number of tries the tool should do before returning a failure.
 
@@ -102,38 +131,7 @@ This component abstracts the interactions with various LLM providers, allowing t
 
 It exploits a sandboxed environment to execute the generated code against the provided test suite.
 
-## Architecture Diagram
-
-### Overall System Architecture
-
-```mermaid
-flowchart TD
-    User([User]) -->|commands| CLI[CLI Handler]
-    CLI -->|triggers| Dispatcher[Dispatcher]
-    CLI -->|loads| CM[Configuration Manager]
-    subgraph CoreComponents[Core Components]
-      EM
-      EV
-      CGE
-      ARE
-    end
-    Dispatcher -->|orchestrates| EM[Experiment Manager]
-    Dispatcher -->|dispatches| CGE[Code Generation Engine]
-    Dispatcher -->|validates| EV[Execution Validator]
-    EV -->|output results| ARE
-    EV -->|executes| Sandbox[Sandboxed Environment]
-    CGE -->|perf results| ARE[Reporting Engine]
-    EM -->|uses many| CGE
-    Sandbox --> TestRunner[Test Runners]
-    CGE -->|generated code| EV
-    CGE -->|API calls| LLM@{ shape: procs, label: "LLM Providers"}
-    LLM -->|responses| CGE
-    
-    ARE -.-> Reports[(Report Files)]
-    ARE -.-> Console[/Console Output/]
-```
-
-### Feedback Loop Sequence
+## Feedback Loop Sequence
 
 ```mermaid
 sequenceDiagram

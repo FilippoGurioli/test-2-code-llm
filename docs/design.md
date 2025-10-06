@@ -53,6 +53,11 @@ The following validators are included:
 ### Final Class Diagram
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     class CLIHandler {
         -ArgumentParser parser
@@ -133,6 +138,11 @@ sequenceDiagram
 The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects and a **Service Locator** to retrieve later components' instances.
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     class CommandFactory {
         -ComponentLocator component_locator
@@ -170,6 +180,11 @@ classDiagram
 The Code Generation Engine is responsible for generating code based on provided test specifications using Large Language Models (LLMs). It exploits the **Strategy Pattern** to support multiple LLM providers and the **Factory Pattern** to instantiate the appropriate strategy based on user configuration.
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     class CodeGenerationEngine {
         -LLMProviderInterface llm_provider
@@ -202,6 +217,11 @@ classDiagram
 The Execution Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     class ExecutionValidator {
         -SandboxEnvironment sandbox
@@ -237,6 +257,11 @@ The logic for the experiment manager will already be included into the [`Experim
 The Reporting Engine is responsible for actively collecting, tracking, and analyzing metrics throughout the code generation process. It implements the **Observer Pattern** to monitor events and the **Strategy Pattern** to construct comprehensive reports.
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     class ReportingEngine {
         -CollectStrategy collect_strategy
