@@ -54,7 +54,7 @@ dev = [
 ]
 
 [project.scripts]
-t2c = "t2c.main:main"
+t2c = "src.t2c.main:main"
 
 [project.urls]
 Homepage = "https://filippogurioli.github.io/test-2-code-llm/"
@@ -161,6 +161,3 @@ skips = ["B101", "B601"]
 
 [tool.bandit.assert_used]
 skips = ["*_test.py", "*test_*.py"]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/"]

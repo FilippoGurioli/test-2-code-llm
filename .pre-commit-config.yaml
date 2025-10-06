@@ -4,17 +4,17 @@
 repos:
   # Code formatting - FAIL if not formatted
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 25.9.0
     hooks:
-      - id: black-check
+      - id: black
         name: black-check
-        language_version: python3.11
+        language_version: python3
         args: [--check, --diff, --line-length=88]
         files: ^src/|^tests/
 
   # Linting - FAIL if any issues found
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.0.292
+    rev: v0.13.3
     hooks:
       - id: ruff
         name: ruff-check
@@ -23,10 +23,11 @@ repos:
 
   # Security scanning - FAIL if security issues found
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.5
+    rev: 1.8.6
     hooks:
       - id: bandit
         name: bandit-security-check
+        pass_filenames: false
         args:
           [
             "-r",
@@ -40,7 +41,7 @@ repos:
 
   # Conventional commits validation
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v3.0.0
+    rev: v4.2.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
@@ -48,7 +49,7 @@ repos:
 
   # Basic file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -61,5 +62,5 @@ repos:
       - id: debug-statements
 
 # Configuration
-default_stages: [commit]
+default_stages: [pre-commit]
 fail_fast: true # Stop on first failure
