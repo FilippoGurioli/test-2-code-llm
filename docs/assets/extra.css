@@ -2,25 +2,25 @@
 :root {
     --md-primary-fg-color: #673ab7;
     --md-accent-fg-color: #9c27b0;
-    
+
     /* Enhanced color palette - Light mode */
     --md-code-bg-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     --md-code-text-light: #2d3748;
     --md-code-border-light: rgba(103, 58, 183, 0.1);
     --md-mermaid-bg-light: rgba(255, 255, 255, 0.9);
     --md-mermaid-border-light: rgba(103, 58, 183, 0.1);
-    
+
     /* Enhanced color palette - Dark mode */
     --md-code-bg-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     --md-code-text-dark: #e2e8f0;
     --md-code-border-dark: rgba(156, 39, 176, 0.3);
     --md-mermaid-bg-dark: rgba(30, 41, 59, 0.95);
     --md-mermaid-border-dark: rgba(156, 39, 176, 0.3);
-    
+
     --md-shadow-light: 0 2px 8px rgba(103, 58, 183, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
     --md-shadow-medium: 0 4px 16px rgba(103, 58, 183, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
     --md-shadow-heavy: 0 8px 32px rgba(103, 58, 183, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
-    
+
     /* Animation variables */
     --md-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --md-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -354,29 +354,29 @@
     .md-typeset {
         font-size: 1rem;
     }
-    
+
     .md-typeset h1 {
         font-size: 2rem;
     }
-    
+
     .md-typeset h2 {
         font-size: 1.6rem;
     }
-    
+
     .md-typeset pre {
         padding: 1rem;
         margin: 1rem 0;
     }
-    
+
     .md-typeset th,
     .md-typeset td {
         padding: 0.75rem 1rem;
     }
-    
+
     .admonition {
         padding: 1rem;
     }
-    
+
     .mermaid {
         padding: 1rem;
     }

@@ -43,7 +43,7 @@ Example experiment configuration:
 experiment:
   name: "T2C Comparative Study"
   output_dir: "./experiments/results"
-  
+
 models:
   - "mistral"
   - "smollm2"
@@ -80,7 +80,7 @@ T2C evaluates and compares multiple language models:
 The project evaluates LLM performance on increasingly complex software projects:
 
 1. **Tic Tac Toe** - Simple game logic and state management
-2. **Snake Game** - Moderate complexity with real-time interaction  
+2. **Snake Game** - Moderate complexity with real-time interaction
 3. **Space Invaders** - Higher complexity with graphics and physics
 
 ## Development
@@ -106,7 +106,7 @@ make type-check
 ```text
 src/t2c/
 ├── cli/              # Command-line interface components
-├── core/             # Core business logic and models  
+├── core/             # Core business logic and models
 ├── engines/          # Code generation, validation, reporting
 ├── experiments/      # Experiment management and execution
 ├── config/           # Configuration and settings management

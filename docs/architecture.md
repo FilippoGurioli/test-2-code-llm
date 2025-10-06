@@ -26,7 +26,7 @@ flowchart TD
     CGE -->|generated code| EV
     CGE -->|API calls| LLM@{ shape: procs, label: "LLM Providers"}
     LLM -->|responses| CGE
-    
+
     ARE -.-> Reports[(Report Files)]
     ARE -.-> Console[/Console Output/]
 ```
@@ -77,7 +77,7 @@ This is a comprehensive example of the file:
 experiment:
   name: "T2C Comparative Study"
   output_dir: "./experiments/results"
-  
+
 models:
   - "mistral"
   - "smollm2"
@@ -142,7 +142,7 @@ sequenceDiagram
     participant LLM as LLM Provider
     participant EV as Execution Validator
     participant ARE as Reporting Engine
-    
+
     User ->> CLI: run "t2c generate"
     CLI ->> Dispatcher: trigger generation
     loop retries until success or upperBound

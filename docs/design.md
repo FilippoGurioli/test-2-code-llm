@@ -68,7 +68,7 @@ classDiagram
         +validate_configuration(config) ValidationResult
         +execute_command(config) ExecutionResult
     }
-    
+
     namespace ParsingPipeline {
         class ArgumentParser {
             +parse(args[]) Configuration
@@ -79,7 +79,7 @@ classDiagram
         }
     }
 
-    namespace ValidationChain {    
+    namespace ValidationChain {
         class ChainValidator {
             -List~Validator~ validators
             +add_validator(validator)
@@ -96,7 +96,7 @@ classDiagram
         class DependencyValidator {}
         class ResourceValidator {}
     }
-    
+
     CLIHandler --> ChainValidator
     ChainValidator --> Validator
     Validator <|-- PathValidator
@@ -122,13 +122,13 @@ sequenceDiagram
     User->>CLIHandler: t2c generate --tests ./my-tests
     CLIHandler->>ArgumentParser: parse(["generate", "--tests", "./my-tests"])
     ArgumentParser-->>CLIHandler: ParsedArguments(command="generate", args={...})
-    
+
     CLIHandler->>ConfigurationMerger: merge(parsed_args, defaults, file, env)
     ConfigurationMerger-->>CLIHandler: Configuration(tests="./my-tests", ...)
-    
+
     CLIHandler->>ChainValidator: validate(configuration)
     ChainValidator-->>CLIHandler: ValidationResult(valid=true)
-    
+
     CLIHandler->>Dispatcher: launch_command(configuration)
     Dispatcher-->>CLIHandler: Result(success=true, details={...})
 ```
@@ -150,15 +150,15 @@ classDiagram
         +get_command(name) Command
         +list_commands() String[]
     }
-    
+
     class Command {
         <<interface>>
         +execute(config) ExecutionResult
         +get_help_text() String
     }
-    
+
     class GenerateCommand {}
-    
+
     class ExperimentCommand {}
 
     class ComponentLocator {

@@ -17,7 +17,7 @@ The following section lists all the project requirements that have been identifi
 1. Generated code shall pass all provided test cases without modification, ensuring functional correctness.
 1. The system shall support multiple types of test inputs:
    - Unit tests (testing individual functions/methods)
-   - Integration tests (testing component interactions)  
+   - Integration tests (testing component interactions)
    - Acceptance tests (testing user-facing behavior)
 1. Generated code shall follow common programming conventions and best practices for the target language.
 1. The system shall handle increasingly complex software projects as case studies:
@@ -39,7 +39,7 @@ The following section lists all the project requirements that have been identifi
 1. The system shall parse and understand various test frameworks and assertion patterns.
 1. Test specifications shall provide sufficient context for the LLM to understand:
    - Expected function signatures
-   - Input/output relationships  
+   - Input/output relationships
    - Business logic requirements
    - Edge case handling
 1. The system shall validate that generated code passes the original test suite through automated execution.
