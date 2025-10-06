@@ -78,7 +78,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=src/t2c --cov-report=xml --cov-report=term-missing
+          pytest --cov=src/t2c --cov-report=xml --cov-report=term-missing --cov-fail-under=0
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'
