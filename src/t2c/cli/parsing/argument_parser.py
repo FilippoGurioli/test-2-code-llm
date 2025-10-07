@@ -2,7 +2,7 @@ from typing import TypeVar
 
 from .config import Configuration
 
-T = TypeVar("T")
+T = TypeVar("T", str, int)
 
 
 class ArgumentParser:
