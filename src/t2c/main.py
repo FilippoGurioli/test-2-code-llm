@@ -1,5 +1,13 @@
-def main(_: list[str] | None = None) -> int:
+import sys
+
+from t2c.cli.parsing.argument_parser import ArgumentParser
+
+
+def main(args: list[str] | None = None) -> int:
     """Main entry point."""
-    # ... application setup would go here (parse argv, configure logging, etc.)
-    print("Hello, World!")
+    if args is None:
+        args = sys.argv[1:]
+
+    config = ArgumentParser.parse(args)
+    print(config)
     return 0
