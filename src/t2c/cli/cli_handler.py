@@ -1,5 +1,6 @@
 from t2c.cli.parsing.argument_parser import ArgumentParser
 from t2c.cli.parsing.config import Configuration
+from t2c.cli.parsing.configuration_merger import ConfigurationMerger
 
 
 class CLIHandler:
@@ -15,7 +16,7 @@ class CLIHandler:
         Returns:
             Configuration: The parsed configuration object.
         """
-        return ArgumentParser.parse(args)
+        return ConfigurationMerger.merge(ArgumentParser.parse(args))
 
     @staticmethod
     def validate_configuration(
