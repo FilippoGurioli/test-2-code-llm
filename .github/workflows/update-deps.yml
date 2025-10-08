@@ -32,10 +32,9 @@ jobs:
           pip install pre-commit
           pre-commit autoupdate
 
-      - name: Check for security vulnerabilities
-        run: |
-          pip install safety
-          safety check --json || true
+      - uses: pyupio/safety-action@v1
+        with:
+          api-key: ${{ secrets.SAFETY_API_KEY }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

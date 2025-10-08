@@ -45,7 +45,7 @@ jobs:
         uses: pre-commit/action@v3.0.1
 
       - name: Type check with MyPy
-        run: mypy src/t2c/ --ignore-missing-imports
+        run: make type-check
 
   test:
     name: Tests
@@ -78,7 +78,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=src/t2c --cov-report=xml --cov-report=term-missing --cov-fail-under=0
+          make test-coverage
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'
@@ -105,10 +105,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install safety bandit[toml]
+          pip install bandit[toml]
 
-      - name: Run safety check
-        run: safety check --json
+      - uses: pyupio/safety-action@v1
+        with:
+          api-key: ${{ secrets.SAFETY_API_KEY }}
 
       - name: Run bandit security check
         run: bandit -r src/ -f json
@@ -133,7 +134,7 @@ jobs:
           pip install build twine
 
       - name: Build package
-        run: python -m build
+        run: make build
 
       - name: Check package
         run: twine check dist/*
