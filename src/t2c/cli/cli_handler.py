@@ -1,13 +1,17 @@
 from t2c.cli.parsing.argument_parser import ArgumentParser
 from t2c.cli.parsing.configuration_merger import ConfigurationMerger
 from t2c.cli.parsing.merged_config import MergedConfiguration
+from t2c.cli.validation_chain.chain_validator import ChainValidator
+from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
 
 
 class CLIHandler:
     """Handles the command-line interface (CLI) of the application."""
 
-    @staticmethod
-    def parse_arguments(args: list[str]) -> MergedConfiguration:
+    def __init__(self, chain_validator: ChainValidator) -> None:
+        self._chain_validator = chain_validator
+
+    def parse_arguments(self, args: list[str]) -> MergedConfiguration:
         """Parses command-line arguments into a MergedConfiguration object.
 
         Args:
@@ -18,10 +22,9 @@ class CLIHandler:
         """
         return ConfigurationMerger.merge(ArgumentParser.parse(args))
 
-    @staticmethod
     def validate_configuration(
-        config: MergedConfiguration,
-    ) -> MergedConfiguration:  # -> ValidatedConfiguration
+        self, config: MergedConfiguration
+    ) -> ValidatedConfiguration:
         """Validates the given configuration.
 
         Args:
@@ -30,10 +33,9 @@ class CLIHandler:
         Returns:
             ValidatedConfiguration: The validated configuration.
         """
-        pass  # Implementation of configuration validation would go here
+        return self._chain_validator.validate(config)
 
-    @staticmethod
-    def execute_command(config: MergedConfiguration) -> None:
+    def execute_command(self, config: MergedConfiguration) -> None:
         """Executes the command with the given configuration.
 
         Args:
@@ -42,4 +44,4 @@ class CLIHandler:
         Returns:
             None
         """
-        pass  # Implementation of command execution would go here
+        return None  # Implementation of command execution would go here
