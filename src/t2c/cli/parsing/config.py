@@ -9,18 +9,18 @@ class Configuration:
     def __init__(
         self,
         command: str | None,
-        testsPath: str | None,
-        configPath: str | None,
-        outputPath: str | None,
-        modelName: str | None,
-        upperBound: int | None,
+        tests_path: str | None,
+        config_path: str | None,
+        output_path: str | None,
+        model_name: str | None,
+        upper_bound: int | None,
     ) -> None:
         self._command: str | None = command
-        self._testsPath: str | None = testsPath
-        self._configPath: str | None = configPath
-        self._outputPath: str | None = outputPath
-        self._modelName: str | None = modelName
-        self._upperBound: int | None = upperBound
+        self._tests_path: str | None = tests_path
+        self._config_path: str | None = config_path
+        self._output_path: str | None = output_path
+        self._model_name: str | None = model_name
+        self._upper_bound: int | None = upper_bound
 
     @property
     def command(self) -> str | None:
@@ -28,36 +28,36 @@ class Configuration:
         return self._command
 
     @property
-    def testsPath(self) -> str | None:
+    def tests_path(self) -> str | None:
         """Path to the tests directory or file."""
-        return self._testsPath
+        return self._tests_path
 
     @property
-    def configPath(self) -> str | None:
+    def config_path(self) -> str | None:
         """Path to the configuration file."""
-        return self._configPath
+        return self._config_path
 
     @property
-    def outputPath(self) -> str | None:
+    def output_path(self) -> str | None:
         """Path where generated code will be written."""
-        return self._outputPath
+        return self._output_path
 
     @property
-    def modelName(self) -> str | None:
+    def model_name(self) -> str | None:
         """Name of the model to use for code generation."""
-        return self._modelName
+        return self._model_name
 
     @property
-    def upperBound(self) -> int | None:
+    def upper_bound(self) -> int | None:
         """Upper bound for generation attempts."""
-        return self._upperBound
+        return self._upper_bound
 
     def __str__(self) -> str:
         return (
             f"Configuration(command={self.command}, "
-            f"testsPath={self.testsPath}, "
-            f"configPath={self.configPath}, "
-            f"outputPath={self.outputPath}, "
-            f"modelName={self.modelName}, "
-            f"upperBound={self.upperBound})"
+            f"testsPath={self.tests_path}, "
+            f"configPath={self.config_path}, "
+            f"outputPath={self.output_path}, "
+            f"modelName={self.model_name}, "
+            f"upperBound={self.upper_bound})"
         )
