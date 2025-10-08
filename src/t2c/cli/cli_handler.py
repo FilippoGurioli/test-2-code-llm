@@ -5,7 +5,8 @@ from t2c.cli.parsing.config import Configuration
 class CLIHandler:
     """Handles the command-line interface (CLI) of the application."""
 
-    def parse_arguments(self, args: list[str]) -> Configuration:
+    @staticmethod
+    def parse_arguments(args: list[str]) -> Configuration:
         """Parses command-line arguments into a Configuration object.
 
         Args:
@@ -16,9 +17,10 @@ class CLIHandler:
         """
         return ArgumentParser.parse(args)
 
+    @staticmethod
     def validate_configuration(
-        self, config: Configuration
-    ):  # -> ValidatedConfiguration
+        config: Configuration,
+    ) -> None:  # -> ValidatedConfiguration
         """Validates the given configuration.
 
         Args:
@@ -26,7 +28,8 @@ class CLIHandler:
         """
         pass  # Implementation of configuration validation would go here
 
-    def execute_command(self, config):  # config: ValidatedConfiguration | -> None
+    @staticmethod
+    def execute_command(config) -> None:  # config: ValidatedConfiguration
         """Executes the command with the given configuration.
 
         Args:

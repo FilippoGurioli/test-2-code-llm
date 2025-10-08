@@ -1,6 +1,6 @@
 import sys
 
-from t2c.cli.parsing.argument_parser import ArgumentParser
+from t2c.cli.cli_handler import CLIHandler
 
 
 def main(args: list[str] | None = None) -> int:
@@ -8,6 +8,7 @@ def main(args: list[str] | None = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
-    config = ArgumentParser.parse(args)
-    print(config)
+    CLIHandler.execute_command(
+        CLIHandler.validate_configuration(CLIHandler.parse_arguments(args))
+    )
     return 0
