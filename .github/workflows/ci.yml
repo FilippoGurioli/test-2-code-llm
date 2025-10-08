@@ -45,7 +45,7 @@ jobs:
         uses: pre-commit/action@v3.0.1
 
       - name: Type check with MyPy
-        run: make type-check
+        run: mypy src/t2c/
 
   test:
     name: Tests
@@ -78,7 +78,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          make test-coverage
+          pytest --cov=src/t2c --cov-report=xml --cov-report=term-missing --cov-fail-under=0
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'
@@ -134,7 +134,7 @@ jobs:
           pip install build twine
 
       - name: Build package
-        run: make build
+        run: python -m build
 
       - name: Check package
         run: twine check dist/*
