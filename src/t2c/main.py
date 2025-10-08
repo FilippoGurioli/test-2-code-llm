@@ -8,7 +8,5 @@ def main(args: list[str] | None = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
-    CLIHandler.execute_command(
-        CLIHandler.validate_configuration(CLIHandler.parse_arguments(args))
-    )
+    print(CLIHandler.parse_arguments(args))
     return 0

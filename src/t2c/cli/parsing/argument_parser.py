@@ -13,7 +13,7 @@ class ArgumentParser:
         """Parses the given arguments.
 
         Args:
-            args (List[str]): The arguments to parse.
+            args (list[str]): The arguments to parse.
         """
         return Configuration(
             command=args[0] if len(args) > 0 else None,
@@ -39,7 +39,7 @@ class ArgumentParser:
         """Extract and parse a value from a list of strings based on a key.
 
         Args:
-            words (List[str]): The list of strings to search.
+            words (list[str]): The list of strings to search.
             arg (tuple[str, str]): The key to search for (long form, short form).
             t (Type[T]): The expected return type.
 
