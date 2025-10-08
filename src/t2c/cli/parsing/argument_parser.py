@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from .config import Configuration
+from t2c.cli.parsing.config import Configuration
 
 T = TypeVar("T", str, int)
 
