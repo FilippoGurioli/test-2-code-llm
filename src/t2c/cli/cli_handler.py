@@ -40,7 +40,7 @@ class CLIHandler:
             )
         return ValidatedConfiguration(config)
 
-    def execute_command(self, config: MergedConfiguration) -> None:
+    def execute_command(self, config: ValidatedConfiguration) -> None:
         """Executes the command with the given configuration.
 
         Args:
