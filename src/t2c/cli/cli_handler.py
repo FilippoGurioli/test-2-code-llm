@@ -33,7 +33,12 @@ class CLIHandler:
         Returns:
             ValidatedConfiguration: The validated configuration.
         """
-        return self._chain_validator.validate(config)
+        validation_result = self._chain_validator.validate(config)
+        if not validation_result.is_valid:
+            raise ValueError(
+                "Configuration is not valid:\n" + "\n".join(validation_result.errors)
+            )
+        return ValidatedConfiguration(config)
 
     def execute_command(self, config: MergedConfiguration) -> None:
         """Executes the command with the given configuration.

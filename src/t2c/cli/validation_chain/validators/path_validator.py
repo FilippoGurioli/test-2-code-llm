@@ -32,17 +32,18 @@ class PathValidator:
                 Path(str(config.tests_path)),
                 Path(str(config.output_path)),
             ]
+            is_valid: bool = True
+            errors: list[str] = []
             for path in paths:
                 if not path.exists():
-                    return ValidationResult(
-                        False, [f"The path '{path}' does not exist."]
-                    )
-                if not path.is_dir():
-                    return ValidationResult(
-                        False, [f"The path '{path}' is not a directory."]
-                    )
-                if not os.access(path, os.R_OK):
-                    return ValidationResult(
-                        False, [f"The path '{path}' is not readable."]
-                    )
+                    errors.append(f"The path '{path}' does not exist.")
+                    is_valid = False
+                elif not path.is_dir():
+                    errors.append(f"The path '{path}' is not a directory.")
+                    is_valid = False
+                elif not os.access(path, os.R_OK):
+                    errors.append(f"The path '{path}' is not readable.")
+                    is_valid = False
+            if not is_valid:
+                return ValidationResult(False, errors)
         return ValidationResult(True, [])

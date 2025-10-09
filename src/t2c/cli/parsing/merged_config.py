@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 from t2c.cli.parsing.config import Configuration
 
@@ -34,11 +35,11 @@ class MergedConfiguration:
             else self._get_default().tests_path
         )
         self._config_path: str | None = config.config_path
-        self._output_path: str = (
-            config.output_path
-            if config.output_path is not None
-            else self._get_default().output_path
-        )
+        if config.output_path is None:
+            self._output_path: str = self._get_default().output_path
+            Path(self._output_path).mkdir(parents=True, exist_ok=True)
+        else:
+            self._output_path: str = config.output_path
         self._model_name: str = (
             config.model_name
             if config.model_name is not None
