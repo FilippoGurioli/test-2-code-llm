@@ -13,7 +13,12 @@ class ChainValidator:
         self._validators.append(validator)
 
     def validate(self, config: MergedConfiguration) -> ValidatedConfiguration:
+        errors: list[str] = []
+        is_validation_succeeded: bool = True
         for validator in self._validators:
-            validator.validate(config)
-
+            result = validator.validate(config)
+            is_validation_succeeded = is_validation_succeeded and result.is_valid
+            errors.extend(result.errors)
+        if not is_validation_succeeded:
+            raise ValueError("Configuration is not valid:\n" + "\n".join(errors))
         return ValidatedConfiguration(config)
