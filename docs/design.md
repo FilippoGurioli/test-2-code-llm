@@ -45,10 +45,10 @@ The validation chain implements a series of validators that check different aspe
 
 The following validators are included:
 
+- Command Validator: ensures the command is valid;
 - Path Validator: checks if specified paths exist and are accessible;
 - Model Validator: verifies if the specified LLM model is supported;
 - Dependency Validator: ensures all required dependencies are installed;
-- Resource Validator: checks if sufficient resources (e.g., memory, CPU) are available.
 
 ### Final Class Diagram
 
