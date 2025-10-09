@@ -3,7 +3,6 @@ from t2c.cli.parsing.configuration_merger import ConfigurationMerger
 from t2c.cli.parsing.merged_config import MergedConfiguration
 from t2c.cli.validation_chain.chain_validator import ChainValidator
 from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
-from t2c.dispatcher.command_factory import CommandFactory
 
 
 class CLIHandler:
@@ -51,4 +50,4 @@ class CLIHandler:
             None
         """
         # TODO: handle --help option with command.get_help_text()
-        CommandFactory.get_command(config.command.value).execute(config)
+        config.command.execute(config)

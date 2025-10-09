@@ -8,10 +8,26 @@ class CommandFactory:
 
     @staticmethod
     def list_commands() -> list[str]:
+        """Lists all available commands.
+
+        Returns:
+            list[str]: The list of command names.
+        """
         return ["generate", "experiment"]
 
     @staticmethod
     def get_command(name: str) -> Command:
+        """Create an instance of a wrapper for the command passed.
+
+        Args:
+            name (str): The name of the command.
+
+        Raises:
+            ValueError: If the command does not exist.
+
+        Returns:
+            Command: An instance of the command.
+        """
         if name == "generate":
             return GenerateCommand()
         elif name == "experiment":
