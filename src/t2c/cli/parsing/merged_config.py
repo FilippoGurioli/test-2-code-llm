@@ -39,7 +39,7 @@ class MergedConfiguration:
             self._output_path: str = self._get_default().output_path
             Path(self._output_path).mkdir(parents=True, exist_ok=True)
         else:
-            self._output_path: str = config.output_path
+            self._output_path = config.output_path
         self._model_name: str = (
             config.model_name
             if config.model_name is not None
