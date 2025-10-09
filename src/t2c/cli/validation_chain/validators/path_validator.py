@@ -10,22 +10,22 @@ class PathValidator:
 
     def validate(self, config: MergedConfiguration) -> ValidationResult:
         if config.command == "experiment" and config.config_path is None:
-            return ValidationResult(
-                False, ["For 'experiment' command, the config path must be provided."]
+            return ValidationResult.failure(
+                "For 'experiment' command, the config path must be provided."
             )
         elif config.command == "experiment" and config.config_path is not None:
             path: Path = Path(str(config.config_path))
             if not path.exists():
-                return ValidationResult(
-                    False, [f"The config path '{config.config_path}' does not exist."]
+                return ValidationResult.failure(
+                    f"The config path '{config.config_path}' does not exist."
                 )
             if not path.is_file():
-                return ValidationResult(
-                    False, [f"The config path '{config.config_path}' is not a file."]
+                return ValidationResult.failure(
+                    f"The config path '{config.config_path}' is not a file."
                 )
             if not os.access(path, os.R_OK):
-                return ValidationResult(
-                    False, [f"The config path '{config.config_path}' is not readable."]
+                return ValidationResult.failure(
+                    f"The config path '{config.config_path}' is not readable."
                 )
         else:
             paths: list[Path] = [
@@ -45,5 +45,5 @@ class PathValidator:
                     errors.append(f"The path '{path}' is not readable.")
                     is_valid = False
             if not is_valid:
-                return ValidationResult(False, errors)
-        return ValidationResult(True, [])
+                return ValidationResult.failure(errors)
+        return ValidationResult.success()

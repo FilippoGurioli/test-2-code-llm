@@ -12,5 +12,5 @@ class CommandValidator:
             errors.append(
                 f"Invalid command: {config.command}. Valid commands are: {', '.join(valid_commands)}."
             )
-            return ValidationResult(False, errors)
-        return ValidationResult(True, [])
+            return ValidationResult.failure(errors)
+        return ValidationResult.success()
