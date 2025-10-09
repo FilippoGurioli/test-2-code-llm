@@ -9,7 +9,8 @@ class PathValidator:
         if config.command == "experiment":
             paths.append(config.config_path)
         else:
-            paths.append(config.output_path, config.tests_path, config)
+            paths.append(config.output_path)
+            paths.append(config.tests_path)
         self._check_validity_or_throw(paths)
 
     def _check_validity_or_throw(self, os_elem: list[str]) -> None:
