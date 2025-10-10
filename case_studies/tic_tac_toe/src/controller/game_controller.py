@@ -22,7 +22,7 @@ class GameController:
         winner = game_state.check_winner()
         if winner is not None:
             self.view.display_winner(winner.value)
-            return game_state
+            return None
         if game_state.is_full():
             self.view.display_draw()
             return None
