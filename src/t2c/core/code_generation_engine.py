@@ -15,7 +15,12 @@ class CodeGenerationEngine:
         self._observers.remove(observer)
 
     def generate_code(self, tests_path: str, output_path: str) -> bool:
-        return False  # TODO
+        self._notify_start(self._llm_provider.__class__.__str__, "pytest")  # TODO
+        result: bool = self._llm_provider.generate_code(
+            f"This is an example prompt that uses {tests_path} and {output_path}"
+        )
+        self._notify_end(result)
+        return result
 
     def _notify_start(self, model_name: str, test_suite: str) -> None:
         for obs in self._observers:

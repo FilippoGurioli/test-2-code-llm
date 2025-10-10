@@ -135,7 +135,7 @@ sequenceDiagram
 
 ## Dispatcher
 
-The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects and a **Service Locator** to retrieve later components' instances.
+The goal of the dispatcher is to delegate the execution of commands to the appropriate command handler based on user input. To do that, the dispatcher exploits the **Command Pattern** to encapsulate requests as objects.
 
 ```mermaid
 ---
@@ -161,18 +161,12 @@ classDiagram
 
     class ExperimentCommand {}
 
-    class ComponentLocator {
-        -Map~String, T~ components
-        +register~T~(name, instance)
-        +get(name) T
-    }
-
     CLIHandler --> CommandFactory
     CommandFactory --> Command
     Command <|-- GenerateCommand
     Command <|-- ExperimentCommand
-    ExperimentCommand --> ComponentLocator
-    GenerateCommand --> ComponentLocator
+    ExperimentCommand --> Core
+    GenerateCommand --> Core
 ```
 
 ## Code Generation Engine
@@ -202,8 +196,9 @@ classDiagram
     }
     class Dispatcher {}
     Dispatcher --> CodeGenerationEngine
-    CodeGenerationEngine --> LLMProviderInterface
+    Dispatcher --> LLMProviderFactory
     LLMProviderFactory --> LLMProviderInterface
+    CodeGenerationEngine --> LLMProviderInterface
     LLMProviderInterface <|-- MistralProvider
     LLMProviderInterface <|-- DeepSeekR1Provider
     LLMProviderInterface <|-- Smollm2Provider
