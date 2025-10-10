@@ -1,6 +1,6 @@
 from t2c.cli.parsing.merged_config import MergedConfiguration
 from t2c.cli.validation_chain.validation_result import ValidationResult
-from t2c.llm_provider.supported_models import SupportedModels
+from t2c.core.llm_provider.supported_models import SupportedModels
 
 
 class ModelValidator:
