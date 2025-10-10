@@ -1,8 +1,10 @@
 def test_render_board(capsys) -> None:
-    from case_studies.tic_tac_toe.src.model.game_state import GameState, Symbol
+    from types import SimpleNamespace
     from case_studies.tic_tac_toe.src.view.game_view import GameView
-    board = [Symbol.X, Symbol.O, None, None, Symbol.X, None, None, Symbol.O, None]
-    game_state = GameState(board=board, starter=Symbol.X)
+    X = SimpleNamespace(value="X")
+    O = SimpleNamespace(value="O")
+    board = [X, O, None, None, X, None, None, O, None]
+    game_state = SimpleNamespace(board=board)
     view = GameView()
     view.render(game_state)
     captured = capsys.readouterr()
