@@ -94,7 +94,7 @@ classDiagram
         class PathValidator {}
         class ModelValidator {}
         class DependencyValidator {}
-        class ResourceValidator {}
+        class CommandValidator {}
     }
 
     CLIHandler --> ChainValidator
@@ -102,7 +102,7 @@ classDiagram
     Validator <|-- PathValidator
     Validator <|-- ModelValidator
     Validator <|-- DependencyValidator
-    Validator <|-- ResourceValidator
+    Validator <|-- CommandValidator
     CLIHandler --> Dispatcher
     CLIHandler --> ArgumentParser
     CLIHandler --> ConfigurationMerger
