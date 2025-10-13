@@ -22,5 +22,9 @@ class LLMProviderFactory:
                 from t2c.core.llm_provider.providers.mistral import Mistral
 
                 return Mistral()
+            case SupportedModels.Gemini:
+                from t2c.core.llm_provider.gemini import Gemini
+
+                return Gemini()
             case _:
                 raise ValueError(f"Unknown LLM provider: {model}")

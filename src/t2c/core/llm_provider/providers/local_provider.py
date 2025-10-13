@@ -13,10 +13,7 @@ REQUEST_TIMEOUT = 300
 
 class LocalProvider(BaseProvider):
     def _clean_response(self, response: str) -> str:
-        return self._remove_cot(self._remove_quotes(response))
-
-    def _remove_quotes(self, response: str) -> str:
-        return response.replace("```", "").strip()
+        return self._remove_cot(response)
 
     def _remove_cot(self, response: str) -> str:
         start_cot_index = response.find("<think>")

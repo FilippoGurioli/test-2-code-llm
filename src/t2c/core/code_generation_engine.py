@@ -17,9 +17,18 @@ class CodeGenerationEngine:
     def generate_code(self, tests_path: str, output_path: str) -> bool:
         self._notify_start(self._llm_provider.__class__.__str__, "pytest")  # TODO
         tests: str = self._serialize_tests(tests_path)
-        answer: str = self._llm_provider.query(
+        query: str = (
             f"Generate code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"
         )
+        query = query + "\n\nFor each file, make sure to:\n"
+        query = (
+            query
+            + "- include a comment on top with the file path like this: # path/to/file.py\n"
+        )
+        query = (
+            query + "- insert them in different code snippets (use triple backticks)"
+        )
+        answer: str = self._llm_provider.query(query)
         print(f"LLM answer: {answer}")
         self._notify_end(answer == "Hello World!")
         return answer == "Hello World!"
