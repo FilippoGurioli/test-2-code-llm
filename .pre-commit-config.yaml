@@ -36,8 +36,11 @@ repos:
             "custom",
             "--msg-template",
             "{relpath}:{line}: {severity}: {msg} ({test_id})",
+            "-c",
+            "pyproject.toml",
           ]
         files: ^src/
+        additional_dependencies: ["bandit[toml]"]
 
   # Conventional commits validation
   - repo: https://github.com/compilerla/conventional-pre-commit
