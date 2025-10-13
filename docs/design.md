@@ -189,7 +189,7 @@ classDiagram
     }
     class LLMProviderInterface {
         <<interface>>
-        +generate_code(prompt, config) CodeResult
+        +query(prompt, config) CodeResult
     }
     class LLMProviderFactory {
         +create_provider(name) LLMProviderInterface
@@ -221,7 +221,7 @@ classDiagram
     class ExecutionValidator {
         -SandboxEnvironment sandbox
         -String language
-        +execute_code(generated_code, test_suite) void
+        +execute_tests(generated_code, test_suite) void
         +subscribe(observer) void
         +unsubscribe(observer) void
     }
