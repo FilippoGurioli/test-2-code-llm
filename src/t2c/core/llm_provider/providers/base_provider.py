@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from litellm import completion
 from litellm.exceptions import APIConnectionError
 
-REQUEST_TIMEOUT = 300
+REQUEST_TIMEOUT = 3000
 
 
 class BaseProvider(ABC):
@@ -26,7 +26,7 @@ class BaseProvider(ABC):
             return cleaned_response
         except APIConnectionError as exc:
             raise RuntimeError(
-                "smollm2 failed on API connection",
+                f"{self._get_server_model_name()} failed on API connection",
                 REQUEST_TIMEOUT * 1000,
                 str(exc),
                 {"api_base": api_base},

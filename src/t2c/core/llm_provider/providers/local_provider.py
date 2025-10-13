@@ -65,7 +65,7 @@ class LocalProvider(BaseProvider):
 
     def _is_running(self) -> bool:
         try:
-            get("http://localhost:11434", timeout=1000)
+            get(self._get_api_base(), timeout=1000)
             return True
         except Exception:
             return False

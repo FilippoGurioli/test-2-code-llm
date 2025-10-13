@@ -16,7 +16,6 @@ class CodeGenerationEngine:
 
     def generate_code(self, tests_path: str, output_path: str) -> bool:
         self._notify_start(self._llm_provider.__class__.__str__, "pytest")  # TODO
-        print("SERIALIZED TESTS:")
         tests: str = self._serialize_tests(tests_path)
         answer: str = self._llm_provider.query(
             f"Generate code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"
