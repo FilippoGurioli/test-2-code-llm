@@ -14,8 +14,8 @@ class CodeGenerationEngine:
     def unsubscribe(self, observer: CodeGenerationObserver) -> None:
         self._observers.remove(observer)
 
-    def generate_code(self, tests_path: str, output_path: str) -> bool:
-        self._notify_start(self._llm_provider.__class__.__str__, "pytest")  # TODO
+    def generate_code(self, run_id: str, tests_path: str, output_path: str) -> bool:
+        self._notify_start(run_id, "pytest")  # TODO
         tests: str = self._serialize_tests(tests_path)
         query: str = (
             f"Generate the source code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"

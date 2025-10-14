@@ -14,13 +14,18 @@ class GenerateCommand:
             LLMProviderFactory.create_provider(config.model)
         )
         tv: TestValidator = TestValidator()
-        # TODO: add listeners to cge and ev
+        run_id: str = config.model + "-" + str(attempts)
+        # TODO: add listeners to cge and tv
         while True:  # do-while like loop
-            cge.generate_code(config.tests_path, config.output_path)
-            attempts += 1
             if (
-                tv.validate_tests(config.tests_path, config.output_path, config.command)
-                or attempts >= config.upper_bound
+                attempts < config.upper_bound
+                and not cge.generate_code(run_id, config.tests_path, config.output_path)
+                or not tv.validate_tests(
+                    run_id, config.tests_path, config.output_path, "pytest"
+                )  # TODO
             ):
+                attempts += 1
+                run_id = config.model + "-" + str(attempts)
+            else:
                 break
         return None
