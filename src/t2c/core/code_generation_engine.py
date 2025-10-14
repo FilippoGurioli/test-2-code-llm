@@ -18,7 +18,7 @@ class CodeGenerationEngine:
         self._notify_start(self._llm_provider.__class__.__str__, "pytest")  # TODO
         tests: str = self._serialize_tests(tests_path)
         query: str = (
-            f"Generate code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"
+            f"Generate the source code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"
         )
         query = query + "\n\nFor each file, make sure to:\n"
         query = (
@@ -29,7 +29,8 @@ class CodeGenerationEngine:
             query + "- insert them in different code snippets (use triple backticks)"
         )
         answer: str = self._llm_provider.query(query)
-        print(f"LLM answer: {answer}")
+        print(f"LLM answer:\n{answer}")
+        self._parse_answer(answer, output_path)
         self._notify_end(answer == "Hello World!")
         return answer == "Hello World!"
 
@@ -70,3 +71,40 @@ class CodeGenerationEngine:
                     except Exception as e:
                         parts.append(f"# could not read file {rel}: {e}\n")
         return "\n".join(parts)
+
+    def _parse_answer(self, answer: str, output_path: str) -> None:
+        """Parse the LLM answer and write files to output_path.
+
+        The answer is expected to contain multiple code snippets, each starting
+        with a comment line indicating the file path, e.g.:
+
+        ```
+        # path/to/file.py
+        <code>
+        ```
+
+        Files are written under `output_path` preserving the relative paths.
+        """
+        import os
+        import re
+
+        code_block_re = re.compile(r"```(?:python)?\n(.*?)\n```", re.DOTALL)
+        path_re = re.compile(r"#\s*(.+)")
+
+        matches = code_block_re.findall(answer)
+        for match in matches:
+            lines = match.strip().splitlines()
+            if not lines:
+                continue
+            path_line = lines[0]
+            path_match = path_re.match(path_line)
+            if not path_match:
+                continue
+            rel_path = path_match.group(1).strip()
+            code = "\n".join(lines[1:]).strip()
+            if not code:
+                continue
+            full_path = os.path.join(output_path, rel_path)
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            with open(full_path, "w", encoding="utf-8") as fh:
+                fh.write(code + "\n")
