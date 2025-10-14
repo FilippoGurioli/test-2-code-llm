@@ -7,7 +7,11 @@ from t2c.core.llm_provider.providers.remote_provider import RemoteProvider
 class Gemini(RemoteProvider):
 
     def __init__(self) -> None:
-        if os.environ.get("GEMINI_API_KEY"):
+        self._set_os_env_var("GOOGLE_APPLICATION_CREDENTIALS")
+        self._set_os_env_var("VERTEXAI_PROJECT")
+
+    def _set_os_env_var(self, key: str) -> None:
+        if os.environ.get(key):
             return
 
         project_root = self._find_project_root()
@@ -18,9 +22,9 @@ class Gemini(RemoteProvider):
         if not env_file.exists():
             return
 
-        key = self._read_key_from_env(env_file, "GEMINI_API_KEY")
-        if key:
-            os.environ["GEMINI_API_KEY"] = key
+        k = self._read_key_from_env(env_file, key)
+        if k:
+            os.environ[key] = k
 
     def _find_project_root(self) -> Path | None:
         """Find repository/project root by looking for pyproject.toml or .git."""
@@ -50,7 +54,6 @@ class Gemini(RemoteProvider):
                     if k != key_name:
                         continue
                     v = v.strip()
-                    # strip optional surrounding quotes
                     if (v.startswith('"') and v.endswith('"')) or (
                         v.startswith("'") and v.endswith("'")
                     ):
@@ -60,7 +63,7 @@ class Gemini(RemoteProvider):
             return None
 
     def _get_server_model_name(self) -> str:
-        return "gemini/gemini-2.0-flash"
+        return "vertex_ai/gemini-2.0-flash"
 
     def _get_api_base(self) -> str:
-        return "https://generativelanguage.googleapis.com/v1"
+        return ""
