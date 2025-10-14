@@ -145,7 +145,6 @@ The goal of the dispatcher is to delegate the execution of commands to the appro
 ---
 classDiagram
     class CommandFactory {
-        -ComponentLocator component_locator
         -Map~String, Command~ commands
         +get_command(name) Command
         +list_commands() String[]
