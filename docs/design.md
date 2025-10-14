@@ -206,9 +206,9 @@ classDiagram
     LLMProviderInterface <|-- GeminiFlashProvider
 ```
 
-## Execution Validator
+## Test Validator
 
-The Execution Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
+The Test Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
 
 ```mermaid
 ---
@@ -217,10 +217,10 @@ The Execution Validator is responsible for executing the generated code against 
       hideEmptyMembersBox: true
 ---
 classDiagram
-    class ExecutionValidator {
+    class TestValidator {
         -SandboxEnvironment sandbox
         -String language
-        +execute_tests(generated_code, test_suite) void
+        +validate_tests(generated_code, test_suite) void
         +subscribe(observer) void
         +unsubscribe(observer) void
     }
@@ -238,7 +238,7 @@ classDiagram
         +get_error() String
     }
 
-    ExecutionValidator --> SandboxEnvironment
+    TestValidator --> SandboxEnvironment
     SandboxEnvironment --> ExecutionResult
 ```
 
@@ -292,7 +292,7 @@ classDiagram
     }
 
     CodeGenerationEngine --> CodeGenerationObserver
-    ExecutionValidator --> CodeValidationObserver
+    TestValidator --> CodeValidationObserver
     CodeGenerationObserver <|-- ReportingEngine
     CodeValidationObserver <|-- ReportingEngine
     ReportingEngine --> CollectStrategy

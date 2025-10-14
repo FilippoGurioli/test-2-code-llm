@@ -17,7 +17,7 @@ flowchart TD
     end
     Dispatcher -->|orchestrates| EM[Experiment Manager]
     Dispatcher -->|dispatches| CGE[Code Generation Engine]
-    Dispatcher -->|validates| EV[Execution Validator]
+    Dispatcher -->|validates| EV[Test Validator]
     EV -->|output results| ARE
     EV -->|executes| Sandbox[Sandboxed Environment]
     CGE -->|perf results| ARE[Reporting Engine]
@@ -127,7 +127,7 @@ It's the core of the application. It exploits an LLM to perform the code generat
 
 This component abstracts the interactions with various LLM providers, allowing the system to switch between different models seamlessly. It handles API calls, manages authentication, and processes responses from the LLMs.
 
-## Execution Validator
+## Test Validator
 
 It exploits a sandboxed environment to execute the generated code against the provided test suite.
 
@@ -140,7 +140,7 @@ sequenceDiagram
     participant Dispatcher
     participant CGE as Code Generation Engine
     participant LLM as LLM Provider
-    participant EV as Execution Validator
+    participant EV as Test Validator
     participant ARE as Reporting Engine
 
     User ->> CLI: run "t2c generate"
