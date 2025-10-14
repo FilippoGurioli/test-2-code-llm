@@ -202,7 +202,7 @@ classDiagram
     LLMProviderInterface <|-- DeepSeekR1Provider
     LLMProviderInterface <|-- Smollm2Provider
     LLMProviderInterface <|-- Qwen3Provider
-    LLMProviderInterface <|-- GitHubCopilotProvider
+    LLMProviderInterface <|-- Llama3Provider
     LLMProviderInterface <|-- GeminiFlashProvider
 ```
 

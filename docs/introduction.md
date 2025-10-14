@@ -43,5 +43,5 @@ Moreover, experiments will be done among different models to find the sweet spot
 - DeepSeek R1
 - Smollm2
 - Qwen3
-- GitHub Copilot
+- Llama3
 - Gemini Flash (until the API free tier limits)

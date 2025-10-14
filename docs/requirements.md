@@ -28,8 +28,8 @@ The following section lists all the project requirements that have been identifi
 ### Large Language Model Domain
 
 1. The system shall interface with multiple LLM providers:
-   - Open-source models (Mistral, DeepSeek R1, Smollm2, Qwen3)
-   - Commercial APIs (GitHub Copilot, Gemini Flash)
+   - Open-source models (Mistral, DeepSeek R1, Smollm2, Qwen3, Llama3)
+   - Commercial APIs (Gemini Flash)
 1. The system shall implement proper prompt engineering techniques to optimize code generation quality from test specifications.
 1. The system shall handle LLM API rate limits and failure scenarios gracefully.
 1. Generated code quality shall be measurable and comparable across different LLM models.

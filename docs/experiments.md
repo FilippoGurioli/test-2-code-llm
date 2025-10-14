@@ -26,7 +26,7 @@ As explained in the [introduction](introduction.md#project-objectives), the mode
 - DeepSeek R1
 - Smollm2
 - Qwen3
-- GitHub Copilot
+- Llama3
 - Gemini Flash (until the API free tier limits)
 
 Each model has been tested with the *default configuration* due to the high number of experiments to be done.

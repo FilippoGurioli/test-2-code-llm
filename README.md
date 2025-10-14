@@ -47,7 +47,7 @@ experiment:
 models:
   - "mistral"
   - "smollm2"
-  - "github-copilot"
+  - "llama3"
 
 test_suites:
   - name: "unit_tests"
@@ -66,14 +66,14 @@ strategies:
 
 T2C evaluates and compares multiple language models:
 
-| Model              | Provider      | Type        | API Support |
-| ------------------ | ------------- | ----------- | ----------- |
-| **Mistral**        | Mistral AI    | Open-source | ✅           |
-| **DeepSeek R1**    | DeepSeek      | Commercial  | ✅           |
-| **Smollm2**        | Hugging Face  | Open-source | ✅           |
-| **Qwen3**          | Alibaba       | Open-source | ✅           |
-| **GitHub Copilot** | GitHub/OpenAI | Commercial  | ✅           |
-| **Gemini Flash**   | Google        | Commercial  | ✅           |
+| Model            | Provider     | Type        | API Support |
+| ---------------- | ------------ | ----------- | ----------- |
+| **Mistral**      | Mistral AI   | Open-source | ✅           |
+| **DeepSeek R1**  | DeepSeek     | Commercial  | ✅           |
+| **Smollm2**      | Hugging Face | Open-source | ✅           |
+| **Qwen3**        | Alibaba      | Open-source | ✅           |
+| **Llama3**       | Meta         | Open-source | ✅           |
+| **Gemini Flash** | Google       | Commercial  | ✅           |
 
 ## Case Studies
 

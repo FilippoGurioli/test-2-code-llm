@@ -81,7 +81,7 @@ experiment:
 models:
   - "mistral"
   - "smollm2"
-  - "github-copilot"
+  - "llama3"
 
 test_suites:
   - name: "unit_tests"
