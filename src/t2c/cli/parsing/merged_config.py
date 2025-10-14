@@ -97,5 +97,5 @@ class MergedConfiguration:
             config_path=None,
             output_path="./output",
             model_name="smollm2",
-            upper_bound=3,
+            upper_bound=1,
         )
