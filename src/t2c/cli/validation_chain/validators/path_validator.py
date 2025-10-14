@@ -35,7 +35,15 @@ class PathValidator:
             is_valid: bool = True
             errors: list[str] = []
             for path in paths:
-                if not path.exists():
+                if not path.exists() and path == Path(str(config.output_path)):
+                    try:
+                        path.mkdir(parents=True, exist_ok=True)
+                    except Exception as e:
+                        errors.append(
+                            f"The output path '{config.output_path}' could not be created: {e}"
+                        )
+                        is_valid = False
+                elif not path.exists():
                     errors.append(f"The path '{path}' does not exist.")
                     is_valid = False
                 elif not path.is_dir():
