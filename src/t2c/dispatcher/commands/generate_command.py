@@ -53,7 +53,7 @@ class GenerateCommand:
             + "-"
             + model.value
             + "-"
-            + datetime.now().strftime("%Y%m%d_%H%M%S"),
+            + datetime.datetime.now().strftime("%Y%m%d_%H%M%S"),
             model=model.value,
             language="python",  # TODO
             attempts=attempts,

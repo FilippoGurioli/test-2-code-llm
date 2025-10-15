@@ -83,7 +83,7 @@ class TestValidationEngine:
 
         if not SANDBOX_BASE_DIR.exists():
             SANDBOX_BASE_DIR.mkdir(parents=True, exist_ok=True)
-        date = datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
+        date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
         complete_path = SANDBOX_BASE_DIR / Path(date)
         complete_path.mkdir(parents=True, exist_ok=False)
         return complete_path
