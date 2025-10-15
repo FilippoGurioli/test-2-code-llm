@@ -1,3 +1,8 @@
+# Example report
+
+This is how the json report looks like:
+
+```json
 {
     "ATxUTxIT-gemini-20251015_160555": {
         "model": "gemini",
@@ -19,3 +24,4 @@
         ]
     }
 }
+```
