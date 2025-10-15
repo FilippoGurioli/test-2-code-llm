@@ -8,5 +8,5 @@ class SupportedModels(str, Enum):
     DeepSeek = "deepseek-r1"
     Smollm2 = "smollm2"
     Qwen3 = "qwen3"
-    Copilot = "copilot"
+    Llama3 = "llama3"
     Gemini = "gemini"

@@ -46,6 +46,7 @@ class TestValidator:
         self._notify_metrics(1.0 if success else 0.0, 0)
         if not success:
             raise Exception(output) from None
+        print("TEST VALIDATION SUCEEDED!!!!")
         return success
 
     def subscribe(self, observer: TestValidationObserver) -> None:
@@ -78,7 +79,6 @@ class TestValidator:
                     continue
                 src_file = os.path.join(root, file)
                 dest_file = os.path.join(dest_root, file)
-                print("Copying", src_file, "to", dest_file)
                 shutil.copy2(src_file, dest_file)
 
     def _setup_sandbox(self, run_id: str) -> Path:
