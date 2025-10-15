@@ -19,3 +19,6 @@ class ReportingEngine:
 
     def on_test_metrics_measured(self, test_pass_rate: float, coverage: float) -> None:
         print("test metrics measured")
+
+    def log_report(self) -> None:
+        print("Logging report")

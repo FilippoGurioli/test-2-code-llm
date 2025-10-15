@@ -1,7 +1,7 @@
 from typing import Protocol
 
-from t2c.core.reporting.code_gen_stats import CodeGenStat
+from t2c.core.reporting.t2c_stat import T2CStat
 
 
 class CollectStrategy(Protocol):
-    def collect(self, data: CodeGenStat) -> None: ...
+    def collect(self, data: T2CStat) -> None: ...

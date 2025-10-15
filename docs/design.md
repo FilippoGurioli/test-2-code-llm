@@ -259,36 +259,42 @@ The Reporting Engine is responsible for actively collecting, tracking, and analy
 classDiagram
     class ReportingEngine {
         -CollectStrategy collect_strategy
-        -List~CodeGenStat~ statistics
+        -List~T2CStat~ statistics
         +log_report() void
     }
 
     class CodeGenerationObserver {
         <<interface>>
-        +on_code_generation_start(model_name, test_suite) void
-        +on_code_generation(is_failed) void
+        +on_code_generation_start(data) void
+        +on_code_generation(data) void
     }
 
     class TestValidationObserver {
         <<interface>>
-        +on_test_validation_start(model_name, test_suite) void
-        +on_test_validation(is_failed) void
-        +on_test_metrics_measured(test_pass_rate, coverage) void
+        +on_test_validation_start(data) void
+        +on_test_validation(data) void
+        +on_test_metrics_measured(data) void
     }
 
     class CollectStrategy {
         <<interface>>
-        +collect(code_gen_stat) void
+        +collect(t2c_stat: T2CStat) void
     }
 
-    class CodeGenStat {
+    class T2CStat {
         -String model_name
-        -String test_suite
-        -Boolean generation_success
-        -Boolean validation_success
-        -Float test_pass_rate
-        -Float coverage
-        -Duration time_taken
+        -String language
+        -Int attempts
+        -List~RunStat~ runs
+    }
+
+    class RunStat {
+        -Float code_gen_duration
+        -Boolean code_gen_success
+        -Float test_validation_duration
+        -Int num_tests
+        -Int tests_passed
+        -Float test_coverage
     }
 
     CodeGenerationEngine --> CodeGenerationObserver
@@ -296,7 +302,8 @@ classDiagram
     CodeGenerationObserver <|-- ReportingEngine
     TestValidationObserver <|-- ReportingEngine
     ReportingEngine --> CollectStrategy
-    ReportingEngine --> CodeGenStat
+    ReportingEngine --> T2CStat
+    T2CStat --> RunStat
     CollectStrategy <|-- ConsoleCollector
     CollectStrategy <|-- JsonCollector
     CollectStrategy <|-- CsvCollector

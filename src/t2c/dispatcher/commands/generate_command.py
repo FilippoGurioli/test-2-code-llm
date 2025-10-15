@@ -17,7 +17,7 @@ class GenerateCommand:
     def execute(self, config: ValidatedConfiguration) -> None:
         self._clear_directory(config.output_path)
         attempts: int = 0
-        cge, tve = self._setup_engines(config.model)
+        cge, tve = self._setup_engines(config.model, Path(config.output_path))
         run_id: str = config.model + "-" + str(attempts)
         self._dump_run(run_id)
         while (
@@ -49,13 +49,15 @@ class GenerateCommand:
                 shutil.rmtree(item)
 
     def _setup_engines(
-        self, model: SupportedModels
+        self, model: SupportedModels, output_path: Path
     ) -> tuple[CodeGenerationEngine, TestValidationEngine]:
         cge: CodeGenerationEngine = CodeGenerationEngine(
             LLMProviderFactory.create_provider(model)
         )
         tve: TestValidationEngine = TestValidationEngine()
-        re: ReportingEngine = ReportingEngine(JsonCollector())
+        re: ReportingEngine = ReportingEngine(
+            JsonCollector(output_path / "report.json")
+        )
         cge.subscribe(re)
         tve.subscribe(re)
         return cge, tve
