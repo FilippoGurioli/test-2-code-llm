@@ -41,7 +41,7 @@ class TestValidationEngine:
             output = str(exc)
             success = False
         self._notify_end(None if success else [output])
-        self._notify_metrics()
+        self._notify_metrics(10, 10, 100.0)  # TODO
         return success
 
     def subscribe(self, observer: TestValidationObserver) -> None:

@@ -17,7 +17,7 @@ class CodeGenerationEngine:
     def generate_code(self, tests_path: str, output_path: str) -> bool:
         self._notify_start()
         tests: str = self._serialize_tests(tests_path)
-        query: str = self._get_query(tests)
+        query: str = self._get_query("python", tests)  # TODO
         try:
             answer: str = self._llm_provider.query(query)
         except Exception as e:
@@ -82,8 +82,8 @@ class CodeGenerationEngine:
         import os
         import re
 
-        code_block_re = re.compile(r"```(?:python)?\n(.*?)\n```", re.DOTALL)
-        path_re = re.compile(r"#\s*(.+)")
+        code_block_re = re.compile(r"```(?:\w+)?\n(.*?)\n```", re.DOTALL)
+        path_re = re.compile(r"#\s*(File:)?(.+)")
 
         matches = code_block_re.findall(answer)
         for match in matches:
@@ -103,11 +103,34 @@ class CodeGenerationEngine:
             with open(full_path, "w", encoding="utf-8") as fh:
                 fh.write(code + "\n")
 
-    def _get_query(self, tests: str) -> str:
-        query: str = "Generate the source code that satisfies the following tests. "
+    def _get_query(self, lang: str, tests: str) -> str:
+        query: str = f"Generate {lang} source code that satisfies the following tests. "
         query += "Don't include any explanation, just the code. "
+        query += "Don't generate tests, only the source code. "
         query += f"Remember to generate the main method and file too.\n\n{tests}"
         query += "\n\nFor each file, make sure to:\n"
         query += "- include a comment on top with the file path like this: # path/to/file.py\n"
         query += "- insert them in different code snippets (use triple backticks)"
-        return query
+
+
+# """
+# Generate Python source code that satisfies the following tests.
+# Do not include any explanation or extra text — only the code.
+# Do not generate tests, only the source code.
+
+# Include the main entry point if needed.
+
+# The tests are:
+# {tests}
+
+# For each file:
+# - Start with a comment line showing the file path, e.g.: # path/to/file.py
+# - Put each file in its own triple-backtick code block with the language specified:
+#   ```python
+#   # path/to/file.py
+#   <code>
+#   ```
+
+#     Do not merge multiple files into a single code block.
+#         return query
+# """
