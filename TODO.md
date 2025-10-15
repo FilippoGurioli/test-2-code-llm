@@ -1,9 +1,7 @@
 # TODO
 
-- implement experiment feature
-- implement llama3 llm integration
-- implement automatic testing of generated code
 - implement reporting engine
-- improve deps validator to support different languages
-- implement --help for all commands
+- implement experiment feature
 - write tests
+- implement --help for all commands
+- improve dependencies validator to support different languages
