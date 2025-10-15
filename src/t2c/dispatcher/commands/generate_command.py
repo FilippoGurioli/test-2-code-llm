@@ -4,6 +4,8 @@ from pathlib import Path
 from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
 from t2c.core.code_generation_engine import CodeGenerationEngine
 from t2c.core.llm_provider.llm_provider_factory import LLMProviderFactory
+from t2c.core.reporting.strategies.json_collector import JsonCollector
+from t2c.core.reporting_engine import ReportingEngine
 from t2c.core.test_validation_engine import TestValidationEngine
 
 
@@ -19,7 +21,9 @@ class GenerateCommand:
         )
         tve: TestValidationEngine = TestValidationEngine()
         run_id: str = config.model + "-" + str(attempts)
-        # TODO: add listeners to cge and tv
+        re: ReportingEngine = ReportingEngine(JsonCollector())
+        cge.subscribe(re)
+        tve.subscribe(re)
         self._dump_run(run_id)
         while True:  # do-while like loop
             if (
