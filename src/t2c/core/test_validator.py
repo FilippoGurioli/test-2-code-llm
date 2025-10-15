@@ -1,11 +1,12 @@
 import os
 import shlex
 import subprocess
+import tempfile
 from pathlib import Path
 
 from t2c.core.reporting.observers.test_validation_observer import TestValidationObserver
 
-SANDBOX_BASE_DIR = Path("/tmp/t2c_sandbox")  # nosec B108
+SANDBOX_BASE_DIR = Path(tempfile.gettempdir()) / "t2c_sandbox"
 
 
 class TestValidator:
