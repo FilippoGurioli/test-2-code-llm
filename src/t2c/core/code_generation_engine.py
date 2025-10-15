@@ -14,27 +14,27 @@ class CodeGenerationEngine:
     def unsubscribe(self, observer: CodeGenerationObserver) -> None:
         self._observers.remove(observer)
 
-    def generate_code(self, run_id: str, tests_path: str, output_path: str) -> bool:
-        self._notify_start(run_id, "pytest")  # TODO
+    def generate_code(self, tests_path: str, output_path: str) -> bool:
+        self._notify_start()
         tests: str = self._serialize_tests(tests_path)
         query: str = self._get_query(tests)
         try:
             answer: str = self._llm_provider.query(query)
         except Exception as e:
-            self._notify_end(False)
-            raise e from None
+            self._notify_end(str(e))
+            return False
         print(answer)
         self._parse_answer(answer, output_path)
-        self._notify_end(True)
+        self._notify_end()
         return True
 
-    def _notify_start(self, model_name: str, test_suite: str) -> None:
+    def _notify_start(self) -> None:
         for obs in self._observers:
-            obs.on_code_generation_start(model_name, test_suite)
+            obs.on_code_generation_start()
 
-    def _notify_end(self, is_failed: bool) -> None:
+    def _notify_end(self, error: str = "") -> None:
         for obs in self._observers:
-            obs.on_code_generation_end(is_failed)
+            obs.on_code_generation_end(error if error != "" else None)
 
     def _serialize_tests(self, tests_path: str) -> str:
         """Read and concatenate test files under `tests_path`.

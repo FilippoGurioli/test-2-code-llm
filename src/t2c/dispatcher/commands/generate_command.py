@@ -26,8 +26,10 @@ class GenerateCommand:
         )
         while attempts < config.upper_bound and (
             not cge.generate_code(config.tests_path, config.output_path)
-            or not tve.validate_tests(config.tests_path, config.output_path, "pytest")
-        ):  # TODO
+            or not tve.validate_tests(
+                config.tests_path, config.output_path, "pytest"
+            )  # TODO
+        ):
             attempts += 1
         return None
 

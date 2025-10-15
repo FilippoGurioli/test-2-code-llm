@@ -14,11 +14,9 @@ class TestValidationEngine:
     def __init__(self) -> None:
         self.observers: list[TestValidationObserver] = []
 
-    def validate_tests(
-        self, run_id: str, tests_path: str, src_path: str, command: str
-    ) -> bool:
-        self._notify_start(run_id, tests_path)  # TODO
-        sandbox_path = self._setup_sandbox(run_id)
+    def validate_tests(self, tests_path: str, src_path: str, command: str) -> bool:
+        self._notify_start()
+        sandbox_path = self._setup_sandbox()
         self._copy_dir_to_sandbox(tests_path, sandbox_path)
         self._copy_dir_to_sandbox(src_path, sandbox_path)
         self._add_init_files(sandbox_path)
@@ -42,11 +40,8 @@ class TestValidationEngine:
         except Exception as exc:
             output = str(exc)
             success = False
-        self._notify_end(not success)
-        self._notify_metrics(1.0 if success else 0.0, 0)
-        if not success:
-            raise Exception(output) from None
-        print("TEST VALIDATION SUCEEDED!!!!")
+        self._notify_end(None if success else [output])
+        self._notify_metrics()
         return success
 
     def subscribe(self, observer: TestValidationObserver) -> None:
@@ -55,17 +50,19 @@ class TestValidationEngine:
     def unsubscribe(self, observer: TestValidationObserver) -> None:
         self.observers.remove(observer)
 
-    def _notify_start(self, model_name: str, test_suite: str) -> None:
+    def _notify_start(self) -> None:
         for o in list(self.observers):
-            o.on_test_validation_start(model_name, test_suite)
+            o.on_test_validation_start()
 
-    def _notify_end(self, is_failed: bool) -> None:
+    def _notify_end(self, errors: list[str] | None) -> None:
         for o in list(self.observers):
-            o.on_test_validation_end(is_failed)
+            o.on_test_validation_end(errors)
 
-    def _notify_metrics(self, test_pass_rate: float, coverage: float) -> None:
+    def _notify_metrics(
+        self, num_tests: int, passed_tests: int, coverage: float
+    ) -> None:
         for o in list(self.observers):
-            o.on_test_metrics_measured(test_pass_rate, coverage)
+            o.on_test_metrics_measured(num_tests, passed_tests, coverage)
 
     def _copy_dir_to_sandbox(self, source_dir: str, sandbox_path: Path) -> None:
         import shutil
@@ -81,15 +78,13 @@ class TestValidationEngine:
                 dest_file = os.path.join(dest_root, file)
                 shutil.copy2(src_file, dest_file)
 
-    def _setup_sandbox(self, run_id: str) -> Path:
+    def _setup_sandbox(self) -> Path:
         import datetime
 
-        model: Path = Path(run_id.split("-")[0])
-        attempt: Path = Path(run_id.split("-")[1])
         if not SANDBOX_BASE_DIR.exists():
             SANDBOX_BASE_DIR.mkdir(parents=True, exist_ok=True)
-        date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
-        complete_path = SANDBOX_BASE_DIR / model / attempt / Path(date)
+        date = datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
+        complete_path = SANDBOX_BASE_DIR / Path(date)
         complete_path.mkdir(parents=True, exist_ok=False)
         return complete_path
 
