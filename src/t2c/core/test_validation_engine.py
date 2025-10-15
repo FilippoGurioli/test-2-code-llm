@@ -9,7 +9,7 @@ from t2c.core.reporting.observers.test_validation_observer import TestValidation
 SANDBOX_BASE_DIR = Path(tempfile.gettempdir()) / "t2c_sandbox"
 
 
-class TestValidator:
+class TestValidationEngine:
 
     def __init__(self) -> None:
         self.observers: list[TestValidationObserver] = []

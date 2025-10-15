@@ -217,7 +217,7 @@ The Test Validator is responsible for executing the generated code against the p
       hideEmptyMembersBox: true
 ---
 classDiagram
-    class TestValidator {
+    class TestValidationEngine {
         -SandboxEnvironment sandbox
         -String language
         +validate_tests(generated_code, test_suite) void
@@ -238,7 +238,7 @@ classDiagram
         +get_error() String
     }
 
-    TestValidator --> SandboxEnvironment
+    TestValidationEngine --> SandboxEnvironment
     SandboxEnvironment --> ExecutionResult
 ```
 
@@ -269,10 +269,10 @@ classDiagram
         +on_code_generation(is_failed) void
     }
 
-    class CodeValidationObserver {
+    class TestValidationObserver {
         <<interface>>
-        +on_code_validation_start(model_name, test_suite) void
-        +on_code_validation(is_failed) void
+        +on_test_validation_start(model_name, test_suite) void
+        +on_test_validation(is_failed) void
         +on_test_metrics_measured(test_pass_rate, coverage) void
     }
 
@@ -292,9 +292,9 @@ classDiagram
     }
 
     CodeGenerationEngine --> CodeGenerationObserver
-    TestValidator --> CodeValidationObserver
+    TestValidationEngine --> TestValidationObserver
     CodeGenerationObserver <|-- ReportingEngine
-    CodeValidationObserver <|-- ReportingEngine
+    TestValidationObserver <|-- ReportingEngine
     ReportingEngine --> CollectStrategy
     ReportingEngine --> CodeGenStat
     CollectStrategy <|-- ConsoleCollector

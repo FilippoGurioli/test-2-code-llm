@@ -3,8 +3,8 @@ from pathlib import Path
 
 from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
 from t2c.core.code_generation_engine import CodeGenerationEngine
-from t2c.core.llm_provider_factory import LLMProviderFactory
-from t2c.core.test_validator import TestValidator
+from t2c.core.llm_provider.llm_provider_factory import LLMProviderFactory
+from t2c.core.test_validation_engine import TestValidationEngine
 
 
 class GenerateCommand:
@@ -17,7 +17,7 @@ class GenerateCommand:
         cge: CodeGenerationEngine = CodeGenerationEngine(
             LLMProviderFactory.create_provider(config.model)
         )
-        tv: TestValidator = TestValidator()
+        tve: TestValidationEngine = TestValidationEngine()
         run_id: str = config.model + "-" + str(attempts)
         # TODO: add listeners to cge and tv
         self._dump_run(run_id)
@@ -25,7 +25,7 @@ class GenerateCommand:
             if (
                 attempts < config.upper_bound
                 and not cge.generate_code(run_id, config.tests_path, config.output_path)
-                or not tv.validate_tests(
+                or not tve.validate_tests(
                     run_id, config.tests_path, config.output_path, "pytest"
                 )  # TODO
             ):
