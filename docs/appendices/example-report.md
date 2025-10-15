@@ -12,12 +12,14 @@ This is how the json report looks like:
             {
                 "code-generation": {
                     "time-taken": 14.5,
-                    "success": true
+                    "success": true,
+                    "error": null
                 },
                 "test-validation": {
                     "time-taken": 4.2,
                     "passed-tests": 0,
                     "number-of-tests": 20,
+                    "errors": [],
                     "coverage": 85.0
                 }
             }
