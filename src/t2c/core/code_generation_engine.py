@@ -17,22 +17,16 @@ class CodeGenerationEngine:
     def generate_code(self, run_id: str, tests_path: str, output_path: str) -> bool:
         self._notify_start(run_id, "pytest")  # TODO
         tests: str = self._serialize_tests(tests_path)
-        query: str = (
-            f"Generate the source code that satisfies the following tests. Don't include any explanation, just the code.\n\n{tests}"
-        )
-        query = query + "\n\nFor each file, make sure to:\n"
-        query = (
-            query
-            + "- include a comment on top with the file path like this: # path/to/file.py\n"
-        )
-        query = (
-            query + "- insert them in different code snippets (use triple backticks)"
-        )
-        answer: str = self._llm_provider.query(query)
-        print(f"LLM answer:\n{answer}")
+        query: str = self._get_query(tests)
+        try:
+            answer: str = self._llm_provider.query(query)
+        except Exception as e:
+            self._notify_end(False)
+            raise e from None
+        print(answer)
         self._parse_answer(answer, output_path)
-        self._notify_end(answer == "Hello World!")
-        return answer == "Hello World!"
+        self._notify_end(True)
+        return True
 
     def _notify_start(self, model_name: str, test_suite: str) -> None:
         for obs in self._observers:
@@ -108,3 +102,12 @@ class CodeGenerationEngine:
             os.makedirs(os.path.dirname(full_path), exist_ok=True)
             with open(full_path, "w", encoding="utf-8") as fh:
                 fh.write(code + "\n")
+
+    def _get_query(self, tests: str) -> str:
+        query: str = "Generate the source code that satisfies the following tests. "
+        query += "Don't include any explanation, just the code. "
+        query += f"Remember to generate the main method and file too.\n\n{tests}"
+        query += "\n\nFor each file, make sure to:\n"
+        query += "- include a comment on top with the file path like this: # path/to/file.py\n"
+        query += "- insert them in different code snippets (use triple backticks)"
+        return query

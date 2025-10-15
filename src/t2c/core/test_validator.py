@@ -1,8 +1,11 @@
+import os
 import shlex
 import subprocess
 from pathlib import Path
 
 from t2c.core.reporting.observers.test_validation_observer import TestValidationObserver
+
+SANDBOX_BASE_DIR = Path("/tmp/t2c_sandbox")  # nosec B108
 
 
 class TestValidator:
@@ -14,14 +17,17 @@ class TestValidator:
         self, run_id: str, tests_path: str, src_path: str, command: str
     ) -> bool:
         self._notify_start(run_id, tests_path)  # TODO
-        self._copy_test_to_src(tests_path, src_path)
-        cmd = shlex.split(command) + [tests_path]
+        sandbox_path = self._setup_sandbox(run_id)
+        self._copy_dir_to_sandbox(tests_path, sandbox_path)
+        self._copy_dir_to_sandbox(src_path, sandbox_path)
+        self._add_init_files(sandbox_path)
+        cmd = shlex.split(command)
         print("Running command:", " ".join(cmd))
-        print("PWD:", src_path or Path.cwd())
+        print("PWD:", sandbox_path)
         try:
             proc = subprocess.run(
                 cmd,
-                cwd=src_path,
+                cwd=sandbox_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 check=False,
@@ -59,21 +65,35 @@ class TestValidator:
         for o in list(self.observers):
             o.on_test_metrics_measured(test_pass_rate, coverage)
 
-    def _copy_test_to_src(self, tests_path: str, src_path: str) -> None:
-        import os
+    def _copy_dir_to_sandbox(self, source_dir: str, sandbox_path: Path) -> None:
         import shutil
 
-        if not os.path.isdir(tests_path):
-            return
-        for root, _, files in os.walk(tests_path):
-            rel_root = os.path.relpath(root, tests_path)
-            dest_root = (
-                os.path.join(src_path, rel_root) if rel_root != "." else src_path
-            )
-            os.makedirs(dest_root, exist_ok=True)
+        for root, _, files in os.walk(source_dir):
+            rel_root = os.path.relpath(root, source_dir)
+            dest_root = sandbox_path / rel_root if rel_root != "." else sandbox_path
+            dest_root.mkdir(parents=True, exist_ok=True)
             for file in files:
-                if file.startswith("."):
+                if file.startswith(".") or file.endswith(".pyc"):
                     continue
                 src_file = os.path.join(root, file)
                 dest_file = os.path.join(dest_root, file)
+                print("Copying", src_file, "to", dest_file)
                 shutil.copy2(src_file, dest_file)
+
+    def _setup_sandbox(self, run_id: str) -> Path:
+        import datetime
+
+        model: Path = Path(run_id.split("-")[0])
+        attempt: Path = Path(run_id.split("-")[1])
+        if not SANDBOX_BASE_DIR.exists():
+            SANDBOX_BASE_DIR.mkdir(parents=True, exist_ok=True)
+        date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
+        complete_path = SANDBOX_BASE_DIR / model / attempt / Path(date)
+        complete_path.mkdir(parents=True, exist_ok=False)
+        return complete_path
+
+    def _add_init_files(self, sandbox_path: Path) -> None:
+        for dirpath, _, filenames in os.walk(sandbox_path):
+            if "__init__.py" not in filenames:
+                init_file = Path(dirpath) / "__init__.py"
+                init_file.touch()
