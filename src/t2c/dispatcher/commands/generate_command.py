@@ -1,3 +1,4 @@
+import datetime
 import shutil
 from pathlib import Path
 
@@ -17,28 +18,18 @@ class GenerateCommand:
     def execute(self, config: ValidatedConfiguration) -> None:
         self._clear_directory(config.output_path)
         attempts: int = 0
-        cge, tve = self._setup_engines(config.model, Path(config.output_path))
-        run_id: str = config.model + "-" + str(attempts)
-        self._dump_run(run_id)
-        while (
-            attempts < config.upper_bound
-            and not cge.generate_code(run_id, config.tests_path, config.output_path)
-            or not tve.validate_tests(
-                run_id,
-                config.tests_path,
-                config.output_path,
-                "pytest",  # TODO make configurable
-            )
-        ):
+        cge, tve = self._setup_engines(
+            self._detect_test_kind(Path(config.tests_path)),  # TODO
+            config.upper_bound,
+            config.model,
+            Path(config.output_path),
+        )
+        while attempts < config.upper_bound and (
+            not cge.generate_code(config.tests_path, config.output_path)
+            or not tve.validate_tests(config.tests_path, config.output_path, "pytest")
+        ):  # TODO
             attempts += 1
-            run_id = config.model + "-" + str(attempts)
-            self._dump_run(run_id)
         return None
-
-    def _dump_run(self, run_id: str) -> None:
-        print("==================================")
-        print(" Starting run:", run_id)
-        print("==================================")
 
     def _clear_directory(self, path: str) -> None:
         path: Path = Path(path)
@@ -49,15 +40,38 @@ class GenerateCommand:
                 shutil.rmtree(item)
 
     def _setup_engines(
-        self, model: SupportedModels, output_path: Path
+        self, test_kind: str, attempts: int, model: SupportedModels, output_path: Path
     ) -> tuple[CodeGenerationEngine, TestValidationEngine]:
         cge: CodeGenerationEngine = CodeGenerationEngine(
             LLMProviderFactory.create_provider(model)
         )
         tve: TestValidationEngine = TestValidationEngine()
         re: ReportingEngine = ReportingEngine(
-            JsonCollector(output_path / "report.json")
+            id=test_kind
+            + "-"
+            + model.value
+            + "-"
+            + datetime.now().strftime("%Y%m%d_%H%M%S"),
+            model=model.value,
+            language="python",  # TODO
+            attempts=attempts,
+            collect_strategy=JsonCollector(output_path / "report.json"),
         )
         cge.subscribe(re)
         tve.subscribe(re)
         return cge, tve
+
+    def _detect_test_kind(self, tests_path: Path) -> str:
+        if tests_path.name.lower() == "unit":
+            return "UT"
+        elif tests_path.name.lower() == "integration":
+            return "IT"
+        elif tests_path.name.lower() == "acceptance":
+            return "AT"
+        else:
+            dirs = [p for p in tests_path.iterdir() if p.is_dir()]
+            if len(dirs) == 1:
+                return self._detect_test_kind(dirs[0])
+            if len(dirs) == 0:
+                return "Unknown"
+            return "x".join(self._detect_test_kind(d) for d in dirs)

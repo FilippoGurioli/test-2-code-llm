@@ -7,13 +7,13 @@ from t2c.core.reporting.t2c_stat import RunStat, T2CStat
 class ReportingEngine:
     def __init__(
         self,
-        run_id: str,
+        id: str,
         model: str,
         language: str,
         attempts: str,
         collect_strategy: CollectStrategy,
     ) -> None:
-        self._run_id = run_id
+        self._id = id
         self._model = model
         self._language = language
         self._attempts = attempts
@@ -28,7 +28,7 @@ class ReportingEngine:
             RunStat(
                 code_gen_duration=time.perf_counter() - self._code_gen_start_time,
                 is_code_gen_successful=error is None,
-                code_gen_error_message=error if error else "",
+                code_gen_error_message=error,
                 test_validation_duration=0.0,
                 number_of_tests=0,
                 number_of_passed_tests=0,
@@ -56,6 +56,7 @@ class ReportingEngine:
     def log_report(self) -> None:
         self._collect_strategy.collect(
             T2CStat(
+                id=self._id,
                 model=self._model,
                 language=self._language,
                 attempts=self._attempts,

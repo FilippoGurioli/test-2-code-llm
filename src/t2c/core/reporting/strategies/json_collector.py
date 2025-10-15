@@ -9,6 +9,5 @@ class JsonCollector:
         self._output_path = output_path
 
     def collect(self, data: T2CStat) -> None:
-        print("Collecting data in JSON format")
         with open(self._output_path, "w") as f:
-            json.dump(data, f)
+            json.dump(data.to_dict(), f)

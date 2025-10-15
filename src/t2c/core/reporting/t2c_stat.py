@@ -3,7 +3,7 @@ class RunStat:
         self,
         code_gen_duration: float,
         is_code_gen_successful: bool,
-        code_gen_error_message: str,
+        code_gen_error_message: str | None,
         test_validation_duration: float,
         number_of_tests: int,
         number_of_passed_tests: int,
@@ -19,13 +19,40 @@ class RunStat:
         self.test_validation_errors = test_validation_errors
         self.coverage = coverage
 
+    def to_dict(self) -> dict:
+        return {
+            "code-generation": {
+                "time-taken": self.code_gen_duration,
+                "success": self.is_code_gen_successful,
+                "error": self.code_gen_error_message,
+            },
+            "test-validation": {
+                "time-taken": self.test_validation_duration,
+                "passed-tests": self.number_of_passed_tests,
+                "number-of-tests": self.number_of_tests,
+                "errors": self.test_validation_errors,
+                "coverage": self.coverage,
+            },
+        }
+
 
 class T2CStat:
 
     def __init__(
-        self, model: str, language: str, attempts: int, runs: list[RunStat]
+        self, id: str, model: str, language: str, attempts: int, runs: list[RunStat]
     ) -> None:
+        self.id = id
         self.model = model
         self.language = language
         self.attempts = attempts
         self.runs = runs
+
+    def to_dict(self) -> dict:
+        return {
+            self.id: {
+                "model": self.model,
+                "language": self.language,
+                "attempts": self.attempts,
+                "runs": [run.to_dict() for run in self.runs],
+            }
+        }
