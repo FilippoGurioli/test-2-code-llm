@@ -32,3 +32,4 @@ class YamlValidator:
         except Exception as e:
             errors.append(f"Error reading configuration file: {e}")
             return ValidationResult.failure(errors)
+        return ValidationResult.success()

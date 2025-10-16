@@ -61,6 +61,7 @@ class Gemini(RemoteProvider):
                     return v
         except Exception:
             return None
+        return None
 
     def _get_server_model_name(self) -> str:
         return "vertex_ai/gemini-2.0-flash"

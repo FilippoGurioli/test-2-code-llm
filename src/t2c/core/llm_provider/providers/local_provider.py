@@ -12,6 +12,11 @@ REQUEST_TIMEOUT = 300
 
 
 class LocalProvider(BaseProvider):
+
+    def __init__(self) -> None:
+        self._ollama_process: Popen[bytes] | None = None
+        super().__init__()
+
     def _clean_response(self, response: str) -> str:
         return self._remove_cot(response)
 
@@ -31,9 +36,8 @@ class LocalProvider(BaseProvider):
             if not ollama_path:
                 raise RuntimeError("Ollama binary not found. Install ollama.") from None
 
-            global ollama_process
             try:
-                ollama_process = Popen(
+                self._ollama_process = Popen(
                     [ollama_path, "serve"],
                     stdout=DEVNULL,
                     stderr=DEVNULL,
@@ -51,14 +55,13 @@ class LocalProvider(BaseProvider):
     def _get_server_model_name(self) -> str:
         return f"ollama/{self._get_model().value.lower()}"
 
-    def _stop_server(self):
-        global ollama_process
-        if ollama_process and ollama_process.poll() is None:
-            ollama_process.terminate()
+    def _stop_server(self) -> None:
+        if self._ollama_process and self._ollama_process.poll() is None:
+            self._ollama_process.terminate()
             try:
-                ollama_process.wait(timeout=5)
+                self._ollama_process.wait(timeout=5)
             except TimeoutExpired:
-                ollama_process.kill()
+                self._ollama_process.kill()
 
     def _is_running(self) -> bool:
         try:

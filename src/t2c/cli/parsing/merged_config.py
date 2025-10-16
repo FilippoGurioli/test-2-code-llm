@@ -98,6 +98,11 @@ class MergedConfiguration:
         """Programming language for the tests."""
         return self._language
 
+    @property
+    def create_report(self) -> bool:
+        """Whether to create a report after execution."""
+        return self._create_report
+
     def __str__(self) -> str:
         return (
             f"Configuration(command={self.command}, "

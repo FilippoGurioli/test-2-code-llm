@@ -4,6 +4,7 @@ from t2c.core.llm_provider.supported_models import SupportedModels
 
 class LLMProviderFactory:
 
+    @staticmethod
     def create_provider(model: SupportedModels) -> LLMProviderInterface:
         match model:
             case SupportedModels.Smollm2:

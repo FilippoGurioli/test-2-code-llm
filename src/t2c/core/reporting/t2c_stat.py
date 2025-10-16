@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class RunStat:
     def __init__(
         self,
@@ -19,7 +22,7 @@ class RunStat:
         self.test_validation_error = test_validation_error
         self.coverage = coverage
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "code-generation": {
                 "time-taken": self.code_gen_duration,
@@ -47,7 +50,7 @@ class T2CStat:
         self.attempts = attempts
         self.runs = runs
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             self.id: {
                 "model": self.model,

@@ -12,14 +12,14 @@ class ValidatedConfiguration:
     def __init__(self, config: MergedConfiguration, id: str | None = None) -> None:
         self.command: str = config.command
         if self.command == "experiment":
-            result = yaml.safe_load(open(config.config_path))
+            result = yaml.safe_load(open(str(config.config_path)))
             if isinstance(result, dict):
                 self.experiment_name: str = result.get("name", "experiment")
                 self.output_path: str = result.get("output_dir", "./results")
                 self.language: str = result.get("language", "python")
                 self.upper_bound: int = result.get("upper_bound", 3)
                 raw_models: list[str] = result.get(
-                    "models", [m.value() for m in list(SupportedModels)]
+                    "models", [m.value for m in list(SupportedModels)]
                 )
                 self.models: list[SupportedModels] = [
                     SupportedModels(m) for m in raw_models
@@ -33,16 +33,16 @@ class ValidatedConfiguration:
                     "The configuration file must contain a YAML dictionary at the top level."
                 )
         else:
-            self.output_path: str = config.output_path
+            self.output_path = config.output_path
             self.model: SupportedModels = SupportedModels(config.model_name)
             self.tests_path: str = config.tests_path
-            self.upper_bound: int = config.upper_bound
-            self.language: str = config.language
+            self.upper_bound = config.upper_bound
+            self.language = config.language
             self.create_report: bool = config.create_report
-            self.id = (
+            self.id: str = (
                 id
                 if id is not None
-                else self.model.value()
+                else self.model.value
                 + "-"
                 + datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             )

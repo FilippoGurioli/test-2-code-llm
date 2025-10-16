@@ -29,8 +29,8 @@ class GenerateCommand:
         return None
 
     def _clear_directory(self, path: str) -> None:
-        path: Path = Path(path)
-        for item in path.iterdir():
+        p: Path = Path(path)
+        for item in p.iterdir():
             if item.is_file() or item.is_symlink():
                 item.unlink()
             elif item.is_dir():
@@ -58,6 +58,7 @@ class GenerateCommand:
         if config.create_report:
             jre: ReportingEngine = ReportingEngine(
                 id=config.id,
+                model=config.model.value,
                 language=config.language,
                 attempts=config.upper_bound,
                 collect_strategy=JsonCollector(

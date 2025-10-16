@@ -10,7 +10,7 @@ class ReportingEngine:
         id: str,
         model: str,
         language: str,
-        attempts: str,
+        attempts: int,
         collect_strategy: CollectStrategy,
     ) -> None:
         self._id = id
