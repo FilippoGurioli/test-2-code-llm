@@ -68,9 +68,3 @@ class ConsoleCollector:
             if run.test_validation_error:
                 print(f"  - Error: {run.test_validation_error}")
             print()
-
-        print("-" * columns)
-        avg_coverage = (
-            sum(r.coverage for r in data.runs) / len(data.runs) if data.runs else 0.0
-        )
-        print(f"Average Coverage: {avg_coverage:.2f}%")
