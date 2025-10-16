@@ -16,8 +16,9 @@ class CodeGenerationEngine:
 
     def generate_code(self, tests_path: str, output_path: str) -> bool:
         self._notify_start()
-        tests: str = self._serialize_tests(tests_path)
-        query: str = self._get_query("python", tests)  # TODO
+        query: str = self._get_query(
+            "python", self._serialize_tests(tests_path)
+        )  # TODO
         try:
             answer: str = self._llm_provider.query(query)
         except Exception as e:
@@ -119,3 +120,4 @@ class CodeGenerationEngine:
         query += "  # path/to/file.py\n"
         query += "  <code>\n"
         query += "  ```\n\n"
+        return query
