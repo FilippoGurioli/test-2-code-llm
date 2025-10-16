@@ -25,6 +25,7 @@ class GenerateCommand:
             config.language,
             config.upper_bound,
             config.model,
+            config.create_report,
             Path(config.output_path),
         )
         while attempts < config.upper_bound and (
@@ -50,6 +51,7 @@ class GenerateCommand:
         language: str,
         attempts: int,
         model: SupportedModels,
+        create_report: bool,
         output_path: Path,
     ) -> tuple[CodeGenerationEngine, TestValidationEngine, list[ReportingEngine]]:
         cge: CodeGenerationEngine = CodeGenerationEngine(
@@ -57,17 +59,6 @@ class GenerateCommand:
         )
         tve: TestValidationEngine = TestValidationEngine(
             RunnerFactory.get_runner(language)
-        )
-        jre: ReportingEngine = ReportingEngine(
-            id=test_kind
-            + "-"
-            + model.value
-            + "-"
-            + datetime.datetime.now().strftime("%Y%m%d_%H%M%S"),
-            model=model.value,
-            language=language,
-            attempts=attempts,
-            collect_strategy=JsonCollector(output_path / "report.json"),
         )
         cre: ReportingEngine = ReportingEngine(
             id=test_kind
@@ -80,11 +71,25 @@ class GenerateCommand:
             attempts=attempts,
             collect_strategy=ConsoleCollector(),
         )
-        cge.subscribe(jre)
         cge.subscribe(cre)
-        tve.subscribe(jre)
         tve.subscribe(cre)
-        return cge, tve, [jre, cre]
+        reporters = [cre]
+        if create_report:
+            jre: ReportingEngine = ReportingEngine(
+                id=test_kind
+                + "-"
+                + model.value
+                + "-"
+                + datetime.datetime.now().strftime("%Y%m%d_%H%M%S"),
+                model=model.value,
+                language=language,
+                attempts=attempts,
+                collect_strategy=JsonCollector(output_path / "report.json"),
+            )
+            cge.subscribe(jre)
+            tve.subscribe(jre)
+            reporters.append(jre)
+        return cge, tve, reporters
 
     def _detect_test_kind(self, tests_path: Path) -> str:
         if "unit" in tests_path.name.lower():

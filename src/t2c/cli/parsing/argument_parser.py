@@ -33,6 +33,9 @@ class ArgumentParser:
             language=ArgumentParser._extract_value_from_list(
                 args, ("--language", "-l"), str
             ),
+            create_report=ArgumentParser._check_presence(
+                args, ("--createReport", "-r")
+            ),
         )
 
     @staticmethod
@@ -71,3 +74,15 @@ class ArgumentParser:
             return t(value_str)
         except (ValueError, TypeError) as err:
             raise ValueError(f"Cannot convert '{value_str}' to {t.__name__}") from err
+
+    @staticmethod
+    def _check_presence(words: list[str], arg: tuple[str, str]) -> bool:
+        """Check if a flag is present in the list of strings.
+
+        Args:
+            words (list[str]): The list of strings to search.
+            arg (tuple[str, str]): The flag to search for (long form, short form).
+        Returns:
+            bool: True if the flag is present, False otherwise.
+        """
+        return any(s for s in words if arg[0] in s or arg[1] in s)

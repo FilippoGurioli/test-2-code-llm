@@ -36,3 +36,4 @@ class ValidatedConfiguration:
             self.tests_path: str = config.tests_path
             self.upper_bound: int = config.upper_bound
             self.language: str = config.language
+            self.create_report: bool = config.create_report

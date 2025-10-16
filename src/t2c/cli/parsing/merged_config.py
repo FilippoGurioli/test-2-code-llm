@@ -12,6 +12,7 @@ class _Defaults:
     model_name: str
     upper_bound: int
     language: str
+    create_report: bool
 
 
 class MergedConfiguration:
@@ -55,6 +56,11 @@ class MergedConfiguration:
             config.language
             if config.language is not None
             else self._get_default().language
+        )
+        self._create_report: bool = (
+            config.create_report
+            if config.create_report is not None
+            else self._get_default().create_report
         )
 
     @property
@@ -100,7 +106,8 @@ class MergedConfiguration:
             f"outputPath={self.output_path}, "
             f"modelName={self.model_name}, "
             f"upperBound={self.upper_bound}, "
-            f"language={self.language})"
+            f"language={self.language}, "
+            f"createReport={self.create_report})"
         )
 
     def _get_default(self) -> _Defaults:
@@ -111,4 +118,5 @@ class MergedConfiguration:
             model_name="smollm2",
             upper_bound=1,
             language="python",
+            create_report=False,
         )

@@ -27,6 +27,15 @@ class ConfigurationMerger:
         else:
             _upper_parsed = None
 
+        _report_env = ConfigurationMerger._get_env_var_value("T2C_CREATE_REPORT")
+        if _report_env is not None:
+            try:
+                _report_parsed: bool | None = bool(_report_env)
+            except ValueError:
+                _report_parsed = None
+        else:
+            _report_parsed = None
+
         config_with_env_vars = Configuration(
             command=config.command,
             output_path=(
@@ -56,6 +65,11 @@ class ConfigurationMerger:
                 config.language
                 if config.language is not None
                 else ConfigurationMerger._get_env_var_value("T2C_LANGUAGE")
+            ),
+            create_report=(
+                config.create_report
+                if config.create_report is not None
+                else _report_parsed
             ),
         )
         return MergedConfiguration(config_with_env_vars)

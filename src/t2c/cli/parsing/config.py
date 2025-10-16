@@ -15,6 +15,7 @@ class Configuration:
         model_name: str | None,
         upper_bound: int | None,
         language: str | None,
+        create_report: bool | None,
     ) -> None:
         self._command: str | None = command
         self._tests_path: str | None = tests_path
@@ -23,6 +24,7 @@ class Configuration:
         self._model_name: str | None = model_name
         self._upper_bound: int | None = upper_bound
         self._language: str | None = language
+        self._create_report: bool | None = create_report
 
     @property
     def command(self) -> str | None:
@@ -59,6 +61,11 @@ class Configuration:
         """Programming language for the tests."""
         return self._language
 
+    @property
+    def create_report(self) -> bool | None:
+        """Whether to create a report."""
+        return self._create_report
+
     def __str__(self) -> str:
         return (
             f"Configuration(command={self.command}, "
@@ -67,5 +74,6 @@ class Configuration:
             f"outputPath={self.output_path}, "
             f"modelName={self.model_name}, "
             f"upperBound={self.upper_bound}, "
-            f"language={self.language})"
+            f"language={self.language}, "
+            f"createReport={self.create_report})"
         )

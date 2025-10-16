@@ -1,4 +1,5 @@
 from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
+from t2c.dispatcher.commands.generate_command import GenerateCommand
 
 
 class ExperimentCommand:
@@ -6,5 +7,14 @@ class ExperimentCommand:
         return "This is the experiment command"  # TODO
 
     def execute(self, config: ValidatedConfiguration) -> None:
-        print(self.get_help_text())
+        configs: list[ValidatedConfiguration] = self._compute_configuration_matrix(
+            config
+        )
+        for cfg in configs:
+            GenerateCommand().execute(cfg)
         return None
+
+    def _compute_configuration_matrix(
+        self, config: ValidatedConfiguration
+    ) -> list[ValidatedConfiguration]:
+        print("TODO")
