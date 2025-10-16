@@ -1,48 +1,31 @@
 import os
-import shlex
-import subprocess
 import tempfile
 from pathlib import Path
 
 from t2c.core.reporting.observers.test_validation_observer import TestValidationObserver
+from t2c.core.testing.runner_interface import Runner
 
 SANDBOX_BASE_DIR = Path(tempfile.gettempdir()) / "t2c_sandbox"
 
 
 class TestValidationEngine:
 
-    def __init__(self) -> None:
+    def __init__(self, runner: Runner) -> None:
         self.observers: list[TestValidationObserver] = []
+        self._runner = runner
 
-    def validate_tests(self, tests_path: str, src_path: str, command: str) -> bool:
+    def validate_tests(self, tests_path: str, src_path: str) -> bool:
         self._notify_start()
         sandbox_path = self._setup_sandbox()
         self._copy_dir_to_sandbox(tests_path, sandbox_path)
         self._copy_dir_to_sandbox(src_path, sandbox_path)
         self._add_init_files(sandbox_path)
-        cmd = shlex.split(command)
-        print("Running command:", " ".join(cmd))
-        print("PWD:", sandbox_path)
-        try:
-            proc = subprocess.run(
-                cmd,
-                cwd=sandbox_path,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                check=False,
-                text=True,
-            )
-            output = proc.stdout or ""
-            success = proc.returncode == 0
-        except FileNotFoundError as exc:
-            output = str(exc)
-            success = False
-        except Exception as exc:
-            output = str(exc)
-            success = False
-        self._notify_end(None if success else [output])
-        self._notify_metrics(10, 10, 100.0)  # TODO
-        return success
+        (passed_tests, total_tests, coverage, error_message) = self._runner.run(
+            sandbox_path
+        )
+        self._notify_end(error_message)
+        self._notify_metrics(total_tests, passed_tests, coverage)
+        return error_message is None
 
     def subscribe(self, observer: TestValidationObserver) -> None:
         self.observers.append(observer)
