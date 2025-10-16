@@ -10,7 +10,7 @@ class DependencyValidator:
         # For brevity I only check for python deps, it should be extended to support other languages
         required_dependencies = []
         if config.language == "python":
-            required_dependencies = ["pytest", "pytest-cov"]
+            required_dependencies = ["pytest"]
         missing_dependencies = []
         for dep in required_dependencies:
             if importlib.util.find_spec(dep) is None:
