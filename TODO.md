@@ -1,6 +1,5 @@
 # TODO
 
-- add report option to config
 - implement experiment feature
 - write tests
 - implement logic to retrieve the previous test validation error to the next code gen

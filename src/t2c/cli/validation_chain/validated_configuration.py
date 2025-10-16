@@ -1,3 +1,5 @@
+import datetime
+
 import yaml
 
 from t2c.cli.parsing.merged_config import MergedConfiguration
@@ -7,7 +9,7 @@ from t2c.core.llm_provider.supported_models import SupportedModels
 class ValidatedConfiguration:
     """Data class that represent a valid configuration."""
 
-    def __init__(self, config: MergedConfiguration) -> None:
+    def __init__(self, config: MergedConfiguration, id: str | None = None) -> None:
         self.command: str = config.command
         if self.command == "experiment":
             result = yaml.safe_load(open(config.config_path))
@@ -37,3 +39,10 @@ class ValidatedConfiguration:
             self.upper_bound: int = config.upper_bound
             self.language: str = config.language
             self.create_report: bool = config.create_report
+            self.id = (
+                id
+                if id is not None
+                else self.model.value()
+                + "-"
+                + datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            )
