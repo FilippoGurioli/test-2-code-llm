@@ -22,8 +22,8 @@ The following section lists all the project requirements that have been identifi
 1. Generated code shall follow common programming conventions and best practices for the target language.
 1. The system shall handle increasingly complex software projects as case studies:
    - Simple games ([Tic Tac Toe](https://en.wikipedia.org/wiki/Tic-tac-toe))
-   - Moderate complexity ([Snake game](https://en.wikipedia.org/wiki/Snake_(video_game_genre)))
-   - Higher complexity ([Space Invaders](https://en.wikipedia.org/wiki/Space_Invaders))
+   - Moderate complexity ([Connect Four](https://en.wikipedia.org/wiki/Connect_Four))
+   - Higher complexity ([2048](https://en.wikipedia.org/wiki/2048_(video_game)))
 
 ### Large Language Model Domain
 

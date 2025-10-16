@@ -80,8 +80,8 @@ T2C evaluates and compares multiple language models:
 The project evaluates LLM performance on increasingly complex software projects:
 
 1. **Tic Tac Toe** - Simple game logic and state management
-2. **Snake Game** - Moderate complexity with real-time interaction
-3. **Space Invaders** - Higher complexity with graphics and physics
+2. **Connect Four** - Moderate complexity with gravity-based piece placement
+3. **2048** - Higher complexity with merging tiles and scoring
 
 ## Development
 

@@ -34,8 +34,8 @@ The project aims to demonstrate how the role of a software developer can be shif
 The project will use case study of increased complexity like:
 
 - Tic Tac Toe
-- Snake
-- Space Invaders
+- Connect Four
+- 2048
 
 Moreover, experiments will be done among different models to find the sweet spot that maximizes the results. The following models will be used:
 
