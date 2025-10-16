@@ -30,6 +30,9 @@ class ArgumentParser:
             upper_bound=ArgumentParser._extract_value_from_list(
                 args, ("--upperBound", "-u"), int
             ),
+            language=ArgumentParser._extract_value_from_list(
+                args, ("--language", "-l"), str
+            ),
         )
 
     @staticmethod

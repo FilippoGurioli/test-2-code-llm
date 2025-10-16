@@ -50,5 +50,4 @@ class CLIHandler:
         Returns:
             None
         """
-        # TODO: handle --help option with command.get_help_text()
         CommandFactory.get_command(config.command).execute(config)

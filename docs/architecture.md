@@ -77,6 +77,7 @@ This is a comprehensive example of the file:
 experiment:
   name: "T2C Comparative Study"
   output_dir: "./experiments/results"
+  language: "python"
 
 models:
   - "mistral"
@@ -86,14 +87,10 @@ models:
 test_suites:
   - name: "unit_tests"
     path: "./tests/unit"
-    language: "python"
   - name: "integration_tests"
     path: "./tests/integration"
-    language: "python"
-
-strategies:
-  max_retries: [1, 3, 5]
-  matrix_testing: true # to combine multiple test suites in a single run
+  - name: "acceptance_tests"
+    path: "./tests/acceptance"
 ```
 
 ## Configuration Manager

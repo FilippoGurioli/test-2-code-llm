@@ -11,6 +11,7 @@ class _Defaults:
     output_path: str
     model_name: str
     upper_bound: int
+    language: str
 
 
 class MergedConfiguration:
@@ -50,6 +51,11 @@ class MergedConfiguration:
             if config.upper_bound is not None
             else self._get_default().upper_bound
         )
+        self._language: str = (
+            config.language
+            if config.language is not None
+            else self._get_default().language
+        )
 
     @property
     def command(self) -> str:
@@ -81,6 +87,11 @@ class MergedConfiguration:
         """Upper bound for generation attempts."""
         return self._upper_bound
 
+    @property
+    def language(self) -> str:
+        """Programming language for the tests."""
+        return self._language
+
     def __str__(self) -> str:
         return (
             f"Configuration(command={self.command}, "
@@ -88,7 +99,8 @@ class MergedConfiguration:
             f"configPath={self.config_path}, "
             f"outputPath={self.output_path}, "
             f"modelName={self.model_name}, "
-            f"upperBound={self.upper_bound})"
+            f"upperBound={self.upper_bound}, "
+            f"language={self.language})"
         )
 
     def _get_default(self) -> _Defaults:
@@ -98,4 +110,5 @@ class MergedConfiguration:
             output_path="./output",
             model_name="smollm2",
             upper_bound=1,
+            language="python",
         )

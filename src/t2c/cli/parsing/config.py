@@ -14,6 +14,7 @@ class Configuration:
         output_path: str | None,
         model_name: str | None,
         upper_bound: int | None,
+        language: str | None,
     ) -> None:
         self._command: str | None = command
         self._tests_path: str | None = tests_path
@@ -21,6 +22,7 @@ class Configuration:
         self._output_path: str | None = output_path
         self._model_name: str | None = model_name
         self._upper_bound: int | None = upper_bound
+        self._language: str | None = language
 
     @property
     def command(self) -> str | None:
@@ -52,6 +54,11 @@ class Configuration:
         """Upper bound for generation attempts."""
         return self._upper_bound
 
+    @property
+    def language(self) -> str | None:
+        """Programming language for the tests."""
+        return self._language
+
     def __str__(self) -> str:
         return (
             f"Configuration(command={self.command}, "
@@ -59,5 +66,6 @@ class Configuration:
             f"configPath={self.config_path}, "
             f"outputPath={self.output_path}, "
             f"modelName={self.model_name}, "
-            f"upperBound={self.upper_bound})"
+            f"upperBound={self.upper_bound}, "
+            f"language={self.language})"
         )

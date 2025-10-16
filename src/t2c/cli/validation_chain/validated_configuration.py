@@ -14,3 +14,4 @@ class ValidatedConfiguration:
             self.model: SupportedModels = SupportedModels(config.model_name)
             self.tests_path: str = config.tests_path
             self.upper_bound: int = config.upper_bound
+            self.language: str = config.language

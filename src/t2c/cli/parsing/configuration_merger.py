@@ -52,6 +52,11 @@ class ConfigurationMerger:
             upper_bound=(
                 config.upper_bound if config.upper_bound is not None else _upper_parsed
             ),
+            language=(
+                config.language
+                if config.language is not None
+                else ConfigurationMerger._get_env_var_value("T2C_LANGUAGE")
+            ),
         )
         return MergedConfiguration(config_with_env_vars)
 
