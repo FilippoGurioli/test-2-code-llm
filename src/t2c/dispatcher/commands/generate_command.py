@@ -18,7 +18,7 @@ class GenerateCommand:
     def execute(self, config: ValidatedConfiguration) -> None:
         self._clear_directory(config.output_path)
         attempts: int = 0
-        cge, tve = self._setup_engines(
+        cge, tve, re = self._setup_engines(
             self._detect_test_kind(Path(config.tests_path)),  # TODO
             config.upper_bound,
             config.model,
@@ -31,6 +31,7 @@ class GenerateCommand:
             )  # TODO
         ):
             attempts += 1
+        re.log_report()
         return None
 
     def _clear_directory(self, path: str) -> None:
@@ -43,7 +44,7 @@ class GenerateCommand:
 
     def _setup_engines(
         self, test_kind: str, attempts: int, model: SupportedModels, output_path: Path
-    ) -> tuple[CodeGenerationEngine, TestValidationEngine]:
+    ) -> tuple[CodeGenerationEngine, TestValidationEngine, ReportingEngine]:
         cge: CodeGenerationEngine = CodeGenerationEngine(
             LLMProviderFactory.create_provider(model)
         )
@@ -61,7 +62,7 @@ class GenerateCommand:
         )
         cge.subscribe(re)
         tve.subscribe(re)
-        return cge, tve
+        return cge, tve, re
 
     def _detect_test_kind(self, tests_path: Path) -> str:
         if tests_path.name.lower() == "unit":

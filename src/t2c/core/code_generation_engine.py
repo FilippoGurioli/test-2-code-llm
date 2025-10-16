@@ -104,33 +104,18 @@ class CodeGenerationEngine:
                 fh.write(code + "\n")
 
     def _get_query(self, lang: str, tests: str) -> str:
-        query: str = f"Generate {lang} source code that satisfies the following tests. "
-        query += "Don't include any explanation, just the code. "
-        query += "Don't generate tests, only the source code. "
-        query += f"Remember to generate the main method and file too.\n\n{tests}"
-        query += "\n\nFor each file, make sure to:\n"
-        query += "- include a comment on top with the file path like this: # path/to/file.py\n"
-        query += "- insert them in different code snippets (use triple backticks)"
-
-
-# """
-# Generate Python source code that satisfies the following tests.
-# Do not include any explanation or extra text — only the code.
-# Do not generate tests, only the source code.
-
-# Include the main entry point if needed.
-
-# The tests are:
-# {tests}
-
-# For each file:
-# - Start with a comment line showing the file path, e.g.: # path/to/file.py
-# - Put each file in its own triple-backtick code block with the language specified:
-#   ```python
-#   # path/to/file.py
-#   <code>
-#   ```
-
-#     Do not merge multiple files into a single code block.
-#         return query
-# """
+        query: str = (
+            f"Generate {lang} source code that satisfies the following tests.\n"
+        )
+        query += "Do not include any explanation or extra text — only the code.\n"
+        query += "Do not merge multiple files into a single code block.\n"
+        query += "Do not generate tests, only the source code.\n\n"
+        query += "Include the main entry point if needed.\n\n"
+        query += f"The tests are:\n{tests}\n\n"
+        query += "For each file:\n"
+        query += "- Start with a comment on top with the file path like this: # path/to/file.py\n"
+        query += "- Put each file in its own triple-backtick code block with the language specified:\n"
+        query += "  ```python\n"
+        query += "  # path/to/file.py\n"
+        query += "  <code>\n"
+        query += "  ```\n\n"
