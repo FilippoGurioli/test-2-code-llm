@@ -54,9 +54,9 @@ class TestValidationEngine:
         for o in list(self.observers):
             o.on_test_validation_start()
 
-    def _notify_end(self, errors: list[str] | None) -> None:
+    def _notify_end(self, error: str | None) -> None:
         for o in list(self.observers):
-            o.on_test_validation_end(errors)
+            o.on_test_validation_end(error)
 
     def _notify_metrics(
         self, num_tests: int, passed_tests: int, coverage: float

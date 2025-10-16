@@ -19,20 +19,11 @@ class ReportingEngine:
         self._attempts = attempts
         self._collect_strategy = collect_strategy
         self._runs: list[RunStat] = []
-        print("Initialized ReportingEngine with ID:", self._id)
 
     def on_code_generation_start(self) -> None:
-        print("Code generation started.")
         self._code_gen_start_time = time.perf_counter()
 
     def on_code_generation_end(self, error: str | None = None) -> None:
-        print("Code generation ended.")
-        print("Error:", error)
-        print(
-            "Duration:",
-            time.perf_counter() - self._code_gen_start_time,
-            "seconds",
-        )
         self._runs.append(
             RunStat(
                 code_gen_duration=time.perf_counter() - self._code_gen_start_time,
@@ -41,36 +32,23 @@ class ReportingEngine:
                 test_validation_duration=0.0,
                 number_of_tests=0,
                 number_of_passed_tests=0,
-                test_validation_errors=[],
+                test_validation_error=None,
                 coverage=0.0,
             )
         )
 
     def on_test_validation_start(self) -> None:
-        print("Test validation started.")
         self._test_validation_start_time = time.perf_counter()
 
-    def on_test_validation_end(self, errors: list[str] | None = None) -> None:
-        print("Test validation ended.")
-        print("Errors:", errors)
-        print(
-            "Duration:",
-            time.perf_counter() - self._test_validation_start_time,
-            "seconds",
-        )
+    def on_test_validation_end(self, error: str | None = None) -> None:
         self._runs[-1].test_validation_duration = (
             time.perf_counter() - self._test_validation_start_time
         )
-        self._runs[-1].test_validation_errors = errors if errors else []
+        self._runs[-1].test_validation_error = error
 
     def on_test_metrics_measured(
         self, num_tests: int, passed_tests: int, coverage: float
     ) -> None:
-        print("Test metrics measured.")
-        print("Number of tests:", num_tests)
-        print("Number of passed tests:", passed_tests)
-        print("Coverage:", coverage)
-        print("Pass rate:", (passed_tests / num_tests) * 100 if num_tests > 0 else 0)
         self._runs[-1].number_of_tests = num_tests
         self._runs[-1].number_of_passed_tests = passed_tests
         self._runs[-1].coverage = coverage

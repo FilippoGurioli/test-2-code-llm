@@ -95,7 +95,7 @@ class CodeGenerationEngine:
             path_match = path_re.match(path_line)
             if not path_match:
                 continue
-            rel_path = path_match.group(1).strip()
+            rel_path = path_match.group(2).strip()
             code = "\n".join(lines[1:]).strip()
             if not code:
                 continue

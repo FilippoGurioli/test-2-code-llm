@@ -7,7 +7,7 @@ class RunStat:
         test_validation_duration: float,
         number_of_tests: int,
         number_of_passed_tests: int,
-        test_validation_errors: list[str],
+        test_validation_error: str | None,
         coverage: float,
     ) -> None:
         self.code_gen_duration = code_gen_duration
@@ -16,7 +16,7 @@ class RunStat:
         self.test_validation_duration = test_validation_duration
         self.number_of_tests = number_of_tests
         self.number_of_passed_tests = number_of_passed_tests
-        self.test_validation_errors = test_validation_errors
+        self.test_validation_error = test_validation_error
         self.coverage = coverage
 
     def to_dict(self) -> dict:
@@ -30,7 +30,7 @@ class RunStat:
                 "time-taken": self.test_validation_duration,
                 "passed-tests": self.number_of_passed_tests,
                 "number-of-tests": self.number_of_tests,
-                "errors": self.test_validation_errors,
+                "error": self.test_validation_error,
                 "coverage": self.coverage,
             },
         }
