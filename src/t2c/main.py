@@ -6,6 +6,7 @@ from t2c.cli.validation_chain.validators.command_validator import CommandValidat
 from t2c.cli.validation_chain.validators.dependency_validator import DependencyValidator
 from t2c.cli.validation_chain.validators.model_validator import ModelValidator
 from t2c.cli.validation_chain.validators.path_validator import PathValidator
+from t2c.cli.validation_chain.validators.yaml_validator import YamlValidator
 
 
 def main(args: list[str] | None = None) -> int:
@@ -30,4 +31,5 @@ def _create_chain_validator() -> ChainValidator:
     chain_validator.add_validator(PathValidator())
     chain_validator.add_validator(ModelValidator())
     chain_validator.add_validator(DependencyValidator())
+    chain_validator.add_validator(YamlValidator())
     return chain_validator

@@ -75,16 +75,17 @@ This is a comprehensive example of the file:
 
 ```yaml
 experiment:
-  name: "T2C Comparative Study"
+  name: "low-complexity-generation"
   output_dir: "./experiments/results"
   language: "python"
+  upper_bound: 3
 
 models:
   - "mistral"
   - "smollm2"
   - "llama3"
 
-test_suites:
+test_kinds:
   - name: "unit_tests"
     path: "./tests/unit"
   - name: "integration_tests"

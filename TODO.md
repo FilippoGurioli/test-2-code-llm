@@ -1,7 +1,5 @@
 # TODO
 
-- detect test pass rate and cov correctly
-- pass language to generate command
 - implement experiment feature
 - write tests
 - implement logic to retrieve the previous test validation error to the next code gen

@@ -27,3 +27,24 @@ This is how the json report looks like:
     }
 }
 ```
+
+```yaml
+experiment:
+  name: "low-complexity-generation"
+  output_dir: "./experiments/results"
+  language: "python"
+  upper_bound: 3
+
+models:
+  - "mistral"
+  - "smollm2"
+  - "llama3"
+
+test_kinds:
+  - name: "unit_tests"
+    path: "./tests/unit"
+  - name: "integration_tests"
+    path: "./tests/integration"
+  - name: "acceptance_tests"
+    path: "./tests/acceptance"
+```
