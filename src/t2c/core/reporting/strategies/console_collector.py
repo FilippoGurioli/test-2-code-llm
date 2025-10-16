@@ -43,6 +43,7 @@ class ConsoleCollector:
         print(yaml.dump(data.to_dict(), sort_keys=False))
 
     def _dump_as_custom(self, data: T2CStat) -> None:
+        columns = shutil.get_terminal_size((80, 20)).columns
         print(f"ID: {data.id}")
         print(f"Model: {data.model}")
         print(f"Language: {data.language}")
@@ -50,7 +51,7 @@ class ConsoleCollector:
         print()
 
         for i, run in enumerate(data.runs, start=1):
-            print(f"--- Run #{i} ---")
+            print(f" Run #{i} ".center(columns, "-"))
             print("Code Generation:")
             print(f"  - Duration: {run.code_gen_duration:.2f}s")
             print(f"  - Success: {'✅' if run.is_code_gen_successful else '❌'}")
@@ -68,7 +69,7 @@ class ConsoleCollector:
                 print(f"  - Error: {run.test_validation_error}")
             print()
 
-        print("-" * shutil.get_terminal_size((80, 20)).columns)
+        print("-" * columns)
         avg_coverage = (
             sum(r.coverage for r in data.runs) / len(data.runs) if data.runs else 0.0
         )
