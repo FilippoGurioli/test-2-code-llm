@@ -19,7 +19,6 @@ class GameState:
         self._board = board
         self._current_player = starter
         self._winner = self._check_winner()
-        print("THE WINNER IS", self._winner)
 
     @property
     def board(self) -> list[list[Player | None]]:
