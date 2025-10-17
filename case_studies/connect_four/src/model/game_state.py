@@ -37,14 +37,17 @@ class GameState:
 
     def _check_winner(self) -> Player | None:
         directions = [(1, 0), (0, 1), (1, 1), (1, -1)]
+        # explore each cell as a potential starting point
         for row in range(self._rows):
             for col in range(self._cols):
                 player = self._board[row][col]
                 if player is None:
                     continue
+                # explore each direction
                 for dr, dc in directions:
                     count = 1
                     r, c = row + dr, col + dc
+                    # explore the current direction
                     while 0 <= r < self._rows and 0 <= c < self._cols and self._board[r][c] == player:
                         count += 1
                         if count == 4:
