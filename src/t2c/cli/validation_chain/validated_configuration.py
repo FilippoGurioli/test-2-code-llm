@@ -14,10 +14,11 @@ class ValidatedConfiguration:
         if self.command == "experiment":
             result = yaml.safe_load(open(str(config.config_path)))
             if isinstance(result, dict):
-                self.experiment_name: str = result.get("name", "experiment")
-                self.output_path: str = result.get("output_dir", "./results")
-                self.language: str = result.get("language", "python")
-                self.upper_bound: int = result.get("upper_bound", 3)
+                experiment_data: dict = result.get("experiment", {})
+                self.experiment_name: str = experiment_data.get("name", "experiment")
+                self.output_path: str = experiment_data.get("output_dir", "./results")
+                self.language: str = experiment_data.get("language", "python")
+                self.upper_bound: int = experiment_data.get("upper_bound", 3)
                 raw_models: list[str] = result.get(
                     "models", [m.value for m in list(SupportedModels)]
                 )

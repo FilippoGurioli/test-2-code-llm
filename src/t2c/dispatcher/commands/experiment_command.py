@@ -1,4 +1,5 @@
 import datetime
+from pathlib import Path
 
 from t2c.cli.parsing.config import Configuration
 from t2c.cli.parsing.merged_config import MergedConfiguration
@@ -26,13 +27,13 @@ class ExperimentCommand:
         upper_bound: int = config.upper_bound
         create_report: bool = True  # always true for experiments
         timestamp: str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        Path(config.output_path).mkdir(parents=True, exist_ok=True)
 
         for model in config.models:
             for test_name, test_path in config.tests_paths:
                 id: str = (
                     f"{config.experiment_name}-{model.value}-{test_name}-{timestamp}"
                 )
-                output_path: str = f"{config.output_path}/{config.experiment_name}"
                 configs.append(
                     ValidatedConfiguration(
                         MergedConfiguration(
@@ -43,7 +44,7 @@ class ExperimentCommand:
                                 model_name=model.value,
                                 upper_bound=upper_bound,
                                 tests_path=test_path,
-                                output_path=output_path,
+                                output_path=config.output_path,
                                 create_report=create_report,
                             )
                         ),

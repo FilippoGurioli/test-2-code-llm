@@ -16,12 +16,14 @@ class GenerateCommand:
         return "This is the generate command"  # TODO
 
     def execute(self, config: ValidatedConfiguration) -> None:
-        self._clear_directory(config.output_path)
+        # self._clear_directory(config.output_path)
+        output_path = Path(config.output_path) / config.id
+        output_path.mkdir(parents=True, exist_ok=True)
         attempts: int = 0
         cge, tve, reporting_engines = self._setup_engines(config)
         while attempts < config.upper_bound and (
-            not cge.generate_code(config.tests_path, config.output_path)
-            or not tve.validate_tests(config.tests_path, config.output_path)
+            not cge.generate_code(config.tests_path, output_path.__str__())
+            or not tve.validate_tests(config.tests_path, output_path.__str__())
         ):
             attempts += 1
         for re in reporting_engines:
@@ -31,7 +33,7 @@ class GenerateCommand:
     def _clear_directory(self, path: str) -> None:
         p: Path = Path(path)
         for item in p.iterdir():
-            if item.is_file() or item.is_symlink():
+            if item.is_file() or item.is_symlink() and item.suffix == ".py":
                 item.unlink()
             elif item.is_dir():
                 shutil.rmtree(item)
