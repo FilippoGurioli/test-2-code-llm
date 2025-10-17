@@ -1,4 +1,4 @@
-from ..model.game_state import GameState, Symbol
+from ..model.game_state import GameState
 
 class GameView:
     def render(self, game_state: GameState) -> None:
