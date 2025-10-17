@@ -1,6 +1,6 @@
 experiment:
   name: "high-complexity"
-  output_dir: "./results/high"
+  output_dir: "./output"
   language: "python"
   upper_bound: 3
 
