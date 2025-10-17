@@ -6,7 +6,7 @@ def make_fake_state(board, winner=None, current_player=None, is_full=False):
         return is_full
     return SimpleNamespace(board=board, winner=winner, current_player=current_player, is_full=_is_full)
 
-def test_loop_cycle_with_winner_calls_display_winner_and_clears_state(monkeypatch) -> None:
+def test_loop_cycle_with_winner_calls_display_winner_and_clears_state() -> None:
     from case_studies.connect_four.src.controller.game_controller import GameController
     from case_studies.connect_four.src.model.game_state import Player
     board = [[None for _ in range(7)] for _ in range(6)]
@@ -18,7 +18,7 @@ def test_loop_cycle_with_winner_calls_display_winner_and_clears_state(monkeypatc
     view.display_winner.assert_called_once_with(Player.RED.value)
     assert gc.state is None
 
-def test_loop_cycle_with_full_board_calls_display_draw_and_clears_state(monkeypatch) -> None:
+def test_loop_cycle_with_full_board_calls_display_draw_and_clears_state() -> None:
     from case_studies.connect_four.src.controller.game_controller import GameController
     board = [[None for _ in range(7)] for _ in range(6)]
     fake_state = make_fake_state(board=board, winner=None, current_player=None, is_full=True)
@@ -28,7 +28,7 @@ def test_loop_cycle_with_full_board_calls_display_draw_and_clears_state(monkeypa
     view.display_draw.assert_called_once()
     assert gc.state is None
 
-def test_loop_cycle_quit_calls_display_exit_and_clears_state(monkeypatch) -> None:
+def test_loop_cycle_quit_calls_display_exit_and_clears_state() -> None:
     from case_studies.connect_four.src.controller.game_controller import GameController
     from case_studies.connect_four.src.model.game_state import Player
     board = [[None for _ in range(7)] for _ in range(6)]
@@ -40,7 +40,7 @@ def test_loop_cycle_quit_calls_display_exit_and_clears_state(monkeypatch) -> Non
     view.display_exit.assert_called_once()
     assert gc.state is None
 
-def test_loop_cycle_invalid_input_calls_display_invalid_move_and_keeps_state(monkeypatch) -> None:
+def test_loop_cycle_invalid_input_calls_display_invalid_move_and_keeps_state() -> None:
     from case_studies.connect_four.src.controller.game_controller import GameController
     from case_studies.connect_four.src.model.game_state import Player
     board = [[None for _ in range(7)] for _ in range(6)]
