@@ -76,12 +76,6 @@ theme:
 
 extra_css:
   - assets/extra.css
-  - https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css
-
-extra_javascript:
-  - https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js
-  - https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js
-  - assets/katex-auto-render.js
 
 extra:
   homepage: https://filippogurioli.github.io/test-2-code-llm/
