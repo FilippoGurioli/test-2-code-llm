@@ -1,6 +1,5 @@
 # TODO
 
-- create high complexity case study
 - fix the problem that launching pytest with acceptance does not work if not passing the file directly
 - move the insertion of \_\_init\_\_.py from test validator to pytest runner
 - implement logic to retrieve the previous test validation error to the next code gen

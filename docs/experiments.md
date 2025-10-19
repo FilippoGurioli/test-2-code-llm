@@ -2,7 +2,7 @@
 
 After the creation of the codebase many experiments were conducted to test the performance of the models and to find the best sweet spot of provided tests, prompt and model configuration.
 
-## Strategy
+## Setup
 
 For each case study it has been created 3 different sets of tests:
 
@@ -43,7 +43,11 @@ To collect the data from the experiments, the `experiment` command of the CLI to
 
 Results have been collected in json format in order to be easily processable with python scripts for analysis and visualization.
 
-### Manual experiments
+## Improvements
+
+During the experiments an improvement has been made to the core logic of the tool. Initially, the code generation engine was not aware of the previous test validation errors, thus each code generation was independent from the previous one. This caused problems in some cases, since the model could generate code that did not fix the previous errors. To solve this problem, the code generation engine has been modified to take into account the previous test validation errors. This has been done by passing the previous errors to the LLM as part of the prompt. This way, the model is aware of the previous errors and can generate code that fixes them.
+
+## Manual experiments
 
 To better understand the performance of the models, some manual experiments have been conducted with available models online. In particular, the following models have been manually tested:
 
