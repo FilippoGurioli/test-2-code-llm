@@ -10,9 +10,17 @@ models:
   - "gemini"
 
 test_kinds:
-  - name: "UI"
+  - name: "UT"
     path: "./case_studies/connect_four/tests/unit"
   - name: "IT"
     path: "./case_studies/connect_four/tests/integration"
   - name: "AT"
     path: "./case_studies/connect_four/tests/acceptance"
+  - name: "ATxUT"
+    path: "./case_studies/connect_four/tests/ATxUT"
+  - name: "ATxIT"
+    path: "./case_studies/connect_four/tests/ATxIT"
+  - name: "ITxUT"
+    path: "./case_studies/connect_four/tests/ITxUT"
+  - name: "ATxITxUT"
+    path: "./case_studies/connect_four/tests/ATxITxUT"

@@ -31,10 +31,26 @@ As explained in the [introduction](introduction.md#project-objectives), the mode
 
 Each model has been tested with the *default configuration* due to the high number of experiments to be done.
 
+Finally, the upper bound has been set to 3 tries for each experiment in order to give the model multiple chances to generate correct code.
+
 The total number of experiments is therefore:
 
 ```math
-6 models * 7 test combinations * 3 case studies = 126 experiments
+6 models * 7 test combinations * 3 case studies * 3 tries = 378 experiments
+```
+
+Note: this is the *worst case scenario*, since if the model is able to generate correct code in less than 3 tries the experiment ends earlier.
+
+Best case scenario is:
+
+```math
+6 models * 7 test combinations * 3 case studies * 1 try = 126 experiments
+```
+
+A good estimate of the total number of experiments is the third quarter between the best and worst case scenarios:
+
+```math
+(378 - 126) * 0.75 + 126 = 315 experiments
 ```
 
 ## Data Collection

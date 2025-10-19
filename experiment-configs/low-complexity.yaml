@@ -8,9 +8,17 @@ models:
   - "gemini"
 
 test_kinds:
-  - name: "UI"
+  - name: "UT"
     path: "./case_studies/tic_tac_toe/tests/unit"
   - name: "IT"
     path: "./case_studies/tic_tac_toe/tests/integration"
   - name: "AT"
     path: "./case_studies/tic_tac_toe/tests/acceptance"
+  - name: "ATxUT"
+    path: "./case_studies/tic_tac_toe/tests/ATxUT"
+  - name: "ATxIT"
+    path: "./case_studies/tic_tac_toe/tests/ATxIT"
+  - name: "ITxUT"
+    path: "./case_studies/tic_tac_toe/tests/ITxUT"
+  - name: "ATxITxUT"
+    path: "./case_studies/tic_tac_toe/tests/ATxITxUT"

@@ -10,9 +10,17 @@ models:
   - "gemini"
 
 test_kinds:
-  - name: "UI"
+  - name: "UT"
     path: "./case_studies/2048/tests/unit"
   - name: "IT"
     path: "./case_studies/2048/tests/integration"
   - name: "AT"
     path: "./case_studies/2048/tests/acceptance"
+  - name: "ATxUT"
+    path: "./case_studies/game_2048/tests/ATxUT"
+  - name: "ATxIT"
+    path: "./case_studies/game_2048/tests/ATxIT"
+  - name: "ITxUT"
+    path: "./case_studies/game_2048/tests/ITxUT"
+  - name: "ATxITxUT"
+    path: "./case_studies/game_2048/tests/ATxITxUT"
