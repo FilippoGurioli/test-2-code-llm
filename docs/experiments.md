@@ -37,6 +37,12 @@ The total number of experiments is therefore:
 6 models * 7 test combinations * 3 case studies = 126 experiments
 ```
 
+## Data Collection
+
+To collect the data from the experiments, the `experiment` command of the CLI tool has been used. The configuration files for each case study are stored under the `experiment-configs` directory.
+
+Results have been collected in json format in order to be easily processable with python scripts for analysis and visualization.
+
 ### Manual experiments
 
 To better understand the performance of the models, some manual experiments have been conducted with available models online. In particular, the following models have been manually tested:

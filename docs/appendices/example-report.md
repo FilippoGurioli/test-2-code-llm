@@ -19,7 +19,7 @@ This is how the json report looks like:
                     "time-taken": 4.2,
                     "passed-tests": 0,
                     "number-of-tests": 20,
-                    "errors": [],
+                    "error": null,
                     "coverage": 85.0
                 }
             }

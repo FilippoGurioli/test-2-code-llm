@@ -79,3 +79,7 @@ This case study has the game loop **outside** of the Controller, like Tic Tac To
 This is the most complex case study. This is the only one that has the game loop **inside** of the Controller. This causes a bit more complexity in the tests, since the Controller has to be tested as a whole, instead of testing each cycle individually.
 
 This case study also has a different directory structure. Instead of creating a separate directory for each component (Model, View, Controller), all the components are in the same directory. Since this was the last case study implemented, it was known that each component would be in a single file, thus this choice was made to reduce the number of directories.
+
+---
+
+It was created also a full project class diagram to better understand the relationships between the classes and their dependencies. The class diagram is available [in the appendices](./appendices/class-diagram.md)
