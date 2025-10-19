@@ -22,7 +22,9 @@ class GenerateCommand:
         attempts: int = 0
         cge, tve, reporting_engines = self._setup_engines(config)
         while attempts < config.upper_bound and (
-            not cge.generate_code(config.tests_path, output_path.__str__())
+            not cge.generate_code(
+                config.language, config.tests_path, output_path.__str__()
+            )
             or not tve.validate_tests(config.tests_path, output_path.__str__())
         ):
             attempts += 1

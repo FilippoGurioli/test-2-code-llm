@@ -14,11 +14,9 @@ class CodeGenerationEngine:
     def unsubscribe(self, observer: CodeGenerationObserver) -> None:
         self._observers.remove(observer)
 
-    def generate_code(self, tests_path: str, output_path: str) -> bool:
+    def generate_code(self, lang: str, tests_path: str, output_path: str) -> bool:
         self._notify_start()
-        query: str = self._get_query(
-            "python", self._serialize_tests(tests_path)
-        )  # TODO
+        query: str = self._get_query(lang, self._serialize_tests(tests_path))
         try:
             answer: str = self._llm_provider.query(query)
         except Exception as e:
