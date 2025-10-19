@@ -1,6 +1,6 @@
 # Experiments
 
-After the creation of the codebase many experiments were conducted to test the performance of the model and to find the best sweet spot of provided tests, prompt and model configuration.
+After the creation of the codebase many experiments were conducted to test the performance of the models and to find the best sweet spot of provided tests, prompt and model configuration.
 
 ## Strategy
 
@@ -43,5 +43,3 @@ To better understand the performance of the models, some manual experiments have
 
 - ChatGPT-5
 - Claude Sonnet 4.5
-
-## Results

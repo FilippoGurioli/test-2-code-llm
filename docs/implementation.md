@@ -23,6 +23,22 @@ The LLM Provider is the interface that let the code generation engine abstract f
 The Base LLM Provider is the abstract class that implements the common logic for all LLM providers. It just implements the `LLMProvider.query()` method in which it exploits abstract methods to be implemented by the subclasses (i.e. the `Template Method Pattern`).
 The Local LLM Provider is the abstract class for all LLM providers that run locally, i.e., on the same machine where the code generation engine runs. The Remote LLM Provider is the abstract class for all LLM providers that run remotely, i.e., on a different machine, and are accessed through a network connection.
 
+```mermaid
+flowchart TD
+    LLMProvider["LLM Provider (Interface)"]
+    BaseLLMProvider["Base LLM Provider (Abstract Class)"]
+    LocalLLMProvider["Local LLM Provider (Abstract Class)"]
+    RemoteLLMProvider["Remote LLM Provider (Abstract Class)"]
+    SpecificLocalLLM@{ shape: procs, label: "Specific Local LLM Providers"}
+    SpecificRemoteLLM@{ shape: procs, label: "Specific Remote LLM Providers"}
+
+    LLMProvider --> BaseLLMProvider
+    BaseLLMProvider --> LocalLLMProvider
+    BaseLLMProvider --> RemoteLLMProvider
+    LocalLLMProvider --> SpecificLocalLLM
+    RemoteLLMProvider --> SpecificRemoteLLM
+```
+
 ### About adding new LLM Providers
 
 To add a new LLM Provider, it is necessary to create a new class that implements the `LLMProvider` interface, or extends one of the abstract classes (`LocalLLMProvider` or `RemoteLLMProvider`), and implement the `query` method. The `query` method takes a string as input (the prompt) and returns a string as output (the LLM's response).
