@@ -3,11 +3,11 @@ from .game_view import GameView
 
 class GameController:
 
-    def __init__(self, initial_state: GameState | None = None):
+    def __init__(self, view: GameView, initial_state: GameState | None = None):
         if initial_state is None:
             initial_state = GameState.new_game()
         self._state: GameState = initial_state
-        self._view = GameView()
+        self._view = view
 
     @property
     def state(self) -> GameState:
