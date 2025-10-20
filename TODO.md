@@ -9,4 +9,4 @@
 - implement a GHA that exploits the project
 - implement --help for all commands
 - improve dependencies validator to support different languages
-- use docker as sandbox environment for test validation
+- create an interface for the sandbox environment (in order to support docker)

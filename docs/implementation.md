@@ -43,6 +43,17 @@ flowchart TD
 
 To add a new LLM Provider, it is necessary to create a new class that implements the `LLMProvider` interface, or extends one of the abstract classes (`LocalLLMProvider` or `RemoteLLMProvider`), and implement the `query` method. The `query` method takes a string as input (the prompt) and returns a string as output (the LLM's response).
 
+## Expansion Areas Planned
+
+Many areas of the project have been planned for future expansion. Here is the list:
+
+- Support for more LLM Providers (under the interface of the LLM Provider)
+- Support for more testing frameworks (under the interface of the Test Runner)
+- Support for more programming languages (thanks to the Dependency Validator)
+- Support for more sandbox environments e.g., Docker, virtual machines, local environments, etc. (under the interface of the Sandbox Environment) | TODO
+
+Currently only `Python` is supported as programming language, `pytest` as testing framework, and local filesystem as sandbox environment.
+
 ## Json Collector
 
 The Json Collector is the component responsible for collecting the information related to the test validation and code generation processes, and storing them in a json file. Firstly it was thought to create a separate file for each process, having each file named after the run id. However, this approach would have created a lot of files. After a research it was found that having a single file is better for performance, since the number of files in a directory affects the performance of file system operations. Thus, the Json Collector has been changed to append the information to a single json file, in which each entry is identified by the run id.
