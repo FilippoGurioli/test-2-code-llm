@@ -62,6 +62,8 @@ class ConsoleCollector:
             print(f"  - Success: {'✅' if run.is_code_gen_successful else '❌'}")
             if run.code_gen_error_message:
                 print(f"  - Error: {run.code_gen_error_message}")
+            print("LLM answer:")
+            print(run.chat_history[-1]["content"])
 
             print("Test Validation:")
             print(f"  - Duration: {run.test_validation_duration:.2f}s")

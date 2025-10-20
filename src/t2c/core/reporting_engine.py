@@ -27,10 +27,13 @@ class ReportingEngine:
     def on_code_generation_start(self) -> None:
         self._code_gen_start_time = time.perf_counter()
 
-    def on_code_generation_end(self, error: str | None = None) -> None:
+    def on_code_generation_end(
+        self, chat: list[dict[str, str]], error: str | None = None
+    ) -> None:
         self._runs.append(
             RunStat(
                 code_gen_duration=time.perf_counter() - self._code_gen_start_time,
+                chat_history=chat,
                 is_code_gen_successful=error is None,
                 code_gen_error_message=error,
                 test_validation_duration=0.0,

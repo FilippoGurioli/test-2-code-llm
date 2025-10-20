@@ -17,9 +17,6 @@ class LocalSandboxEnvironment:
         pass  # Local environment does not require teardown
 
     def run_command(self, command: list[str], cwd: Path) -> tuple[str, int]:
-        print("Running command in local sandbox:", " ".join(command))
-        print("In directory:", str(cwd))
-        print()
         self._check_is_relative(cwd)
         absolute_cwd = BASE_DIR / cwd
         proc = subprocess.run(
@@ -34,7 +31,6 @@ class LocalSandboxEnvironment:
         return output, proc.returncode
 
     def copy_to_sandbox(self, local_path: Path, sandbox_path: Path) -> None:
-        print("Copying to sandbox:", str(local_path), "->", str(sandbox_path))
         self._check_is_relative(sandbox_path)
         absolute_sandbox_path = BASE_DIR / sandbox_path
         if local_path.is_dir():
@@ -48,7 +44,6 @@ class LocalSandboxEnvironment:
                     dest_file.write(src_file.read())
 
     def delete_from_sandbox(self, sandbox_path: Path) -> None:
-        print("Deleting from sandbox:", str(sandbox_path))
         self._check_is_relative(sandbox_path)
         absolute_sandbox_path = BASE_DIR / sandbox_path
         if absolute_sandbox_path.is_dir():
@@ -59,7 +54,6 @@ class LocalSandboxEnvironment:
             absolute_sandbox_path.unlink()
 
     def get_dirs(self, sandbox_path: Path) -> list[Path]:
-        print("Getting dirs in sandbox path:", str(sandbox_path))
         self._check_is_relative(sandbox_path)
         absolute_sandbox_path = BASE_DIR / sandbox_path
         return [
@@ -67,7 +61,6 @@ class LocalSandboxEnvironment:
         ]
 
     def get_files(self, sandbox_path: Path) -> list[Path]:
-        print("Getting files in sandbox path:", str(sandbox_path))
         self._check_is_relative(sandbox_path)
         absolute_sandbox_path = BASE_DIR / sandbox_path
         return [
@@ -77,7 +70,6 @@ class LocalSandboxEnvironment:
         ]
 
     def touch(self, sandbox_path: Path) -> None:
-        print("Touching file in sandbox path:", str(sandbox_path))
         self._check_is_relative(sandbox_path)
         absolute_sandbox_path = BASE_DIR / sandbox_path
         absolute_sandbox_path.parent.mkdir(parents=True, exist_ok=True)

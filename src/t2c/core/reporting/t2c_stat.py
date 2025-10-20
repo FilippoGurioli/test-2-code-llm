@@ -9,6 +9,7 @@ class RunStat:
     def __init__(
         self,
         code_gen_duration: float,
+        chat_history: list[dict[str, str]],
         is_code_gen_successful: bool,
         code_gen_error_message: str | None,
         test_validation_duration: float,
@@ -18,6 +19,7 @@ class RunStat:
         coverage: float,
     ) -> None:
         self.code_gen_duration = code_gen_duration
+        self.chat_history = chat_history
         self.is_code_gen_successful = is_code_gen_successful
         self.code_gen_error_message = code_gen_error_message
         self.test_validation_duration = test_validation_duration
@@ -35,6 +37,7 @@ class RunStat:
         return {
             "code-generation": {
                 "time-taken": self.code_gen_duration,
+                "chat-history": self.chat_history,
                 "success": self.is_code_gen_successful,
                 "error": self.code_gen_error_message,
             },

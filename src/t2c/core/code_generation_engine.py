@@ -54,7 +54,6 @@ class CodeGenerationEngine:
         except Exception as e:
             self._notify_end(str(e))
             return False
-        # print(answer)
         self._dump_to_file(answer, output_path)
         self._notify_end()
         return True
@@ -65,7 +64,9 @@ class CodeGenerationEngine:
 
     def _notify_end(self, error: str = "") -> None:
         for obs in self._observers:
-            obs.on_code_generation_end(error if error != "" else None)
+            obs.on_code_generation_end(
+                self._chat_history, error if error != "" else None
+            )
 
     def _serialize_tests(self, tests_path: str) -> str:
         """Read and concatenate test files under `tests_path`.
