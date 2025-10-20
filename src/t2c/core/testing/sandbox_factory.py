@@ -11,8 +11,3 @@ class SandboxFactory:
         from t2c.core.testing.environments.local import LocalSandboxEnvironment
 
         return LocalSandboxEnvironment()
-
-    # @staticmethod
-    # def docker_env(image_name: str) -> SandboxEnvironment:
-    #     """Create a Docker-based sandbox environment."""
-    #     TODO
