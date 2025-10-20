@@ -5,6 +5,11 @@ experiment:
   upper_bound: 3
 
 models:
+  - "mistral"
+  - "deepseek"
+  - "smollm2"
+  - "qwen3"
+  - "llama3"
   - "gemini"
 
 test_kinds:
