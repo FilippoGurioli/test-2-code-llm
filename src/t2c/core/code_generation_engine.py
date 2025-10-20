@@ -29,8 +29,9 @@ class CodeGenerationEngine:
             self._chat_history.append(
                 {"role": "user", "content": self._get_retry_query(validation_error)}
             )
-        query: str = self._get_query(lang, self._serialize_tests(tests_path))
-        self._chat_history.append({"role": "user", "content": query})
+        else:
+            query: str = self._get_query(lang, self._serialize_tests(tests_path))
+            self._chat_history.append({"role": "user", "content": query})
         try:
             answer: str = self._llm_provider.query(self._chat_history)
             self._chat_history.append({"role": "assistant", "content": answer})
