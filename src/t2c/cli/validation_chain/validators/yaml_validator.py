@@ -1,3 +1,5 @@
+"""Module responsible for validating the YAML configuration file."""
+
 from pathlib import Path
 
 import yaml

@@ -1,3 +1,6 @@
+"""Module defining the ValidationResult class used to represent validation outcomes."""
+
+
 class ValidationResult:
     """Represents the result of a validation process."""
 

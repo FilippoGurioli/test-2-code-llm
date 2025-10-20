@@ -1,3 +1,6 @@
+"""Module defining the Configuration class for application settings."""
+
+
 class Configuration:
     """Holds the configuration of the application.
 

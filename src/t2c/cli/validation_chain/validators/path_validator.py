@@ -1,3 +1,5 @@
+"""Module responsible for validating paths in the configuration."""
+
 import os
 from pathlib import Path
 
@@ -14,44 +16,52 @@ class PathValidator:
                 "For 'experiment' command, the config path must be provided."
             )
         elif config.command == "experiment" and config.config_path is not None:
-            path: Path = Path(str(config.config_path))
-            if not path.exists():
-                return ValidationResult.failure(
-                    f"The config path '{config.config_path}' does not exist."
-                )
-            if not path.is_file():
-                return ValidationResult.failure(
-                    f"The config path '{config.config_path}' is not a file."
-                )
-            if not os.access(path, os.R_OK):
-                return ValidationResult.failure(
-                    f"The config path '{config.config_path}' is not readable."
-                )
+            return self._validate_experiment_paths(config)
         else:
-            paths: list[Path] = [
-                Path(str(config.tests_path)),
-                Path(str(config.output_path)),
-            ]
-            is_valid: bool = True
-            errors: list[str] = []
-            for path in paths:
-                if not path.exists() and path == Path(str(config.output_path)):
-                    try:
-                        path.mkdir(parents=True, exist_ok=True)
-                    except Exception as e:
-                        errors.append(
-                            f"The output path '{config.output_path}' could not be created: {e}"
-                        )
-                        is_valid = False
-                elif not path.exists():
-                    errors.append(f"The path '{path}' does not exist.")
-                    is_valid = False
-                elif not path.is_dir():
-                    errors.append(f"The path '{path}' is not a directory.")
-                    is_valid = False
-                elif not os.access(path, os.R_OK):
-                    errors.append(f"The path '{path}' is not readable.")
-                    is_valid = False
-            if not is_valid:
-                return ValidationResult.failure(errors)
+            return self._validate_generate_paths(config)
+
+    def _validate_experiment_paths(
+        self, config: MergedConfiguration
+    ) -> ValidationResult:
+        path: Path = Path(str(config.config_path))
+        if not path.exists():
+            return ValidationResult.failure(
+                f"The config path '{config.config_path}' does not exist."
+            )
+        if not path.is_file():
+            return ValidationResult.failure(
+                f"The config path '{config.config_path}' is not a file."
+            )
+        if not os.access(path, os.R_OK):
+            return ValidationResult.failure(
+                f"The config path '{config.config_path}' is not readable."
+            )
         return ValidationResult.success()
+
+    def _validate_generate_paths(self, config: MergedConfiguration) -> ValidationResult:
+        paths: list[Path] = [
+            Path(str(config.tests_path)),
+            Path(str(config.output_path)),
+        ]
+        is_valid: bool = True
+        errors: list[str] = []
+        for path in paths:
+            if not path.exists() and path == Path(str(config.output_path)):
+                try:
+                    path.mkdir(parents=True, exist_ok=True)
+                except Exception as e:
+                    errors.append(
+                        f"The output path '{config.output_path}' could not be created: {e}"
+                    )
+                    is_valid = False
+            elif not path.exists():
+                errors.append(f"The path '{path}' does not exist.")
+                is_valid = False
+            elif not path.is_dir():
+                errors.append(f"The path '{path}' is not a directory.")
+                is_valid = False
+            elif not os.access(path, os.R_OK):
+                errors.append(f"The path '{path}' is not readable.")
+                is_valid = False
+        if not is_valid:
+            return ValidationResult.failure(errors)

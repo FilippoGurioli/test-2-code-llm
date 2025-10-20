@@ -1,3 +1,5 @@
+"""Module responsible for validating configurations using a chain of validators."""
+
 from t2c.cli.parsing.merged_config import MergedConfiguration
 from t2c.cli.validation_chain.validation_result import ValidationResult
 from t2c.cli.validation_chain.validator_interface import Validator

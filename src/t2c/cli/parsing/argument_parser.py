@@ -1,3 +1,5 @@
+"""Module responsible for parsing command-line arguments."""
+
 from typing import TypeVar
 
 from t2c.cli.parsing.config import Configuration
@@ -6,7 +8,7 @@ T = TypeVar("T", str, int)
 
 
 class ArgumentParser:
-    """This class is responsible of parsing the argument provided as input from the user. It structures them into an object."""
+    """This class is responsible of parsing the arguments provided as input from the user. It structures them into an object."""
 
     @staticmethod
     def parse(args: list[str]) -> Configuration:

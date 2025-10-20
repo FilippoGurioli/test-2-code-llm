@@ -1,3 +1,5 @@
+"""Module handling the command-line interface (CLI) of the application."""
+
 from t2c.cli.parsing.argument_parser import ArgumentParser
 from t2c.cli.parsing.configuration_merger import ConfigurationMerger
 from t2c.cli.parsing.merged_config import MergedConfiguration

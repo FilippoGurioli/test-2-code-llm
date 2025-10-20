@@ -1,3 +1,9 @@
+"""The main module. It contains the entrance for the tool.
+
+Returns:
+    int: The exit code.
+"""
+
 import sys
 
 from t2c.cli.cli_handler import CLIHandler

@@ -1,3 +1,5 @@
+"""Module defining the MergedConfiguration class that combines user configuration with defaults and environment variables."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -6,6 +8,8 @@ from t2c.cli.parsing.config import Configuration
 
 @dataclass(frozen=True)
 class _Defaults:
+    """Holds the default values for the configuration."""
+
     tests_path: str
     config_path: str | None
     output_path: str
