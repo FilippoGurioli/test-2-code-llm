@@ -1,22 +1,21 @@
 """Module for the TestValidationEngine class."""
 
-import os
-import tempfile
+import datetime
 from pathlib import Path
 
 from t2c.core.reporting.observers.test_validation_observer import TestValidationObserver
 from t2c.core.testing.runner_interface import Runner
-
-SANDBOX_BASE_DIR = Path(tempfile.gettempdir()) / "t2c_sandbox"
+from t2c.core.testing.sandbox_environment_interface import SandboxEnvironment
 
 
 class TestValidationEngine:
     """The TestValidationEngine is responsible for validating generated tests
     against the provided source code in an isolated sandbox environment."""
 
-    def __init__(self, runner: Runner) -> None:
+    def __init__(self, runner: Runner, sandbox: SandboxEnvironment) -> None:
         self.observers: list[TestValidationObserver] = []
         self._runner = runner
+        self._sandbox = sandbox
 
     def validate_tests(self, tests_path: str, src_path: str) -> str | None:
         """Validate the generated tests against the provided source code.
@@ -29,14 +28,20 @@ class TestValidationEngine:
             str | None: an error message if validation fails, otherwise None.
         """
         self._notify_start()
-        sandbox_path = self._setup_sandbox()
-        self._copy_dir_to_sandbox(tests_path, sandbox_path)
-        self._copy_dir_to_sandbox(src_path, sandbox_path)
+        self._sandbox.setup()
+        sandbox_path = Path(datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ"))
+        self._sandbox.copy_to_sandbox(
+            Path(src_path), sandbox_path / Path(src_path).name
+        )
+        self._sandbox.copy_to_sandbox(
+            Path(tests_path), sandbox_path / Path(tests_path).name
+        )
         (passed_tests, total_tests, coverage, error_message) = self._runner.run(
-            sandbox_path
+            sandbox_path, self._sandbox
         )
         self._notify_end(error_message)
         self._notify_metrics(total_tests, passed_tests, coverage)
+        self._sandbox.teardown()
         return error_message
 
     def subscribe(self, observer: TestValidationObserver) -> None:
@@ -58,27 +63,3 @@ class TestValidationEngine:
     ) -> None:
         for o in list(self.observers):
             o.on_test_metrics_measured(num_tests, passed_tests, coverage)
-
-    def _copy_dir_to_sandbox(self, source_dir: str, sandbox_path: Path) -> None:
-        import shutil
-
-        for root, _, files in os.walk(source_dir):
-            rel_root = os.path.relpath(root, source_dir)
-            dest_root = sandbox_path / rel_root if rel_root != "." else sandbox_path
-            dest_root.mkdir(parents=True, exist_ok=True)
-            for file in files:
-                if file.startswith(".") or file.endswith(".pyc"):
-                    continue
-                src_file = os.path.join(root, file)
-                dest_file = os.path.join(dest_root, file)
-                shutil.copy2(src_file, dest_file)
-
-    def _setup_sandbox(self) -> Path:
-        import datetime
-
-        if not SANDBOX_BASE_DIR.exists():
-            SANDBOX_BASE_DIR.mkdir(parents=True, exist_ok=True)
-        date = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ")
-        complete_path = SANDBOX_BASE_DIR / Path(date)
-        complete_path.mkdir(parents=True, exist_ok=False)
-        return complete_path

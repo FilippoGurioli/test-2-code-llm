@@ -35,9 +35,9 @@ class ValidatedConfiguration:
         if isinstance(result, dict):
             experiment_data: dict[str, str] = result.get("experiment", {})
             self.experiment_name: str = experiment_data.get("name", "experiment")
-            self.output_path: str = experiment_data.get("output_dir", "./results")
-            self.language: str = experiment_data.get("language", "python")
-            self.upper_bound: int = int(experiment_data.get("upper_bound", "3"))
+            self.output_path = experiment_data.get("output_dir", "./results")
+            self.language = experiment_data.get("language", "python")
+            self.upper_bound = int(experiment_data.get("upper_bound", "3"))
             raw_models: list[str] = result.get(
                 "models", [m.value for m in list(SupportedModels)]
             )

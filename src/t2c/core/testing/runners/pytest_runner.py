@@ -1,16 +1,19 @@
 """Module implementing a test runner using pytest."""
 
-import os
 import re
-import subprocess
 from pathlib import Path
+
+from t2c.core.testing.sandbox_environment_interface import SandboxEnvironment
 
 
 class PytestRunner:
     """It runs pytest."""
 
-    def run(self, cwd: Path) -> tuple[int, int, float, str | None]:
-        self._add_init_files(cwd)
+    def run(
+        self, cwd: Path, sandbox: SandboxEnvironment
+    ) -> tuple[int, int, float, str | None]:
+        self._delete_pycache(cwd, sandbox)
+        self._add_init_files(cwd, sandbox)
         passed_tests = 0
         total_tests = 0
         coverage = 0.0
@@ -23,31 +26,30 @@ class PytestRunner:
             "--cov-report=term",
         ]
         try:
-            proc = subprocess.run(
-                cmd,
-                cwd=str(cwd),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                check=False,
-            )
+            stdout, returncode = sandbox.run_command(cmd, cwd)
         except FileNotFoundError as exc:
             return (0, 0, 0.0, f"pytest not found: {exc}")
-        output = proc.stdout or ""
+        output = stdout or ""
         total_tests = self._get_total_tests(output)
         passed_tests, total_tests = self._get_passed_tests(output, total_tests)
         coverage = self._get_coverage(output)
-        if proc.returncode != 0:
+        if returncode != 0:
             # provide the last 800 chars of output as a diagnostic
             snippet = output.strip()[-800:]
             error_message = snippet or "pytest failed with non-zero exit code"
         return (passed_tests, total_tests, coverage, error_message)
 
-    def _add_init_files(self, sandbox_path: Path) -> None:
-        for dirpath, _, filenames in os.walk(sandbox_path):
-            if "__init__.py" not in filenames:
-                init_file = Path(dirpath) / "__init__.py"
-                init_file.touch()
+    def _add_init_files(self, sandbox_path: Path, sandbox: SandboxEnvironment) -> None:
+        sandbox.touch(sandbox_path / "__init__.py")
+        for dir in sandbox.get_dirs(sandbox_path):
+            self._add_init_files(dir, sandbox)
+
+    def _delete_pycache(self, sandbox_path: Path, sandbox: SandboxEnvironment) -> None:
+        for dir in sandbox.get_dirs(sandbox_path):
+            if dir.name == "__pycache__":
+                sandbox.delete_from_sandbox(dir)
+            else:
+                self._delete_pycache(dir, sandbox)
 
     def _get_total_tests(self, output: str) -> int:
         m = re.search(r"collected\s+(\d+)\s+items", output)

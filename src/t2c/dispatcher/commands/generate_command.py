@@ -10,6 +10,7 @@ from t2c.core.reporting.strategies.json_collector import JsonCollector
 from t2c.core.reporting_engine import ReportingEngine
 from t2c.core.test_validation_engine import TestValidationEngine
 from t2c.core.testing.runner_factory import RunnerFactory
+from t2c.core.testing.sandbox_factory import SandboxFactory
 
 
 class GenerateCommand:
@@ -50,7 +51,7 @@ class GenerateCommand:
             LLMProviderFactory.create_provider(config.model)
         )
         tve: TestValidationEngine = TestValidationEngine(
-            RunnerFactory.get_runner(config.language)
+            RunnerFactory.get_runner(config.language), SandboxFactory.local_env()
         )
         cre: ReportingEngine = ReportingEngine(
             id=config.id,

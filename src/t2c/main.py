@@ -20,15 +20,15 @@ def main(args: list[str] | None = None) -> int:
     if args is None:
         args = sys.argv[1:]
 
-    try:
+        # try:
         cli_handler = CLIHandler(_create_chain_validator())
         parsed_args = cli_handler.parse_arguments(args)
         validated_args = cli_handler.validate_configuration(parsed_args)
         cli_handler.execute_command(validated_args)
         return 0
-    except Exception as e:
-        print(f"Error during execution of Test 2 Code: {e}")
-        return 1
+    # except Exception as e:
+    #     print(f"Error during execution of Test 2 Code: {e}")
+    #     return 1
 
 
 def _create_chain_validator() -> ChainValidator:

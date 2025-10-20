@@ -65,3 +65,4 @@ class PathValidator:
                 is_valid = False
         if not is_valid:
             return ValidationResult.failure(errors)
+        return ValidationResult.success()
