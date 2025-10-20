@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from litellm import completion
 from litellm.exceptions import APIConnectionError
 
-REQUEST_TIMEOUT = 30000
+REQUEST_TIMEOUT = 3600  # 1 hour in seconds
 
 
 class BaseProvider(ABC):
