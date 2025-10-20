@@ -1,3 +1,5 @@
+"""Module defining the interface for test runners."""
+
 from pathlib import Path
 from typing import Protocol
 

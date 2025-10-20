@@ -1,3 +1,5 @@
+"""Module for collecting T2C statistics and appending them in JSON format."""
+
 import json
 from pathlib import Path
 
@@ -5,6 +7,8 @@ from t2c.core.reporting.t2c_stat import T2CStat
 
 
 class JsonCollector:
+    """Collector that appends T2C statistics to a JSON file."""
+
     def __init__(self, output_path: Path = Path("report.json")) -> None:
         self._output_path = output_path
 

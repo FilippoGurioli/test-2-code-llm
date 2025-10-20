@@ -1,7 +1,11 @@
+"""Module for reporting T2C statistics."""
+
 from typing import Any
 
 
 class RunStat:
+    """Statistics for a single run of the T2C process."""
+
     def __init__(
         self,
         code_gen_duration: float,
@@ -23,6 +27,11 @@ class RunStat:
         self.coverage = coverage
 
     def to_dict(self) -> dict[str, Any]:
+        """Convert RunStat to a dictionary representation.
+
+        Returns:
+            dict[str, Any]: Dictionary representation of the RunStat.
+        """
         return {
             "code-generation": {
                 "time-taken": self.code_gen_duration,
@@ -40,6 +49,7 @@ class RunStat:
 
 
 class T2CStat:
+    """Statistics for the T2C process."""
 
     def __init__(
         self, id: str, model: str, language: str, attempts: int, runs: list[RunStat]
@@ -51,6 +61,11 @@ class T2CStat:
         self.runs = runs
 
     def to_dict(self) -> dict[str, Any]:
+        """Convert T2CStat to a dictionary representation.
+
+        Returns:
+            dict[str, Any]: Dictionary representation of the T2CStat.
+        """
         return {
             self.id: {
                 "model": self.model,

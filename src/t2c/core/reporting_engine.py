@@ -1,3 +1,5 @@
+"""Module defining the ReportingEngine class for managing reporting of code generation and test validation metrics."""
+
 import time
 
 from t2c.core.reporting.collect_strategy import CollectStrategy
@@ -5,6 +7,8 @@ from t2c.core.reporting.t2c_stat import RunStat, T2CStat
 
 
 class ReportingEngine:
+    """The ReportingEngine class manages the reporting of code generation and test validation metrics."""
+
     def __init__(
         self,
         id: str,
@@ -54,6 +58,7 @@ class ReportingEngine:
         self._runs[-1].coverage = coverage
 
     def log_report(self) -> None:
+        """Logs the collected report using the specified collection strategy."""
         self._collect_strategy.collect(
             T2CStat(
                 id=self._id,

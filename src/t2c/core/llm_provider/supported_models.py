@@ -1,3 +1,5 @@
+"""Module defining supported LLM models."""
+
 from enum import Enum
 
 

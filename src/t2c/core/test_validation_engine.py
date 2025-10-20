@@ -1,3 +1,5 @@
+"""Module for the TestValidationEngine class."""
+
 import os
 import tempfile
 from pathlib import Path
@@ -9,12 +11,23 @@ SANDBOX_BASE_DIR = Path(tempfile.gettempdir()) / "t2c_sandbox"
 
 
 class TestValidationEngine:
+    """The TestValidationEngine is responsible for validating generated tests
+    against the provided source code in an isolated sandbox environment."""
 
     def __init__(self, runner: Runner) -> None:
         self.observers: list[TestValidationObserver] = []
         self._runner = runner
 
     def validate_tests(self, tests_path: str, src_path: str) -> str | None:
+        """Validate the generated tests against the provided source code.
+
+        Args:
+            tests_path (str): the path to the generated tests.
+            src_path (str): the path to the source code.
+
+        Returns:
+            str | None: an error message if validation fails, otherwise None.
+        """
         self._notify_start()
         sandbox_path = self._setup_sandbox()
         self._copy_dir_to_sandbox(tests_path, sandbox_path)

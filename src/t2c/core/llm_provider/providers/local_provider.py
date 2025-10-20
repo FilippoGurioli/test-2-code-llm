@@ -1,3 +1,5 @@
+"""Module for the Local LLM Provider using Ollama."""
+
 import atexit
 from abc import abstractmethod
 from subprocess import DEVNULL, Popen, TimeoutExpired
@@ -8,10 +10,9 @@ from requests import get
 from t2c.core.llm_provider.providers.base_provider import BaseProvider
 from t2c.core.llm_provider.supported_models import SupportedModels
 
-REQUEST_TIMEOUT = 300
-
 
 class LocalProvider(BaseProvider):
+    """Local LLM Provider using Ollama."""
 
     def __init__(self) -> None:
         self._ollama_process: Popen[bytes] | None = None
@@ -21,6 +22,7 @@ class LocalProvider(BaseProvider):
         return self._remove_cot(response)
 
     def _remove_cot(self, response: str) -> str:
+        """Removes chain-of-thought tags from the response."""
         start_cot_index = response.find("<think>")
         end_cot_index = response.find("</think>") + len("</think>")
         if start_cot_index == -1 or end_cot_index == -1:
@@ -75,4 +77,9 @@ class LocalProvider(BaseProvider):
 
     @abstractmethod
     def _get_model(self) -> SupportedModels:
+        """Get the supported model for the provider.
+
+        Returns:
+            SupportedModels: The supported model.
+        """
         pass

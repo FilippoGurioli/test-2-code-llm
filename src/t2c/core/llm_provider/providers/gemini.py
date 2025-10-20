@@ -1,3 +1,5 @@
+"""Module for Gemini LLM provider."""
+
 import os
 from pathlib import Path
 
@@ -5,6 +7,7 @@ from t2c.core.llm_provider.providers.remote_provider import RemoteProvider
 
 
 class Gemini(RemoteProvider):
+    """Gemini LLM provider implementation."""
 
     def __init__(self) -> None:
         self._set_os_env_var("GOOGLE_APPLICATION_CREDENTIALS")

@@ -1,8 +1,14 @@
+"""Module implementing the code generation engine."""
+
+import os
+import re
+
 from t2c.core.llm_provider.interface import LLMProviderInterface
 from t2c.core.reporting.observers.code_generation_observer import CodeGenerationObserver
 
 
 class CodeGenerationEngine:
+    """The code generation engine responsible for generating code using an LLM provider."""
 
     def __init__(self, llm_provider: LLMProviderInterface) -> None:
         self._llm_provider: LLMProviderInterface = llm_provider
@@ -23,9 +29,19 @@ class CodeGenerationEngine:
     def generate_code(
         self, lang: str, tests_path: str, output_path: str, validation_error: str | None
     ) -> bool:
+        """It launches a code generation based on the provided tests and previous errors. It dumps all the generated code into the output directory.
+
+        Args:
+            lang (str): the programming language to generate code in
+            tests_path (str): the path to the tests
+            output_path (str): the path where to dump the generated code
+            validation_error (str | None): the validation error from the previous attempt
+
+        Returns:
+            bool: if the code generation was successful
+        """
         self._notify_start()
         if validation_error is not None:
-            # Append the validation error to the chat history to inform the LLM
             self._chat_history.append(
                 {"role": "user", "content": self._get_retry_query(validation_error)}
             )
@@ -58,7 +74,6 @@ class CodeGenerationEngine:
         For each file emit a header with the relative path and the file contents
         decoded as UTF-8 (binary fallback uses repr).
         """
-        import os
 
         parts: list[str] = []
         for root, dirs, files in os.walk(tests_path):
@@ -91,11 +106,7 @@ class CodeGenerationEngine:
         # path/to/file.py
         <code>
         ```
-
-        Files are written under `output_path` preserving the relative paths.
         """
-        import os
-        import re
 
         code_block_re = re.compile(r"```(?:\w+)?\n(.*?)\n```", re.DOTALL)
         path_re = re.compile(r"#\s*(File:)?(.+)")

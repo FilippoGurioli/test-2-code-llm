@@ -1,11 +1,25 @@
+"""Module for LLM provider factory."""
+
 from t2c.core.llm_provider.interface import LLMProviderInterface
 from t2c.core.llm_provider.supported_models import SupportedModels
 
 
 class LLMProviderFactory:
+    """Factory class for creating LLM provider instances."""
 
     @staticmethod
     def create_provider(model: SupportedModels) -> LLMProviderInterface:
+        """Create an LLM provider instance.
+
+        Args:
+            model (SupportedModels): The supported model.
+
+        Raises:
+            ValueError: If the model is not supported.
+
+        Returns:
+            LLMProviderInterface: The LLM provider instance.
+        """
         match model:
             case SupportedModels.Smollm2:
                 from t2c.core.llm_provider.providers.smollm2 import Smollm2

@@ -1,3 +1,5 @@
+"""Module for console reporting strategy."""
+
 import json
 import shutil
 from enum import Enum
@@ -8,12 +10,15 @@ from t2c.core.reporting.t2c_stat import T2CStat
 
 
 class Format(Enum):
+    """Enumeration for console output formats."""
+
     JSON = "json"
     YAML = "yaml"
     CUSTOM = "custom"
 
 
 class ConsoleCollector:
+    """Console reporting strategy implementation."""
 
     def __init__(self, format: Format = Format.CUSTOM) -> None:
         self._format = format

@@ -1,6 +1,5 @@
 # TODO
 
-- write doc strings
 - write tests
 - run experiments and collect data
 - analyze results

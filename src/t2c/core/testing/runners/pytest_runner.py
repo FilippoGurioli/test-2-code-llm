@@ -1,3 +1,5 @@
+"""Module implementing a test runner using pytest."""
+
 import os
 import re
 import subprocess
@@ -5,6 +7,7 @@ from pathlib import Path
 
 
 class PytestRunner:
+    """It runs pytest."""
 
     def run(self, cwd: Path) -> tuple[int, int, float, str | None]:
         self._add_init_files(cwd)
@@ -31,6 +34,22 @@ class PytestRunner:
         except FileNotFoundError as exc:
             return (0, 0, 0.0, f"pytest not found: {exc}")
         output = proc.stdout or ""
+        total_tests = self._get_total_tests(output)
+        passed_tests, total_tests = self._get_passed_tests(output, total_tests)
+        coverage = self._get_coverage(output)
+        if proc.returncode != 0:
+            # provide the last 800 chars of output as a diagnostic
+            snippet = output.strip()[-800:]
+            error_message = snippet or "pytest failed with non-zero exit code"
+        return (passed_tests, total_tests, coverage, error_message)
+
+    def _add_init_files(self, sandbox_path: Path) -> None:
+        for dirpath, _, filenames in os.walk(sandbox_path):
+            if "__init__.py" not in filenames:
+                init_file = Path(dirpath) / "__init__.py"
+                init_file.touch()
+
+    def _get_total_tests(self, output: str) -> int:
         m = re.search(r"collected\s+(\d+)\s+items", output)
         if not m:
             m = re.search(r"collected\s+(\d+)", output)
@@ -39,8 +58,11 @@ class PytestRunner:
                 total_tests = int(m.group(1))
             except Exception:
                 total_tests = 0
-        # Parse passed/failed/other summary counts from pytest output summary lines
+        return total_tests if m else 0
+
+    def _get_passed_tests(self, output: str, total_tests: int) -> tuple[int, int]:
         counts = {"passed": 0, "failed": 0, "skipped": 0, "xfailed": 0, "xpassed": 0}
+        passed_tests = 0
         for key in counts.keys():
             mm = re.search(rf"(\d+)\s+{key}", output)
             if mm:
@@ -68,7 +90,9 @@ class PytestRunner:
                 + counts["xfailed"]
                 + counts["xpassed"]
             )
+        return (passed_tests, total_tests)
 
+    def _get_coverage(self, output: str) -> float:
         cov_m = re.search(r"TOTAL\s+\d+\s+\d+\s+(\d+)%", output)
         if cov_m:
             try:
@@ -82,16 +106,4 @@ class PytestRunner:
                     coverage = float(cov_m2.group(1))
                 except Exception:
                     coverage = 0.0
-
-        if proc.returncode != 0:
-            # provide the last 800 chars of output as a diagnostic
-            snippet = output.strip()[-800:]
-            error_message = snippet or "pytest failed with non-zero exit code"
-
-        return (passed_tests, total_tests, coverage, error_message)
-
-    def _add_init_files(self, sandbox_path: Path) -> None:
-        for dirpath, _, filenames in os.walk(sandbox_path):
-            if "__init__.py" not in filenames:
-                init_file = Path(dirpath) / "__init__.py"
-                init_file.touch()
+        return coverage if cov_m or cov_m2 else 0.0
