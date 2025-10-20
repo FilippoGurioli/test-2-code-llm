@@ -30,9 +30,7 @@ class TestValidationEngine:
         self._notify_start()
         self._sandbox.setup()
         sandbox_path = Path(datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%SZ"))
-        self._sandbox.copy_to_sandbox(
-            Path(src_path), sandbox_path / Path(src_path).name
-        )
+        self._copy_source_content_to_sandbox(Path(src_path), sandbox_path)
         self._sandbox.copy_to_sandbox(
             Path(tests_path), sandbox_path / Path(tests_path).name
         )
@@ -63,3 +61,10 @@ class TestValidationEngine:
     ) -> None:
         for o in list(self.observers):
             o.on_test_metrics_measured(num_tests, passed_tests, coverage)
+
+    def _copy_source_content_to_sandbox(
+        self, source_path: str, sandbox_path: Path
+    ) -> None:
+        """It does not copy the root directory, just its content."""
+        for item in Path(source_path).iterdir():
+            self._sandbox.copy_to_sandbox(item, sandbox_path / item.name)
