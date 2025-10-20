@@ -19,7 +19,6 @@ class TestValidationEngine:
         sandbox_path = self._setup_sandbox()
         self._copy_dir_to_sandbox(tests_path, sandbox_path)
         self._copy_dir_to_sandbox(src_path, sandbox_path)
-        self._add_init_files(sandbox_path)
         (passed_tests, total_tests, coverage, error_message) = self._runner.run(
             sandbox_path
         )
@@ -70,9 +69,3 @@ class TestValidationEngine:
         complete_path = SANDBOX_BASE_DIR / Path(date)
         complete_path.mkdir(parents=True, exist_ok=False)
         return complete_path
-
-    def _add_init_files(self, sandbox_path: Path) -> None:
-        for dirpath, _, filenames in os.walk(sandbox_path):
-            if "__init__.py" not in filenames:
-                init_file = Path(dirpath) / "__init__.py"
-                init_file.touch()

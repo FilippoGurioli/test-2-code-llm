@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -6,6 +7,7 @@ from pathlib import Path
 class PytestRunner:
 
     def run(self, cwd: Path) -> tuple[int, int, float, str | None]:
+        self._add_init_files(cwd)
         passed_tests = 0
         total_tests = 0
         coverage = 0.0
@@ -87,3 +89,9 @@ class PytestRunner:
             error_message = snippet or "pytest failed with non-zero exit code"
 
         return (passed_tests, total_tests, coverage, error_message)
+
+    def _add_init_files(self, sandbox_path: Path) -> None:
+        for dirpath, _, filenames in os.walk(sandbox_path):
+            if "__init__.py" not in filenames:
+                init_file = Path(dirpath) / "__init__.py"
+                init_file.touch()
