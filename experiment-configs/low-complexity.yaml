@@ -6,7 +6,7 @@ experiment:
 
 models:
   - "mistral"
-  - "deepseek"
+  - "deepseek-r1"
   - "smollm2"
   - "qwen3"
   - "llama3"
