@@ -153,7 +153,15 @@ class CodeGenerationEngine:
             "The previously generated code did not pass the tests due to the following error:\n\n"
         )
         retry_query += f"{validation_error}\n\n"
-        retry_query += (
-            "Please fix the code accordingly and provide the updated source code.\n"
-        )
+        retry_query += "Fix the code accordingly. Remember to:\n"
+        retry_query += "- Not include any explanation or extra text — only the code.\n"
+        retry_query += "- Not merge multiple files into a single code block.\n"
+        retry_query += "- Not generate tests, only the source code.\n\n"
+        retry_query += "For each file:\n"
+        retry_query += "- Start with a comment on top with the file path like this: # path/to/file.py\n"
+        retry_query += "- Put each file in its own triple-backtick code block with the language specified:\n"
+        retry_query += "  ```python\n"
+        retry_query += "  # path/to/file.py\n"
+        retry_query += "  <code>\n"
+        retry_query += "  ```\n\n"
         return retry_query
