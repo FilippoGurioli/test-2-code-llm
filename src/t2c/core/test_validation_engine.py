@@ -14,7 +14,7 @@ class TestValidationEngine:
         self.observers: list[TestValidationObserver] = []
         self._runner = runner
 
-    def validate_tests(self, tests_path: str, src_path: str) -> bool:
+    def validate_tests(self, tests_path: str, src_path: str) -> str | None:
         self._notify_start()
         sandbox_path = self._setup_sandbox()
         self._copy_dir_to_sandbox(tests_path, sandbox_path)
@@ -24,7 +24,7 @@ class TestValidationEngine:
         )
         self._notify_end(error_message)
         self._notify_metrics(total_tests, passed_tests, coverage)
-        return error_message is None
+        return error_message
 
     def subscribe(self, observer: TestValidationObserver) -> None:
         self.observers.append(observer)

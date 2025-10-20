@@ -7,6 +7,12 @@ class CodeGenerationEngine:
     def __init__(self, llm_provider: LLMProviderInterface) -> None:
         self._llm_provider: LLMProviderInterface = llm_provider
         self._observers: list[CodeGenerationObserver] = []
+        self._chat_history: list[dict[str, str]] = [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that generates code based on provided tests.",
+            }
+        ]
 
     def subscribe(self, observer: CodeGenerationObserver) -> None:
         self._observers.append(observer)
@@ -14,16 +20,25 @@ class CodeGenerationEngine:
     def unsubscribe(self, observer: CodeGenerationObserver) -> None:
         self._observers.remove(observer)
 
-    def generate_code(self, lang: str, tests_path: str, output_path: str) -> bool:
+    def generate_code(
+        self, lang: str, tests_path: str, output_path: str, validation_error: str | None
+    ) -> bool:
         self._notify_start()
+        if validation_error is not None:
+            # Append the validation error to the chat history to inform the LLM
+            self._chat_history.append(
+                {"role": "user", "content": self._get_retry_query(validation_error)}
+            )
         query: str = self._get_query(lang, self._serialize_tests(tests_path))
+        self._chat_history.append({"role": "user", "content": query})
         try:
-            answer: str = self._llm_provider.query(query)
+            answer: str = self._llm_provider.query(self._chat_history)
+            self._chat_history.append({"role": "assistant", "content": answer})
         except Exception as e:
             self._notify_end(str(e))
             return False
-        print(answer)
-        self._parse_answer(answer, output_path)
+        # print(answer)
+        self._dump_to_file(answer, output_path)
         self._notify_end()
         return True
 
@@ -65,7 +80,7 @@ class CodeGenerationEngine:
                         parts.append(f"# could not read file {rel}: {e}\n")
         return "\n".join(parts)
 
-    def _parse_answer(self, answer: str, output_path: str) -> None:
+    def _dump_to_file(self, answer: str, output_path: str) -> None:
         """Parse the LLM answer and write files to output_path.
 
         The answer is expected to contain multiple code snippets, each starting
@@ -119,3 +134,13 @@ class CodeGenerationEngine:
         query += "  <code>\n"
         query += "  ```\n\n"
         return query
+
+    def _get_retry_query(self, validation_error: str) -> str:
+        retry_query: str = (
+            "The previously generated code did not pass the tests due to the following error:\n\n"
+        )
+        retry_query += f"{validation_error}\n\n"
+        retry_query += (
+            "Please fix the code accordingly and provide the updated source code.\n"
+        )
+        return retry_query

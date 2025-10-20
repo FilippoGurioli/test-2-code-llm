@@ -7,21 +7,16 @@ REQUEST_TIMEOUT = 30000
 
 
 class BaseProvider(ABC):
-    def query(self, prompt: str) -> str:
+    def query(self, chat: list[dict[str, str]]) -> str:
         self._start_server()
-        _chat_history: list[dict[str, str]] = [
-            {"role": "system", "content": "You are a helpful assistant."}
-        ]
-        _chat_history.append({"content": prompt, "role": "user"})
         api_base = self._get_api_base()
         try:
             response = completion(
                 model=self._get_server_model_name(),
-                messages=_chat_history,
+                messages=chat,
                 api_base=api_base,
                 request_timeout=REQUEST_TIMEOUT,
             )
-            _chat_history.append({"content": response, "role": "assistant"})
             cleaned_response = self._clean_response(response.choices[0].message.content)
             return cleaned_response
         except APIConnectionError as exc:

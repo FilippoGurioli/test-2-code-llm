@@ -21,13 +21,22 @@ class GenerateCommand:
         output_path.mkdir(parents=True, exist_ok=True)
         attempts: int = 0
         cge, tve, reporting_engines = self._setup_engines(config)
-        while attempts < config.upper_bound and (
-            not cge.generate_code(
-                config.language, config.tests_path, output_path.__str__()
+        validation_error: str | None = None
+        while True:  # do-while loop
+            code_gen_succeeded = cge.generate_code(
+                config.language,
+                config.tests_path,
+                output_path.__str__(),
+                validation_error,
             )
-            or not tve.validate_tests(config.tests_path, output_path.__str__())
-        ):
+            validation_error = tve.validate_tests(
+                config.tests_path, output_path.__str__()
+            )
             attempts += 1
+            if (
+                code_gen_succeeded and validation_error is None
+            ) or attempts >= config.upper_bound:
+                break
         for re in reporting_engines:
             re.log_report()
         return None
