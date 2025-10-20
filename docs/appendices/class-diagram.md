@@ -100,8 +100,8 @@ classDiagram
     %% Dispatcher
 
     class CommandFactory {
-        +list_commands() List[str]
-        +get_command(command_name: str) Command
+        +$list_commands() List[str]
+        +$get_command(command_name: str) Command
     }
 
     class Command {
@@ -120,6 +120,123 @@ classDiagram
         +QWEN
         +LLAMA
         +GEMINI
+    }
+
+    class CodeGenerationEngine {
+        -LLMProviderInterface llm_provider
+        -List[CodeGenerationObserver] observers
+        +generate_code(lang: str, tests_path: str, output_path: str, validation_error: Optional[str]) bool
+        +subscribe(observer: CodeGenerationObserver) void
+        +unsubscribe(observer: CodeGenerationObserver) void
+    }
+
+    class LLMProviderInterface {
+        <<interface>>
+        +query(chat: List[Dict[str, str]]) str
+    }
+
+    class BaseProvider {
+        <<abstract>>
+        +query(chat: List[Dict[str, str]]) str
+        -*clean_response(response: str) str*
+        -*start_server() void*
+        -*get_server_model_name() str*
+        -*get_api_base() str*
+    }
+
+    class LocalProvider {
+        <<abstract>>
+        -clean_response(response: str) str
+        -start_server() void
+        -get_server_model_name() str
+        -get_api_base() str
+        -*get_model() SupportedModel*
+    }
+
+    class RemoteProvider {
+        <<abstract>>
+        -clean_response(response: str) str
+        -start_server() void
+    }
+
+    class LLMProviderFactory {
+        +$create_provider(model: SupportedModel) LLMProviderInterface
+    }
+
+    class TestValidationEngine {
+        -Runner runner
+        -List[TestValidatorObserver] observers
+        -SandboxEnvironment sandbox
+        +validate_tests(tests_path: str, src_path: str) Optional[str]
+        +subscribe(observer: TestValidatorObserver) void
+        +unsubscribe(observer: TestValidatorObserver) void
+    }
+
+    class Runner {
+        <<interface>>
+        +run(cwd: Path, environment: SandboxEnvironment) tuple[int, int, float, Optional[str]]
+    }
+
+    class RunnerFactory {
+        +$get_runner(lang: str) Runner
+    }
+
+    class SandboxFactory {
+        +$local_env() SandboxEnvironment
+    }
+
+    class SandboxEnvironment {
+        <<interface>>
+        +setup() void
+        +teardown() void
+        +run_command(command: List[str], cwd: Path) tuple[int, str]
+        +copy_to_sandbox(src: Path, dest: Path) void
+        +delete_from_sandbox(path: Path) void
+        +get_dirs(path: Path) List[Path]
+        +touch(path: Path) void
+    }
+
+    class ReportingEngine {
+        -CollectStrategy collector
+        +log_report() void
+    }
+
+    class CollectStrategy {
+        <<interface>>
+        +collect(data: T2CStat) void
+    }
+
+    class CodeGenerationObserver {
+        <<interface>>
+        +on_code_generation_start() void
+        +on_code_generation_end(chat: List[Dict[str, str]], error: Optional[str]) void
+    }
+
+    class TestValidationObserver {
+        <<interface>>
+        +on_test_validation_start() void
+        +on_test_validation_end(error: Optional[str]) void
+        +on_test_metrics_measured(num_tests: int, passed: int, coverage: float) void
+    }
+
+    class T2CStat {
+        +str id
+        +str model
+        +str language
+        +str attempts
+        +List[RunStat] runs
+    }
+
+    class RunStat {
+        +float code_gen_duration
+        +List[Dict[str, str]] chat_history
+        +bool is_code_gen_successful
+        +Optional[str] code_gen_error
+        +float test_validation_duration
+        +int number_of_tests
+        +int number_of_passed_tests
+        +Optional[str] test_validation_error
+        +float coverage
     }
 
     Main --> CLIHandler
@@ -166,4 +283,44 @@ classDiagram
     GenerateCommand --> TestValidationEngine
     GenerateCommand --> RunnerFactory
     GenerateCommand --> SandboxFactory
+
+    CodeGenerationEngine --> LLMProviderInterface
+    CodeGenerationEngine --> CodeGenerationObserver
+    LLMProviderFactory --> SupportedModel
+    LLMProviderFactory --> LLMProviderInterface
+    LLMProviderFactory --> Smollm2
+    LLMProviderFactory --> Qwen3
+    LLMProviderFactory --> DeepSeek
+    LLMProviderFactory --> Mistral
+    LLMProviderFactory --> Llama3
+    LLMProviderFactory --> Gemini
+    LLMProviderInterface <|-- BaseProvider
+    BaseProvider <|-- LocalProvider
+    BaseProvider <|-- RemoteProvider
+    LocalProvider <|-- Smollm2
+    LocalProvider <|-- Llama3
+    LocalProvider --> SupportedModel
+    RemoteProvider <|-- Qwen3
+    RemoteProvider <|-- DeepSeek
+    RemoteProvider <|-- Mistral
+    RemoteProvider <|-- Gemini
+    TestValidationEngine --> TestValidationObserver
+    TestValidationEngine --> Runner
+    TestValidationEngine --> SandboxEnvironment
+    Runner --> SandboxEnvironment
+    SandboxFactory --> SandboxEnvironment
+    SandboxFactory --> LocalSandboxEnvironment
+    RunnerFactory --> Runner
+    RunnerFactory --> PytestRunner
+    Runner <|-- PytestRunner
+    SandboxEnvironment <|-- LocalSandboxEnvironment
+    ReportingEngine --> CollectStrategy
+    ReportingEngine --> RunStat
+    ReportingEngine --> T2CStat
+    CodeGenerationObserver <|-- ReportingEngine
+    TestValidationObserver <|-- ReportingEngine
+    CollectStrategy <|-- ConsoleCollector
+    CollectStrategy <|-- JsonCollector
+    CollectStrategy --> T2CStat
+    T2CStat --> RunStat
 ```
