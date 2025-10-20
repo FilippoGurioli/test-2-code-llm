@@ -13,9 +13,6 @@ cd test-2-code-llm
 
 # Install in development mode
 make install-dev
-
-# Verify installation
-t2c --help
 ```
 
 ### Basic Usage
@@ -41,25 +38,23 @@ Example experiment configuration:
 
 ```yaml
 experiment:
-  name: "T2C Comparative Study"
-  output_dir: "./experiments/results"
+  name: "experiment_1"
+  output_dir: "./output"
+  language: "python"
+  upper_bound: 3
 
 models:
   - "mistral"
-  - "smollm2"
-  - "llama3"
+  - "deepseek-r1"
+  - "gemini"
 
-test_suites:
-  - name: "unit_tests"
-    path: "./tests/unit"
-    language: "python"
-  - name: "integration_tests"
-    path: "./tests/integration"
-    language: "python"
-
-strategies:
-  max_retries: [1, 3, 5]
-  matrix_testing: true
+test_kinds:
+  - name: "UT"
+    path: "./case_studies/tic_tac_toe/tests/unit"
+  - name: "IT"
+    path: "./case_studies/tic_tac_toe/tests/integration"
+  - name: "AT"
+    path: "./case_studies/tic_tac_toe/tests/acceptance"
 ```
 
 ## Supported LLM Models
@@ -106,11 +101,8 @@ make type-check
 ```text
 src/t2c/
 ├── cli/              # Command-line interface components
-├── core/             # Core business logic and models
-├── engines/          # Code generation, validation, reporting
-├── experiments/      # Experiment management and execution
-├── config/           # Configuration and settings management
-└── utils/            # Shared utilities and helpers
+├── core/             # Core business logic and models (code generation and test validation)
+└── dispatcher/       # Command dispatching and handling
 ```
 
 ## Documentation
