@@ -1,3 +1,5 @@
+"""Module for the command factory."""
+
 from t2c.dispatcher.commands.command_interface import Command
 from t2c.dispatcher.commands.experiment_command import ExperimentCommand
 from t2c.dispatcher.commands.generate_command import GenerateCommand

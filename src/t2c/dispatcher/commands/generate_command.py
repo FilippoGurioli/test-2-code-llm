@@ -1,4 +1,5 @@
-import shutil
+"""Module for the generate command."""
+
 from pathlib import Path
 
 from t2c.cli.validation_chain.validated_configuration import ValidatedConfiguration
@@ -12,11 +13,12 @@ from t2c.core.testing.runner_factory import RunnerFactory
 
 
 class GenerateCommand:
+    """It launches a code generation and a test validation as many as configured upper bound."""
+
     def get_help_text(self) -> str:
         return "This is the generate command"  # TODO
 
     def execute(self, config: ValidatedConfiguration) -> None:
-        # self._clear_directory(config.output_path)
         output_path = Path(config.output_path) / config.id
         output_path.mkdir(parents=True, exist_ok=True)
         attempts: int = 0
@@ -40,14 +42,6 @@ class GenerateCommand:
         for re in reporting_engines:
             re.log_report()
         return None
-
-    def _clear_directory(self, path: str) -> None:
-        p: Path = Path(path)
-        for item in p.iterdir():
-            if item.is_file() or item.is_symlink() and item.suffix == ".py":
-                item.unlink()
-            elif item.is_dir():
-                shutil.rmtree(item)
 
     def _setup_engines(
         self, config: ValidatedConfiguration

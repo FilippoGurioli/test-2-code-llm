@@ -1,3 +1,5 @@
+"""Module for the experiment command."""
+
 import datetime
 from pathlib import Path
 
@@ -8,6 +10,8 @@ from t2c.dispatcher.commands.generate_command import GenerateCommand
 
 
 class ExperimentCommand:
+    """It launches multiple generate commands as per the experiment configuration."""
+
     def get_help_text(self) -> str:
         return "This is the experiment command"  # TODO
 

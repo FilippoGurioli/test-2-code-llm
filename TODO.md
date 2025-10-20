@@ -4,6 +4,8 @@
 - write tests
 - run experiments and collect data
 - analyze results
+- let CI pass
+- create a release
 - implement a GHA that exploits the project
 - create an interface for the sandbox environment (in order to support docker)
 - implement --help for all commands
