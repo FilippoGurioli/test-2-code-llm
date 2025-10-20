@@ -1,6 +1,5 @@
 # TODO
 
-- implement logic to retrieve the previous test validation error to the next code gen
 - write doc strings
 - write tests
 - run experiments and collect data
