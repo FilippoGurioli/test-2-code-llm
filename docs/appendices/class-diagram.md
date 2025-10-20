@@ -9,6 +9,9 @@ config:
 ---
 
 classDiagram
+
+    %% CLI
+
     class Main {
         +main(args: List[str] | None) int
     }
@@ -94,6 +97,31 @@ classDiagram
         +$failure(errors: List[str]) ValidationResult
     }
 
+    %% Dispatcher
+
+    class CommandFactory {
+        +list_commands() List[str]
+        +get_command(command_name: str) Command
+    }
+
+    class Command {
+        <<interface>>
+        +get_help_text() str
+        +execute(config: ValidatedConfiguration) void
+    }
+
+    %% Core
+
+    class SupportedModel {
+        <<Enum>>
+        +MISTRAL
+        +DEEPSEEK
+        +SMOLLM
+        +QWEN
+        +LLAMA
+        +GEMINI
+    }
+
     Main --> CLIHandler
     Main --> ChainValidator
     Main --> CommandValidator
@@ -122,4 +150,20 @@ classDiagram
     Validator <|-- ModelValidator
     Validator <|-- PathValidator
     Validator <|-- YamlValidator
+
+    CommandFactory --> Command
+    CommandFactory --> GenerateCommand
+    CommandFactory --> ExperimentCommand
+    Command <|-- GenerateCommand
+    Command <|-- ExperimentCommand
+    Command --> ValidatedConfiguration
+    ExperimentCommand --> GenerateCommand
+    GenerateCommand --> CodeGenerationEngine
+    GenerateCommand --> LLMProviderFactory
+    GenerateCommand --> ConsoleCollector
+    GenerateCommand --> JsonCollector
+    GenerateCommand --> ReportingEngine
+    GenerateCommand --> TestValidationEngine
+    GenerateCommand --> RunnerFactory
+    GenerateCommand --> SandboxFactory
 ```
