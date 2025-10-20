@@ -182,13 +182,13 @@ classDiagram
     class CodeGenerationEngine {
         -LLMProviderInterface llm_provider
         -List~CodeGenerationObserver~ observers
-        +generate_code(tests, config) CodeResult
+        +generate_code(language, tests, output) CodeResult
         +subscribe(observer) void
         +unsubscribe(observer) void
     }
     class LLMProviderInterface {
         <<interface>>
-        +query(prompt, config) CodeResult
+        +query(prompt) String
     }
     class LLMProviderFactory {
         +create_provider(name) LLMProviderInterface
@@ -208,7 +208,7 @@ classDiagram
 
 ## Test Validator
 
-The Test Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It ensures that the generated code meets the functional requirements specified by the tests.
+The Test Validator is responsible for executing the generated code against the provided test suite in a sandboxed environment. It is injected the Runner to abstract from the test suite and the sandbox environment to abstract from the execution environment.
 
 ```mermaid
 ---
@@ -219,27 +219,32 @@ The Test Validator is responsible for executing the generated code against the p
 classDiagram
     class TestValidationEngine {
         -SandboxEnvironment sandbox
-        -String language
-        +validate_tests(generated_code, test_suite) void
+        -Runner test_runner
+        +validate_tests(generated_code, tests) void
         +subscribe(observer) void
         +unsubscribe(observer) void
     }
 
     class SandboxEnvironment {
-        +run(code, tests) ExecutionResult
+        +setup() void
+        +teardown() void
+        +run_command(command, path) ExecutionResult
+        +copy_files(src, dest) void
+        +delete_file(path) void
     }
 
-    class ExecutionResult {
-        -Boolean success
-        -String output
-        -String error
-        +is_successful() Boolean
-        +get_output() String
-        +get_error() String
+    class Runner {
+        <<interface>>
+        +run_tests(tests, path, sandbox) TestResult
     }
 
     TestValidationEngine --> SandboxEnvironment
-    SandboxEnvironment --> ExecutionResult
+    TestValidationEngine --> Runner
+    Runner --> SandboxEnvironment
+    Runner <|-- PytestRunner
+    Runner <|-- JUnitRunner
+    SandboxEnvironment <|-- LocalSandbox
+    SandboxEnvironment <|-- DockerSandbox
 ```
 
 ## Experiment Manager
@@ -290,6 +295,7 @@ classDiagram
 
     class RunStat {
         -Float code_gen_duration
+        -List~String~ chat_history
         -Boolean code_gen_success
         -Float test_validation_duration
         -Int num_tests
