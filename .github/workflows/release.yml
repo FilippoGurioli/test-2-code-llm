@@ -45,6 +45,7 @@ jobs:
           python -m build
 
       - name: Upload to GitHub Release Assets
+        if: steps.release.outputs.released == 'true'
         uses: python-semantic-release/publish-action@v10.4.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +61,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ needs.release.result == 'success' }}
+    if: ${{ needs.release.outputs.released == 'true' }}
 
     permissions:
       contents: read
