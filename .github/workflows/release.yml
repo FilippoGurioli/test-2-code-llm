@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Semantic Version Release
         id: release
@@ -26,6 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           git_committer_name: "github-actions"
           git_committer_email: "actions@users.noreply.github.com"
+          verbosity: 2
 
       - name: Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v10.4.1
