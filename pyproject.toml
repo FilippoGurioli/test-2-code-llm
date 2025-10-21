@@ -177,7 +177,6 @@ commit_parser = "conventional"
 logging_use_named_masks = false
 major_on_zero = true
 allow_zero_version = false
-repo_dir = "/home/filippo/Documents/Unibo/ASMD/test-2-code-llm"
 no_git_verify = false
 tag_format = "v{version}"
 
