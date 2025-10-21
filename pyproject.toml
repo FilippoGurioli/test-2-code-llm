@@ -39,22 +39,23 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "litellm >= 1.70.0",       # LLM interaction
-    "pytest>=7.4.0",           # Testing framework
-    "pytest-asyncio>=0.21.0",  # Async testing
-    "pytest-cov>=4.1.0",       # Coverage reporting
-    "pytest-mock>=3.11.0",     # Mocking utilities
-    "pytest-watch>=4.2.0",     # Test watcher for TDD
-    "black>=23.0.0",           # Code formatting
-    "ruff>=0.0.290",           # Fast linting
-    "mypy>=1.5.0",             # Type checking
-    "pre-commit>=3.4.0",       # Git hooks
-    "safety>=2.3.0",           # Security vulnerability scanner
-    "bandit[toml]>=1.7.0",     # Security linter
-    "sphinx>=7.1.0",           # Documentation
-    "sphinx-rtd-theme>=1.3.0", # Documentation theme
-    "types-requests>=2.28.0",  # Type hints for requests
-    "types-PyYAML>=6.0.0",     # Type hints for PyYAML
+    "litellm >= 1.70.0",               # LLM interaction
+    "pytest>=7.4.0",                   # Testing framework
+    "pytest-asyncio>=0.21.0",          # Async testing
+    "pytest-cov>=4.1.0",               # Coverage reporting
+    "pytest-mock>=3.11.0",             # Mocking utilities
+    "pytest-watch>=4.2.0",             # Test watcher for TDD
+    "black>=23.0.0",                   # Code formatting
+    "ruff>=0.0.290",                   # Fast linting
+    "mypy>=1.5.0",                     # Type checking
+    "pre-commit>=3.4.0",               # Git hooks
+    "safety>=2.3.0",                   # Security vulnerability scanner
+    "bandit[toml]>=1.7.0",             # Security linter
+    "sphinx>=7.1.0",                   # Documentation
+    "sphinx-rtd-theme>=1.3.0",         # Documentation theme
+    "types-requests>=2.28.0",          # Type hints for requests
+    "types-PyYAML>=6.0.0",             # Type hints for PyYAML
+    "python-semantic-release>=7.23.0", # Automated releases
 ]
 
 [project.scripts]
@@ -167,3 +168,87 @@ skips = ["B101", "B601", "B404", "B603"]
 
 [tool.bandit.assert_used]
 skips = ["*_test.py", "*test_*.py"]
+
+[tool.semantic_release]
+assets = []
+build_command = "python -m build"
+commit_message = "chore(release): {version} [skip ci]"
+commit_parser = "conventional"
+logging_use_named_masks = false
+major_on_zero = true
+allow_zero_version = false
+repo_dir = "/home/filippo/Documents/Unibo/ASMD/test-2-code-llm"
+no_git_verify = false
+tag_format = "v{version}"
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = []
+mode = "update"
+insertion_flag = "<!-- version list -->"
+template_dir = "templates"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
+output_format = "md"
+mask_initial_release = true
+
+[tool.semantic_release.changelog.environment]
+block_start_string = "{%"
+block_end_string = "%}"
+variable_start_string = "{{"
+variable_end_string = "}}"
+comment_start_string = "{#"
+comment_end_string = "#}"
+trim_blocks = false
+lstrip_blocks = false
+newline_sequence = "\n"
+keep_trailing_newline = false
+extensions = []
+autoescape = false
+
+[tool.semantic_release.commit_author]
+env = "GIT_COMMIT_AUTHOR"
+default = "semantic-release <semantic-release>"
+
+[tool.semantic_release.commit_parser_options]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf", "docs"]
+other_allowed_tags = [
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+allowed_tags = [
+    "feat",
+    "fix",
+    "perf",
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+default_bump_level = 0
+parse_squash_commits = true
+ignore_merge_commits = true
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
+insecure = false
+
+[tool.semantic_release.publish]
+dist_glob_patterns = ["dist/*"]
+upload_to_vcs_release = true
