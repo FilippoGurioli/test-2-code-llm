@@ -1,4 +1,4 @@
-.PHONY: help run install install-dev test test-coverage test-watch lint format type-check security quality clean build
+.PHONY: help install-dev test test-coverage test-watch lint format type-check security quality clean build
 
 VENV := .venv
 PYTHON := $(VENV)/bin/python
@@ -16,12 +16,6 @@ $(VENV)/bin/activate:  ## Create in-project virtual environment
 	python3 -m venv $(VENV)
 	@$(PIP) install --upgrade pip setuptools wheel
 	@echo "Virtual environment created in $(VENV). To activate: source $(VENV)/bin/activate"
-
-run: $(VENV)/bin/activate  ## Run the main application
-	$(PYTHON) -m t2c
-
-install: $(VENV)/bin/activate  ## Install package in development mode
-	$(PIP) install -e .
 
 install-dev: $(VENV)/bin/activate  ## Install package and dev dependencies, install git hooks
 	$(PIP) install -e ".[dev]"
