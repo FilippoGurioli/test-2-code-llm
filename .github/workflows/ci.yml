@@ -112,7 +112,7 @@ jobs:
           api-key: ${{ secrets.SAFETY_API_KEY }}
 
       - name: Run bandit security check
-        run: bandit -r src/ -f json
+        run: bandit -r src/ -f json -c pyproject.toml
 
   build:
     name: Build Package
