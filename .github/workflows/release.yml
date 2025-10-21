@@ -47,39 +47,9 @@ jobs:
       - name: Install semantic-release and plugins
         run: |
           npm install -g semantic-release \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator \
-            @semantic-release/changelog \
-            @semantic-release/git \
-            @semantic-release/github \
-            conventional-changelog-conventionalcommits
+            semantic-release-preconfigured-conventional-commits
 
-      - name: Run semantic-release (compute version, changelog & create release)
+      - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: semantic-release
-
-      - name: Upload build artifacts
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*
-          draft: false
-          prerelease: ${{ contains(github.ref_name, 'rc') || contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') }}
-
-  # publish:
-  #   name: Publish to PyPI
-  #   runs-on: ubuntu-latest
-  #   needs: release
-  #   environment:
-  #     name: pypi
-  #     url: https://pypi.org/p/t2c
-
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: dist-files
-  #         path: dist/
-
-  #     - name: Publish to PyPI
-  #       uses: pypa/gh-action-pypi-publish@release/v1
+        run: npx semantic-release
