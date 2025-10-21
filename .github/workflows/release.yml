@@ -46,7 +46,7 @@ jobs:
 
       - name: Install semantic-release
         run: |
-          npm install -g semantic-release semantic-release-preconfigured-conventional-commits
+          npm install --save-dev semantic-release semantic-release-preconfigured-conventional-commits
 
       - name: Run semantic-release
         env:
