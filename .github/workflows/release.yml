@@ -42,12 +42,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "22"
 
-      - name: Install semantic-release and plugins
+      - name: Install semantic-release
         run: |
-          npm install -g semantic-release \
-            semantic-release-preconfigured-conventional-commits
+          npm install -g semantic-release semantic-release-preconfigured-conventional-commits
 
       - name: Run semantic-release
         env:
