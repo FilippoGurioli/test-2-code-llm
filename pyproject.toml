@@ -56,8 +56,6 @@ dev = [
     "types-requests>=2.28.0",          # Type hints for requests
     "types-PyYAML>=6.0.0",             # Type hints for PyYAML
     "python-semantic-release>=7.23.0", # Automated releases
-    "build>=0.10.0",                   # Build distributions
-    "twine>=4.0.0",                    # Upload distributions
 ]
 
 [project.scripts]
