@@ -63,8 +63,8 @@ class TestValidationEngine:
             o.on_test_metrics_measured(num_tests, passed_tests, coverage)
 
     def _copy_source_content_to_sandbox(
-        self, source_path: str, sandbox_path: Path
+        self, source_path: Path, sandbox_path: Path
     ) -> None:
         """It does not copy the root directory, just its content."""
-        for item in Path(source_path).iterdir():
+        for item in source_path.iterdir():
             self._sandbox.copy_to_sandbox(item, sandbox_path / item.name)
