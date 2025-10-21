@@ -13,6 +13,9 @@ cd test-2-code-llm
 
 # Install in development mode
 make install-dev
+
+# Source the virtual environment
+source .venv/bin/activate
 ```
 
 ### Basic Usage
