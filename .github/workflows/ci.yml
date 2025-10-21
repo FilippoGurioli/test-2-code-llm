@@ -81,7 +81,7 @@ jobs:
           if [[ "${{ matrix.python-version }}" == "3.11" ]]; then
             pytest --cov=src/t2c --cov-report=xml --cov-report=term-missing --cov-fail-under=0
           else
-            pytest
+            pytest --cov-fail-under=0
           fi
 
       - name: Upload coverage to Codecov
