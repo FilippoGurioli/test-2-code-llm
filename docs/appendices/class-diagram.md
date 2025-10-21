@@ -7,7 +7,6 @@ config:
     class:
       hideEmptyMembersBox: true
 ---
-
 classDiagram
 
     %% CLI
