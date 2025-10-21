@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "t2c"
-version = "0.1.0"
+version = "1.0.0"
 description = "Test 2 Code with LLMs - Academic research tool for LLM-based code generation"
 readme = "README.md"
 license = { text = "MIT" }
