@@ -42,7 +42,7 @@ security: $(VENV)/bin/activate  ## Run security checks
 	@echo "Running dependency vulnerability scan..."
 	@$(PYTHON) -m safety scan || (echo "Security vulnerabilities found in dependencies!" && exit 1)
 	@echo "Running static security analysis..."
-	@$(PYTHON) -m bandit -r src/ -f custom --msg-template "{relpath}:{line}: {severity}: {msg} ({test_id})" || (echo "Security issues found in code!" && exit 1)
+	@$(PYTHON) -m bandit -r src/ -f custom --msg-template "{relpath}:{line}: {severity}: {msg} ({test_id})" -c pyproject.toml || (echo "Security issues found in code!" && exit 1)
 	@echo "Security checks passed!"
 
 test-watch: $(VENV)/bin/activate  ## Run tests in watch mode (requires pytest-watch installed)
