@@ -1,5 +1,6 @@
 """Module defining the ReportingEngine class for managing reporting of code generation and test validation metrics."""
 
+import copy
 import time
 
 from t2c.core.reporting.collect_strategy import CollectStrategy
@@ -33,7 +34,7 @@ class ReportingEngine:
         self._runs.append(
             RunStat(
                 code_gen_duration=time.perf_counter() - self._code_gen_start_time,
-                chat_history=chat,
+                chat_history=copy.deepcopy(chat),
                 is_code_gen_successful=error is None,
                 code_gen_error_message=error,
                 test_validation_duration=0.0,
