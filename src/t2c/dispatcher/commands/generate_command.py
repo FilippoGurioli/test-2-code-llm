@@ -32,10 +32,11 @@ class GenerateCommand:
                 output_path.__str__(),
                 validation_error,
             )
-            validation_error = tve.validate_tests(
-                config.tests_path, output_path.__str__()
-            )
             attempts += 1
+            if code_gen_succeeded:
+                validation_error = tve.validate_tests(
+                    config.tests_path, output_path.__str__()
+                )
             if (
                 code_gen_succeeded and validation_error is None
             ) or attempts >= config.upper_bound:
