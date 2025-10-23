@@ -39,6 +39,7 @@ class LocalSandboxEnvironment:
             for item in local_path.iterdir():
                 self.copy_to_sandbox(item, sandbox_path / item.name)
         else:
+            absolute_sandbox_path.parent.mkdir(parents=True, exist_ok=True)
             with local_path.open("rb") as src_file:
                 with absolute_sandbox_path.open("wb") as dest_file:
                     dest_file.write(src_file.read())
