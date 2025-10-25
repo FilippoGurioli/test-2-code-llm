@@ -14,11 +14,11 @@ models:
 
 test_kinds:
   - name: "UT"
-    path: "./case_studies/2048/tests/unit"
+    path: "./case_studies/game_2048/tests/unit"
   - name: "IT"
-    path: "./case_studies/2048/tests/integration"
+    path: "./case_studies/game_2048/tests/integration"
   - name: "AT"
-    path: "./case_studies/2048/tests/acceptance"
+    path: "./case_studies/game_2048/tests/acceptance"
   - name: "ATxUT"
     path: "./case_studies/game_2048/tests/ATxUT"
   - name: "ATxIT"
