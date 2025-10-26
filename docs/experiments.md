@@ -63,6 +63,19 @@ Results have been collected in json format in order to be easily processable wit
 
 During the experiments an improvement has been made to the core logic of the tool. Initially, the code generation engine was not aware of the previous test validation errors, thus each code generation was independent from the previous one. This caused problems in some cases, since the model could generate code that did not fix the previous errors. To solve this problem, the code generation engine has been modified to take into account the previous test validation errors. This has been done by passing the previous errors to the LLM as part of the prompt. This way, the model is aware of the previous errors and can generate code that fixes them.
 
+## Automatic Experiments
+
+To launch experiments automatically, over all the combination of models, test types and case studies, launch the following commands from the project root directory:
+
+```bash
+# source the virtual environment
+source .venv/bin/activate
+
+t2c experiment ./experiment-configs/low-complexity.yaml && \
+t2c experiment ./experiment-configs/medium-complexity.yaml && \
+t2c experiment ./experiment-configs/high-complexity.yaml
+```
+
 ## Manual experiments
 
 To better understand the performance of the models, some manual experiments have been conducted with available models online. In particular, the following models have been manually tested:
