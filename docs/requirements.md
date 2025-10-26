@@ -19,7 +19,6 @@ The following section lists all the project requirements that have been identifi
    - Unit tests (testing individual functions/methods)
    - Integration tests (testing component interactions)
    - Acceptance tests (testing user-facing behavior)
-1. Generated code shall follow common programming conventions and best practices for the target language.
 1. The system shall handle increasingly complex software projects as case studies:
    - Simple games ([Tic Tac Toe](https://en.wikipedia.org/wiki/Tic-tac-toe))
    - Moderate complexity ([Connect Four](https://en.wikipedia.org/wiki/Connect_Four))
@@ -59,7 +58,7 @@ The following section lists all the project requirements that have been identifi
 1. The system shall collect metrics on code generation success rates across different:
    - Test types (unit, integration, acceptance)
    - Project complexity levels
-   - LLM models and configurations
+   - LLM models
 1. The system shall enable reproducible experiments with consistent test cases across different model evaluations.
 1. Generated code quality shall be evaluated using multiple criteria:
    - Test pass rates
@@ -82,7 +81,6 @@ The following section lists all the project requirements that have been identifi
 1. The system shall implement retry logic with iterative refinement when tests fail.
 1. The system shall generate comprehensive reports on generation success/failure rates.
 1. The system shall support batch processing of multiple test files simultaneously.
-1. The system shall validate generated code syntax before test execution.
 
 ## Non-Functional Requirements
 
@@ -93,6 +91,5 @@ The following section lists all the project requirements that have been identifi
 
 ## Implementation Requirements
 
-1. The system shall be implemented in Python 3.9+ for broad compatibility and rich ecosystem support.
+1. The system shall be implemented in Python 3.11+ for broad compatibility and rich ecosystem support.
 1. The system shall implement a plugin architecture for easy addition of new LLM providers.
-1. The system shall include unit tests covering all core functionality with >80% code coverage.
