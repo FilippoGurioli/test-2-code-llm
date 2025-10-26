@@ -20,14 +20,14 @@ class ArgumentParser:
         return Configuration(
             command=args[0] if len(args) > 0 else None,
             tests_path=ArgumentParser._extract_value_from_list(
-                args, ("--testsPath", "-t"), str
+                args, ("--tests", "-t"), str
             ),
             config_path=args[1] if len(args) > 1 else None,
             output_path=ArgumentParser._extract_value_from_list(
-                args, ("--outputPath", "-o"), str
+                args, ("--output", "-o"), str
             ),
             model_name=ArgumentParser._extract_value_from_list(
-                args, ("--modelName", "-m"), str
+                args, ("--model", "-m"), str
             ),
             upper_bound=ArgumentParser._extract_value_from_list(
                 args, ("--upperBound", "-u"), int
@@ -35,9 +35,7 @@ class ArgumentParser:
             language=ArgumentParser._extract_value_from_list(
                 args, ("--language", "-l"), str
             ),
-            create_report=ArgumentParser._check_presence(
-                args, ("--createReport", "-r")
-            ),
+            create_report=ArgumentParser._check_presence(args, ("--report", "-r")),
         )
 
     @staticmethod
