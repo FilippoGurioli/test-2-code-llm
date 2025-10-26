@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.1 (2025-10-26)
+
+### Documentation
+
+- Correct typos
+  ([`2eb3213`](https://github.com/FilippoGurioli/test-2-code-llm/commit/2eb3213d2694f4f7039cbbf5897eb8253cd75d04))
+
+
 ## v1.2.0 (2025-10-26)
 
 ### Bug Fixes
