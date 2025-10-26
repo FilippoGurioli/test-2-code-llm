@@ -9,3 +9,4 @@ nav:
   - Results: results.md
   - Appendices:
       - Class Diagram: appendices/class-diagram.md
+      - Audit and Future Work: appendices/audit.md
