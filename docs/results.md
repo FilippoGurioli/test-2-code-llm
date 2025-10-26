@@ -25,7 +25,7 @@ To create a ranking it was exploited a weighted formula based on performance met
 | **Average Coverage**      | Code coverage percentage achieved by generated code    |  0.2   |
 | **Normalized Time Taken** | Penalization for longer generation times               |  -0.1  |
 
-The final ranking forumla was indeed:
+The final ranking formula was indeed:
 
 ```math
 score = 0.4 * success + 0.4 * pass + 0.2 * coverage - 0.1 * normalizedTime

@@ -14,7 +14,7 @@ If we go back to requirements we can see that not all the main objectives have b
 
 Python was chosen as the programming language for this project due to its widely recognized strengths in machine learning libraries. However, the last time I used python was more than a year ago, so first weeks were completely spent in re-familiarizing myself with the language and its ecosystem as well as imposing a solid typing discipline to my code.
 
-I must admit that the prototyping capability of python were really helpful during all the phases of the project. I really think that I've found the sweet spot between a more-or-less strict typing system and the flexibility of a dynamic language.
+I must admit that the prototyping capabilities of python were really helpful during all the phases of the project. I really think that I've found the sweet spot between a more-or-less strict typing system and the flexibility of a dynamic language.
 
 I really like how the project turned out, I enjoyed a lot the design phase and I think that no major design flaws were made. The modularity of the codebase allowed me to easily extend and modify different parts of the project without affecting the overall structure. Moreover, the modular design also allowed me to struggle for perfection in concepts while providing simplified implementations that let me meet the deadlines (e.g. design a *sandbox environment* as a sterile testing ground while implementing it as not-very-sterile local environment).
 
